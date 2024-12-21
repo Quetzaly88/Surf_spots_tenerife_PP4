@@ -1,3 +1,23 @@
+21 dec
+Migration Issue. Inconsisten migration history. 
+   When attempting to run **python manage.py migrate** was encountered an error. 
+   The error indicated that the admin migration was applied before the migration for the sustom user model. This resulted in an inconsistent migration history. 
+   The SQLite database was installed with hope that the issue was resolved but it didn'st work. 
+   
+   Solution: Database reset(rm db.sqlite3)
+            Migration cleanup (rm users_account/migrations/0001_initial.py)
+            Recreating migrations (python manage.py makemigrations users_account)
+            Applying migrations (python manage.py migrate)
+After the migration issue was resolved the terminal accepted commands and everything return to normal. 
+
+I believe this issue was the result of me just doing the migrations that the terminal was suggesting. 
+
+
+
+
+
+
+
 ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
 Welcome Andrea Nilsson,
