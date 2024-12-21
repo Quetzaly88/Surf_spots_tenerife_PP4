@@ -4,5 +4,7 @@ from django.db import models
 
 
 # Create your models here.
+# custom user model = NovaUser
+
 class NovaUser(AbstractUser):
-    pass #custom fields if needed. 
+    pass #add custom fields if needed. 
