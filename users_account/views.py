@@ -7,13 +7,13 @@ from django.contrib import messages # displays messages
 def register(request):
     if request.method == 'POST': 
         form = RegistrationForm(request.POST)
-        if form_valid(): #check if form is valid, then save data to create user
+        if form.is_valid(): #check if form is valid, then save data to create user
             form.save()
             messages.success(request, 'Your account was successfully created!') #account created, redirect to login
             return redirect('login')
     else:
         form = RegistrationForm() #if GET render empty form
         
-return render(request, 'users_account/register.html', {'form': form}) #render the registration template and pass the form instance to the template context. 
+    return render(request, 'users_account/register.html', {'form': form}) #render the registration template and pass the form instance to the template context. 
 
 
