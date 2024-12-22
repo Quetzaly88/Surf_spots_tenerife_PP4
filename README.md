@@ -14,6 +14,10 @@ I believe this issue was the result of me just doing the migrations that the ter
 
 
 
+22 dec
+https://www.w3resource.com/javascript/form/email-validation.php
+javascript code
+
 
 
 
