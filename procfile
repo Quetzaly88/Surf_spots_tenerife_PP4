@@ -1,1 +1,1 @@
-web: gunicorn surf_spots_tenerife.wsgi --log-file -
+web: gunicorn surf_spots.wsgi:application --log-file -
