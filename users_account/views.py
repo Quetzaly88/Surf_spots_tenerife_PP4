@@ -31,3 +31,9 @@ def login_view(request):
         else:
             messages.error(request, "Invalid username or password")
     return render(request, 'users_account/login.html')
+
+    #logout view
+def logout_view(request):
+    logout(request)
+    messages.success(request, 'You are logged out')
+    return redirect('login') #redirect to login page
