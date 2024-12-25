@@ -23,9 +23,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-6$jc%56st5h5z!8t(l(a*2_0nn_b86!ufvz*82r4=8k3tuo+wh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False  #set to false before any deplyment . once deployment is completed set it to true locally to continue development and see errors 'yellow page'
+DEBUG = True  #set to false before any deplyment . once deployment is completed set it to true locally to continue development and see errors 'yellow page'
 
 ALLOWED_HOSTS = ['8000-quetzaly88-surfspotsten-jr4iym5ywcp.ws.codeinstitute-ide.net' ,'.herokuapp.com']
+
+# CSRF Trusted Origins
+#CSRF_TRUSTED_ORIGINS = [
+ #   'https://8000-quetzaly88-surfspotsten-jr4iym5ywcp.ws.codeinstitute-ide.net',
+ #   'https://your-production-url.com',
+#]
+
+# Security Settings (for production)
+#CSRF_COOKIE_SECURE = True
+#SESSION_COOKIE_SECURE = True
+#SECURE_SSL_REDIRECT = True
 
 
 # Application definition
@@ -55,7 +66,7 @@ ROOT_URLCONF = 'surf_spots.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [], #django will find templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
