@@ -28,15 +28,13 @@ DEBUG = True  #set to false before any deplyment . once deployment is completed 
 ALLOWED_HOSTS = ['8000-quetzaly88-surfspotsten-jr4iym5ywcp.ws.codeinstitute-ide.net' ,'.herokuapp.com']
 
 # CSRF Trusted Origins
-#CSRF_TRUSTED_ORIGINS = [
- #   'https://8000-quetzaly88-surfspotsten-jr4iym5ywcp.ws.codeinstitute-ide.net',
- #   'https://your-production-url.com',
-#]
+CSRF_TRUSTED_ORIGINS = [
+   'https://8000-quetzaly88-surfspotsten-jr4iym5ywcp.ws.codeinstitute-ide.net',
+]
 
 # Security Settings (for production)
-#CSRF_COOKIE_SECURE = True
-#SESSION_COOKIE_SECURE = True
-#SECURE_SSL_REDIRECT = True
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
 
 
 # Application definition
