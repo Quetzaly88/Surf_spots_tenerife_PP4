@@ -4,6 +4,7 @@ from .forms import RegistrationForm # Custom form class for user registration.
 from django.contrib import messages # displays messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User #for checking duplicate usernames
 
 # Create your views here.
 
@@ -17,6 +18,7 @@ def register(request):
             return redirect('login')
     else:
         form = RegistrationForm() #if GET render empty form
+    
     return render(request, 'users_account/register.html', {'form': form}) #render the registration template and pass the form instance to the template context. 
 
     #login view
