@@ -15,8 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include #include function allows to connect the urls of the users_account app to the main urls.py
+from users_account import views #import views directly
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('account/', include('users_account.urls')), #include routes from users_account
+    path('users/', include('users_account.urls')),
+    path('',views.login_view, name='home'), #login page as homepage
+    path('', include('users_account.urls')), # include users_account routes directly
 ]

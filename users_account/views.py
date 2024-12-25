@@ -3,9 +3,11 @@ from django.shortcuts import render, redirect #renders HTML templates, redirects
 from .forms import RegistrationForm # Custom form class for user registration. 
 from django.contrib import messages # displays messages
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-    #register view
+
+#register view
 def register(request):
     if request.method == 'POST': 
         form = RegistrationForm(request.POST)
@@ -15,7 +17,6 @@ def register(request):
             return redirect('login')
     else:
         form = RegistrationForm() #if GET render empty form
-        
     return render(request, 'users_account/register.html', {'form': form}) #render the registration template and pass the form instance to the template context. 
 
     #login view
@@ -25,7 +26,7 @@ def login_view(request):
         password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
         if user is not None: 
-            login(request)
+            login(request, user)
             messages.success(request, "You are loged in!")
             return redirect('home')
         else:
@@ -37,3 +38,9 @@ def logout_view(request):
     logout(request)
     messages.success(request, 'You are logged out')
     return redirect('login') #redirect to login page
+
+#create post view
+# @login_required decorator, to limit access just to logged-in users
+@login_required
+def create_post(request):
+    return render(request, 'surf_spots/create_post.html')
