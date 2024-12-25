@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-6$jc%56st5h5z!8t(l(a*2_0nn_b86!ufvz*82r4=8k3tuo+wh'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  #set to false before any deplyment . once deployment is completed set it to true locally to continue development and see errors 'yellow page'
+DEBUG = False  #set to false before any deplyment . once deployment is completed set it to true locally to continue development and see errors 'yellow page'
 
 ALLOWED_HOSTS = ['8000-quetzaly88-surfspotsten-jr4iym5ywcp.ws.codeinstitute-ide.net' ,'.herokuapp.com']
 
@@ -120,12 +120,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-#directory to store project's static fields
+#dadd static directories for development
 STATICFILES_DIRS = [
-    BASE_DIR / 'static', #path
+    BASE_DIR / 'static',
 ]
 
-#directory for collected static files
+#directory where collecstatic will store files
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
