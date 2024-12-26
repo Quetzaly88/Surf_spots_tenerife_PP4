@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from .models import NovaUser
 
-#TEMPLATE: https://docs.djangoproject.com/
+#TEMPLATE
 class UserAuthTests(TestCase):
     def setUp(self):
         self.user = NovaUser.objects.create_user(
@@ -19,7 +19,6 @@ class UserAuthTests(TestCase):
             'password1': 'astrongpassword',
             'password2': 'astrongpassword',
         })
-        #https://forum.djangoproject.com/t/test-fails-with-assertionerror-302-200/31182
         self.assertEqual(response.status_code, 302)  # Check for redirect after success
         self.assertTrue(NovaUser.objects.filter(username='newuser').exists())  # User should be created
 
@@ -31,8 +30,6 @@ class UserAuthTests(TestCase):
             'password1': 'aweirdpassword',
             'password2': 'nomatchpassword',
         })
-        #https://docs.djangoproject.com/en/stable/topics/forms/#field-data-validation
-        #https://forum.djangoproject.com/t/test-fails-with-assertionerror-302-200/31182
         self.assertEqual(response.status_code, 200)  # Check for redirect after success
         self.assertContains(response, "The two password fields didn’t match.", status_code=200)
 
@@ -54,7 +51,7 @@ class UserAuthTests(TestCase):
         self.assertEqual(response.status_code, 200)  # No redirect. remains in login page
         self.assertContains(response, "Invalid username or password", status_code=200)
 
-# test case for logout: https://docs.djangoproject.com/en/stable/topics/testing/tools/#testcase
+# test case for logout: 
     def test_user_logout(self):
         #login user. 
         self.client.login(username='testuser', password='password444')

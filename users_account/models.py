@@ -7,4 +7,4 @@ from django.db import models
 # custom user model = NovaUser
 
 class NovaUser(AbstractUser):
-    pass #add custom fields if needed. 
+    pass

@@ -71,3 +71,12 @@ The tests verify that the users can interact with the application as intended, w
    5. Access Control
    - An anauthenticated user attempts to access a protected page. 
    - The test ensures the user is redirected to login page with a next parameter for redirection after login. 
+
+
+**How to run the tests?**
+1. Run "python3 manage.py test"
+2. The output will display the status of each test, indicating if is passed or if it has failed. 
+
+* Testing in Django. https://docs.djangoproject.com/en/5.1/topics/testing/overview/
+* Teast case class. https://docs.djangoproject.com/en/5.1/topics/testing/tools/#testcase
+* User creation form. https://docs.djangoproject.com/en/stable/ref/contrib/auth/#django.contrib.auth.forms.UserCreationForm

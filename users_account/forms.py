@@ -18,8 +18,8 @@ class Meta:
     fields = ['username', 'email', 'password1', 'password2']
 
 # used save Method
-def save(self, comit=True):
-    user = super().save(comit=False)
+def save(self, commit=True):
+    user = super().save(commit=False)
     user.email = self.cleaned_data['email']
     if commit:
         user.save()
