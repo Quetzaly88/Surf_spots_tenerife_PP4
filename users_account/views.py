@@ -6,7 +6,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User #for checking duplicate usernames
 
-# Create your views here.
 
 #register view
 def register(request):
@@ -24,7 +23,7 @@ def register(request):
     #login view
 def login_view(request):
     if request.method == "POST":
-        username = request.POST.get("username")#form
+        username = request.POST.get("username")
         password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
         if user is not None: 
@@ -46,3 +45,13 @@ def logout_view(request):
 @login_required
 def create_post(request):
     return render(request, 'surf_spots/create_post.html')
+
+
+#create home page
+@login_required
+def home_view(request):
+    return render(request, 'users_account/home.html')
+
+
+
+

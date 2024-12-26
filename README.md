@@ -18,19 +18,15 @@ I believe this issue was the result of me just doing the migrations that the ter
 https://www.w3resource.com/javascript/form/email-validation.php
 javascript code
 
+25 dec
+**Errors:** 
+Template doesn't exist: 
+   The users_account/login.html template was not loading because of incorrect configurations.
+   I corrected the directory structure with the new templates folder for login.html and register.html.
 
-
-
-
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
-
-Welcome Andrea Nilsson,
-
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. It's perfectly ok to use this template as the basis for your project submissions.
-
-You can safely delete this README.md file or change it for your own project. Please do read it at least once, though! It contains some important information about Gitpod and the extensions we use. Some of this information has been updated since the video content was created. The last update to this file was: **June 18, 2024**
-
-## Gitpod Reminders
+403 error:
+    CSRF Verification failed: I found out that its purpose was for protection preventing external or malicious users to submit unauthorized POST requests to the server. 
+    I added trusted URL, disable secure cookies for development and adding the csrf tokens. 
 
 To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
 
