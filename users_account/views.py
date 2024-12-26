@@ -7,7 +7,10 @@ from django.contrib import messages  # displays messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User  # for checking duplicate usernames
+from django.http import JsonResponse
+import json
 from .forms import RegistrationForm  # Custom form class for user registration.
+from .models import SurfSpot 
 
 
 # register view
@@ -24,9 +27,7 @@ def register(request):
         request, 'users_account/register.html', {'form': form}
     )  # render the registration template and pass the form instance to the template context.
 
-    # login view
-
-
+# login view
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -57,3 +58,36 @@ def home_view(request):
 @login_required
 def home_view(request):
     return render(request, 'users_account/home.html')
+
+
+# add API endpoint to handle post creation in views.py. 
+# template. https://medium.com/@jacobtamus/create-basic-get-post-endpoints-with-django-rest-framework-e3ef5721e5d
+@csrf_exempt
+@login_required
+def create_surf_spot(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        title = data.get('title')
+        location = data.get('location')
+        description = data.get('description')
+        best_seasons = data.get('best_seasons', "")
+
+        if not title or not location or not description:
+            return JsonResponse({"error": "All required fields must be filled"}, status=400)
+
+        surf_spot = SurfSpot.objects.create(
+            title=title,
+            location=location, 
+            description=description,
+            best_seasons=best_seasons,
+            user=request.user,
+        )
+        return JsonResponse(
+            {
+                "message": "Surf spot created successfully",
+                "id": surf_spot.id,
+                "created_at": surf_spot.created_at,
+            },
+            status=201,
+        )
+    return JsonResponse({"error": "Invalid request method"}, status=405)
