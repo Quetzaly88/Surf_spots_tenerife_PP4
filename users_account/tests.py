@@ -2,67 +2,86 @@ from django.test import TestCase
 from django.urls import reverse
 from .models import NovaUser
 
-#TEMPLATE
+
+# TEMPLATE
 class UserAuthTests(TestCase):
     def setUp(self):
         self.user = NovaUser.objects.create_user(
-        username='testuser',
-        email='testuser@anemail.com',
-        password='password444',
+            username="testuser",
+            email="testuser@anemail.com",
+            password="password444",
         )
 
-#test valid user registration
+    # test valid user registration
     def test_registration_valid(self):
-        response = self.client.post(reverse('register'), {
-            'username': 'newuser',
-            'email': 'newuser@anemail.com',
-            'password1': 'astrongpassword',
-            'password2': 'astrongpassword',
-        })
+        response = self.client.post(
+            reverse("register"),
+            {
+                "username": "newuser",
+                "email": "newuser@anemail.com",
+                "password1": "astrongpassword",
+                "password2": "astrongpassword",
+            },
+        )
         self.assertEqual(response.status_code, 302)  # Check for redirect after success
-        self.assertTrue(NovaUser.objects.filter(username='newuser').exists())  # User should be created
+        self.assertTrue(
+            NovaUser.objects.filter(username="newuser").exists()
+        )  # User should be created
 
-#test invalid user registration
+    # test invalid user registration
     def test_registration_invalid(self):
-        response = self.client.post(reverse('register'), {
-            'username': '',
-            'email': 'invalid-email',
-            'password1': 'aweirdpassword',
-            'password2': 'nomatchpassword',
-        })
+        response = self.client.post(
+            reverse("register"),
+            {
+                "username": "",
+                "email": "invalid-email",
+                "password1": "aweirdpassword",
+                "password2": "nomatchpassword",
+            },
+        )
         self.assertEqual(response.status_code, 200)  # Check for redirect after success
-        self.assertContains(response, "The two password fields didn’t match.", status_code=200)
+        self.assertContains(
+            response, "The two password fields didn’t match.", status_code=200
+        )
 
-#test valid user login
+    # test valid user login
     def test_user_login_valid(self):
-        response = self.client.post(reverse('login'), {
-            'username': 'testuser',
-            'password': 'password444',
-        })
+        response = self.client.post(
+            reverse("login"),
+            {
+                "username": "testuser",
+                "password": "password444",
+            },
+        )
         self.assertEqual(response.status_code, 302)  # Check for redirect after success
-        self.assertRedirects(response, reverse('home'))
+        self.assertRedirects(response, reverse("home"))
 
-#test invalid user login
+    # test invalid user login
     def test_user_login_invalid(self):
-        response = self.client.post(reverse('login'), {
-            'username': 'testuser',
-            'password': 'invalidpassword',
-        })
-        self.assertEqual(response.status_code, 200)  # No redirect. remains in login page
+        response = self.client.post(
+            reverse("login"),
+            {
+                "username": "testuser",
+                "password": "invalidpassword",
+            },
+        )
+        self.assertEqual(
+            response.status_code, 200
+        )  # No redirect. remains in login page
         self.assertContains(response, "Invalid username or password", status_code=200)
 
-# test case for logout: 
+    # test case for logout:
     def test_user_logout(self):
-        #login user. 
-        self.client.login(username='testuser', password='password444')
-        #logout request. 
-        response = self.client.get(reverse('logout'))
+        # login user.
+        self.client.login(username="testuser", password="password444")
+        # logout request.
+        response = self.client.get(reverse("logout"))
         self.assertEqual(response.status_code, 302)  # Check for redirect after success
-        self.assertRedirects(response, reverse('login'))
+        self.assertRedirects(response, reverse("login"))
 
-#Test access for logged out users cannot access ptotected pages
-    def test_home_page_requires_login(self): 
-        response = self.client.get(reverse('home'))
+    # Test access for logged out users cannot access ptotected pages
+    def test_home_page_requires_login(self):
+        response = self.client.get(reverse("home"))
         self.assertEqual(response.status_code, 302)
-        #redirect should include "next" parameter in the url
+        # redirect should include "next" parameter in the url
         self.assertRedirects(response, f"{reverse('login')}?next={reverse('home')}")

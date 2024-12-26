@@ -80,3 +80,7 @@ The tests verify that the users can interact with the application as intended, w
 * Testing in Django. https://docs.djangoproject.com/en/5.1/topics/testing/overview/
 * Teast case class. https://docs.djangoproject.com/en/5.1/topics/testing/tools/#testcase
 * User creation form. https://docs.djangoproject.com/en/stable/ref/contrib/auth/#django.contrib.auth.forms.UserCreationForm
+
+For Testing:
+Errors: Installed black "pip install black". integrate "Black" with pre-commit hooks to ensure your code is formatted before each commit. pip install pre-commit. https://youtu.be/c5eaobs27yk?feature=shared
+USed Copilot Github AI
