@@ -11,7 +11,7 @@ class RegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={
         'class': 'form-control', 
         'placeholder': 'Enter your email'}
-    }))
+    ))
 
 # nested class with the form that provides metadata about the form. Meta allowws to automatically populate fields.
 class Meta:
