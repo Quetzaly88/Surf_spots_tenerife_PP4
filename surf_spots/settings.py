@@ -67,7 +67,7 @@ ROOT_URLCONF = "surf_spots.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],  # django will find templates
+        "DIRS": [BASE_DIR / "templates"],  # django will find templates
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

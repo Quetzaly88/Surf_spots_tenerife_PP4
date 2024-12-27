@@ -100,7 +100,7 @@ def list_surf_spots(request):
                 "location": spot.location, 
                 "description": spot.description,
                 "best_seasons": spot.best_seasons,
-                "user":spot.user.username,
+                "user": spot.user.username,
                 "created_at": spot.created_at,
             }
             for spot in spots

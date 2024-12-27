@@ -15,8 +15,10 @@
     <a href="{% url 'logout' %}">Logout</a>
 
     <!--Post form-->
-    <h2>Post a surf spot</h2>
-    <form id="create-post-form"></form>
+    <div id="posts-container">
+        <h2>Surf spots</h2>
+
+        <form id="create-post-form"></form>
 
         <label for="title">Title:</label>
         <input type="text" id="title" name="title" required>
@@ -32,8 +34,8 @@
 
         <button type="submit">Submit</button>
 
-    </form>
-    
+        </form>
+    </div>
     <div id="success-message"></div>
 
 </body>
