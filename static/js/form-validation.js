@@ -33,3 +33,46 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
+
+
+//add event listener for create form 
+//add event listener for form submition
+form.addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const title = form.querySelector("#title").value;
+    const location = form.querySelector("#location").value;
+    const description = form.querySelector("#description").value;
+    const best_seasons = form.querySelector("#best_seasons").value;
+
+    if (!title || !location || !description) {
+        alert("All required fields must be filled!");
+        return;
+    }
+
+    try {
+        const response = await fetch("/api/surf_spots/create/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    title,
+                    location,
+                    description,
+                    best_seasons,
+                }),
+            }),
+
+            if (response.ok) {
+                const data = await response.json();
+                document.querySelector("#success-message").innerText =
+                    "Surf spot created successfully!";
+            } else {
+                alert("Error: Unable to create surf spot.");
+            }
+        } catch (error) {
+            alert("An unexpected error occurred.");
+        }
+    });
+});
