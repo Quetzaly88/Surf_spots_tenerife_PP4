@@ -84,3 +84,6 @@ The tests verify that the users can interact with the application as intended, w
 For Testing:
 Errors: Installed black "pip install black". integrate "Black" with pre-commit hooks to ensure your code is formatted before each commit. pip install pre-commit. https://youtu.be/c5eaobs27yk?feature=shared. Commitment issues arised so I erased Black, commitment hooks and the virtual environment. 
 I Used Copilot Github AI for some errors but it did.t help me.
+
+
+https://jshint.com/. Javascript validation. using jshint version 8 

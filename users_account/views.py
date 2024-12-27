@@ -2,16 +2,15 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages  # displays messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User  # for checking duplicate usernames
+from django.views.decorators.http import require_POST
+from .forms import RegistrationForm  # Custom form class for user registration.
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 import json
-
-from .forms import RegistrationForm  # Custom form class for user registration.
 from .models import SurfSpot 
-
 
 # register view
 def register(request):
@@ -60,6 +59,7 @@ def home_view(request):
     return render(request, 'users_account/home.html')
 
 
+#Create a surf spot
 # add API endpoint to handle post creation in views.py. 
 # template. https://medium.com/@jacobtamus/create-basic-get-post-endpoints-with-django-rest-framework-e3ef5721e5d
 @csrf_exempt
@@ -70,11 +70,13 @@ def create_surf_spot(request):
         title = data.get('title')
         location = data.get('location')
         description = data.get('description')
-        best_seasons = data.get('best_seasons', "")
+        best_seasons = data.get('best_seasons', '')
 
+        #validate required fields
         if not title or not location or not description:
-            return JsonResponse({"error": "All required fields must be filled"}, status=400)
+            return JsonResponse({'error': 'All required fields must be filled'}, status=400)
 
+        #save the surf spot
         surf_spot = SurfSpot.objects.create(
             title=title,
             location=location, 
@@ -82,12 +84,30 @@ def create_surf_spot(request):
             best_seasons=best_seasons,
             user=request.user,
         )
-        return JsonResponse(
+
+        return JsonResponse({'message': "Surf spot created successfully"}, status=201)
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=405)
+return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+# List surf spots 
+def list_surf_spots(request):
+    if request.method == 'GET':
+        spots = SurfSpot.objects.all().select_related('user').order_by('-created_at')
+        data = [
             {
-                "message": "Surf spot created successfully",
-                "id": surf_spot.id,
-                "created_at": surf_spot.created_at,
-            },
-            status=201,
-        )
-    return JsonResponse({"error": "Invalid request method"}, status=405)
+                "title": spot.title,
+                "location": spot.location, 
+                "description": spot.description,
+                "best_seasons": spot.best_seasons,
+                "user":spot.user.username,
+                "created_at": spot.created_at,
+            }
+            for spot in spots
+        ]
+        return JsonResponse(data, safe=False)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+
+def error_unauthorized():
+    return JsonResponse({'error': 'You must be logged in to perform thisaction'}, status=401)

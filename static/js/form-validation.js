@@ -1,3 +1,5 @@
+/* jshint esversion: 8 */
+
 // load DOM
 document.addEventListener('DOMContentLoaded', function () {
     //Select the form element
@@ -35,8 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-//add event listener for create form 
-//add event listener for form submition
+//add event listener for create surf post
 form.addEventListener('submit', async function (event) {
     event.preventDefault();
 
@@ -76,3 +77,5 @@ form.addEventListener('submit', async function (event) {
         }
     });
 });
+
+
