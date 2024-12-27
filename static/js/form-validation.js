@@ -63,19 +63,31 @@ form.addEventListener('submit', async function (event) {
                     description,
                     best_seasons,
                 }),
-            }),
+            });
 
             if (response.ok) {
-                const data = await response.json();
-                document.querySelector("#success-message").innerText =
-                    "Surf spot created successfully!";
+                displaySuccess("Surf spot created successfully!");
+                form.reset();
             } else {
-                alert("Error: Unable to create surf spot.");
+                const errorData = await response.json();
+                displayError(errorData.error || "An unexpected error occurred.");
             }
         } catch (error) {
-            alert("An unexpected error occurred.");
+            displayError("An unexpected error occurred.");
         }
     });
+
+    function displayError(message) {
+        const errorElement = document.querySelector('#error-message');
+        errorElement.innerText = message;
+        errorElement.computedStyleMap.display = 'block';
+    }
+
+    function displaySuccess(message) {
+        const successElement = document.querySelector('#success-message');
+        successElement.innerText = message;
+        successElement.style.display = 'block';
+        const errorElement = document.querySelector('#error-message');
+        errorElement.style.display = 'none';
+    }
 });
-
-
