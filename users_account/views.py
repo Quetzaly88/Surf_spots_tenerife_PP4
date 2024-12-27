@@ -1,14 +1,14 @@
 # import modules and classes
-from django.shortcuts import (
-    render,
-    redirect,
-)  # renders HTML templates, redirects to a different URL
+from django.shortcuts import render, redirect
 from django.contrib import messages  # displays messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User  # for checking duplicate usernames
+
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 import json
+
 from .forms import RegistrationForm  # Custom form class for user registration.
 from .models import SurfSpot 
 
