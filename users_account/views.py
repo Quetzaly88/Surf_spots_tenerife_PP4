@@ -1,16 +1,18 @@
 # import modules and classes
+import json
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from .models import SurfSpot 
+
 from django.contrib import messages  # displays messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User  # for checking duplicate usernames
 from django.views.decorators.http import require_POST
 from .forms import RegistrationForm  # Custom form class for user registration.
 
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.decorators import login_required
-import json
-from .models import SurfSpot 
+
 
 # register view
 def register(request):
@@ -46,13 +48,6 @@ def logout_view(request):
     logout(request)
     return redirect('login')  # redirect to login page
 
-
-# create post view. @login_required decorator, to limit access just to logged-in users
-@login_required
-def home_view(request):
-    return render(request, 'users_account/home.html')
-
-
 # create home page
 @login_required
 def home_view(request):
@@ -65,30 +60,36 @@ def home_view(request):
 @csrf_exempt
 @login_required
 def create_surf_spot(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        title = data.get('title')
-        location = data.get('location')
-        description = data.get('description')
-        best_seasons = data.get('best_seasons', '')
+    try: 
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            title = data.get('title')
+            location = data.get('location')
+            description = data.get('description')
+            best_seasons = data.get('best_seasons', '')
 
         #validate required fields
-        if not title or not location or not description:
-            return JsonResponse({'error': 'All required fields must be filled'}, status=400)
+            if not title or not location or not description:
+                return JsonResponse({'error': 'All required fields must be filled'}, status=400)
 
         #save the surf spot
-        surf_spot = SurfSpot.objects.create(
-            title=title,
-            location=location, 
-            description=description,
-            best_seasons=best_seasons,
-            user=request.user,
-        )
+            surf_spot = SurfSpot.objects.create(
+                title=title,
+                location=location, 
+                description=description,
+                best_seasons=best_seasons,
+                user=request.user,
+            )
+            return JsonResponse({'message': "Surf spot created successfully"}, status=201)
 
-        return JsonResponse({'message': "Surf spot created successfully"}, status=201)
+
+        return JsonResponse({'error': "Invalid request method"}, status=405)
+
     except json.JSONDecodeError:
-        return JsonResponse({'error': 'Invalid JSON'}, status=405)
-return JsonResponse({'error': 'Invalid request method'}, status=405)
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except Exception as e:
+        return JsonResponse({'error': f'Unexpected error: {str(e)}'}, status=500)
+
 
 # List surf spots 
 def list_surf_spots(request):
