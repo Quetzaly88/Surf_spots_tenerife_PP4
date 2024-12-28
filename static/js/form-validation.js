@@ -34,40 +34,43 @@ document.addEventListener('DOMContentLoaded', function () {
             event.preventDefault(); //prevent from submission
         }
     });
-});
 
 
-//add event listener for create surf post
-form.addEventListener('submit', async function (event) {
-    event.preventDefault();
+    //add event listener for creating surf post
+    const createPostForm = document.getElementById('create-post-form');
+    if (createPostForm) {
+        createPostForm.addEventListener('submit', async function (event) {
+            event.preventDefault();
 
-    const title = form.querySelector("#title").value;
-    const location = form.querySelector("#location").value;
-    const description = form.querySelector("#description").value;
-    const best_seasons = form.querySelector("#best_seasons").value;
+        const title = form.querySelector("#title").value;
+        const location = form.querySelector("#location").value;
+        const description = form.querySelector("#description").value;
+        const best_seasons = form.querySelector("#best_seasons").value;
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-    if (!title || !location || !description) {
-        alert("All required fields must be filled!");
-        return;
-    }
+        if (!title || !location || !description) {
+            alert("All required fields must be filled!");
+            return;
+        }
 
-    try {
-        const response = await fetch("/api/surf_spots/create/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    title,
-                    location,
-                    description,
-                    best_seasons,
-                }),
-            });
+        try {
+            const response = await fetch("/api/surf_spots/create/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrfToken,
+                    },
+                    body: JSON.stringify({
+                        title,
+                        location,
+                        description,
+                        best_seasons,
+                    }),
+                });
 
             if (response.ok) {
                 displaySuccess("Surf spot created successfully!");
-                form.reset();
+                createPostForm.reset();
             } else {
                 const errorData = await response.json();
                 displayError(errorData.error || "An unexpected error occurred.");
@@ -76,18 +79,25 @@ form.addEventListener('submit', async function (event) {
             displayError("An unexpected error occurred.");
         }
     });
-
+} 
+    
     function displayError(message) {
         const errorElement = document.querySelector('#error-message');
-        errorElement.innerText = message;
-        errorElement.computedStyleMap.display = 'block';
+        if (errorElement) {
+            errorElement.innerText = message;
+            errorElement.style.display = 'block';
+        }
     }
 
     function displaySuccess(message) {
         const successElement = document.querySelector('#success-message');
-        successElement.innerText = message;
-        successElement.style.display = 'block';
+        if (successElement) {
+            successElement.innerText = message;
+            successElement.style.display = 'block';
+        }
         const errorElement = document.querySelector('#error-message');
-        errorElement.style.display = 'none';
+        if (errorElement) {
+            errorElement.style.display = 'none';
+        }
     }
 });

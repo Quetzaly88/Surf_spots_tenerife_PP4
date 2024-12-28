@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <!--link to shared css file-->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 
@@ -37,8 +38,10 @@
         <textarea name="best_seasons" id="best_seasons" required></textarea>
 
         <button type="submit">Submit</button>
-   
-        <div id="success-message"></div>
+
+        <!--success and error messages-->
+        <div id="success-message" class="success"></div>
+        <div id="error-message" class="error"></div>
 
     </form>
 <script src="{% static 'js/display-posts.js' %}"></script>
