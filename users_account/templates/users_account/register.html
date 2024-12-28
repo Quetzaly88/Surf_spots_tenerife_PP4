@@ -1,9 +1,9 @@
-<!--load django's static template tag-->
-{% load static %} 
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <!--load django's static template tag-->
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
@@ -12,30 +12,28 @@
 </head>
 
 <body>
+    <!-- main container for styling -->
     <div class="container">
-        <div class="form">
-            <h1>Create your account here!</h1>
-            <form method="POST" action="{% url 'register' %}">
-                <!--Django's token for security-->
-                {% csrf_token %}
-                <!--render django's form fields as <p> elements-->
-                {{ form.as_p }}
-                <button type="submit" class="btn-primary">Register</button>
-            </form>
-        </div>
-        <div class="footer_form">
-            <p>
-                <!--link to external JS file for form validation-->
-                Do you have an account? 
-                <a href="{% url 'login' %}" class="link">Log in</a>
-            </p>
-        </div>
+        <h1>Create your account here!</h1>
+        <p>Join us to share and discover surf spotswith the community!</p>
+
+        <!-- registration form -->
+        <form method="POST" action="{% url 'register' %}">
+            <!--Django's token for security-->
+            {% csrf_token %}
+            <!--render django's form fields as <p> elements-->
+            {{ form.as_p }}
+            <button type="submit" class="btn-primary">Register</button>
+        </form>
+
+        <!-- footer with login link -->
+        <p class="footer-text">
+            Already have an account? <a href="{% url 'login' %}" class="link">Log in here</a>
+        </p>
     </div>
-    
+<!-- <a href="{% url 'logout' %}">Logout</a> -->
+ 
     <script src="{% static 'js/form-validation.js' %}" defer></script>
-
-    <a href="{% url 'logout' %}">Logout</a>
-
 </body>
 
 </html>
