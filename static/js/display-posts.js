@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
         try {
             const response = await fetch("/api/surf_spots/list/");
             if (!response.ok) {
-                throw new Error("Failed to fetchsurf spots");
+                throw new Error("Failed to fetch surf spots");
             }
             const spots = await response.json();
 
@@ -20,6 +20,12 @@ document.addEventListener("DOMContentLoaded", function () {
             spots.forEach((spot) => {
                 const spotDiv = document.createElement("div");
                 spotDiv.classList.add("surf-spot");
+
+                //handle null or undefined fields
+                const bestSeasons = spot.best_seasons || "Not specified";
+                const user = spot.user || "Anonymous";
+                const date = spot.created_at ? new Date(spot.created_at).toLocaleString() : "Unknown date";
+
                 //dynamic content insertion
                 spotDiv.innerHTML = `
                     <h3>${spot.title}</h3>
@@ -27,13 +33,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     <p class="label">Description: <span>${spot.description}</span></p>
                     <p class="label">Best seasons: <span>${spot.best_seasons}</span></p>
                     <p class="label">Posted by: <span>${spot.user}</span></p>
-                    <p class="label">Date: <span>${new Date(spot.created_at).toLocaleString()}</span></p>
+                    <p class="label">Date: <span>${date}</span></p>
                 `;
 
                 surfSpotsList.appendChild(spotDiv);
             });
         } catch (error) {
-            surfSpotsList.innerHTML = `<p class="error">Error loadingsurf spots: ${error.message}</p>`;
+            console.error("Error loading surf spots:", error);
+            const errorDiv = document.createElement("p");
+            errorDiv.classList.add("error");
+            errorDiv.textContent = `Error loading surf spots: ${error.message}`;
+            surfSpotsList.appendChild(errorDiv);
         }
     }
 
