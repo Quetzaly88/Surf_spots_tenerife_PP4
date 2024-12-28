@@ -8,21 +8,24 @@ from .models import NovaUser  # imports the custom NovaUSer
 
 
 class RegistrationForm(UserCreationForm):
-    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={
+    email = forms.EmailField(
+        required=True, 
+        widget=forms.EmailInput(attrs={
         'class': 'form-control', 
-        'placeholder': 'Enter your email'}
-    ))
+        'placeholder': 'Enter your email'
+        })
+    )
 
 # nested class with the form that provides metadata about the form. Meta allowws to automatically populate fields.
-class Meta:
-    model = NovaUser
-    fields = ['username', 'email', 'password1', 'password2']
+    class Meta:
+        model = NovaUser
+        fields = ['username', 'email', 'password1', 'password2']
 
 
 # used save Method
-def save(self, commit=True):
-    user = super().save(commit=False)
-    user.email = self.cleaned_data['email']
-    if commit:
-        user.save()
-    return user
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+        return user
