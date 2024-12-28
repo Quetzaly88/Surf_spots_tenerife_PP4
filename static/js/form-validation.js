@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     //Select the form element
     let form = document.querySelector('form');
 
-    //add event listener for form submition
+    //add event listener for form submition (for user registration validation)
     form.addEventListener('submit', function (event) {
         //get the values of form inputs
         const email = form.querySelector('input[name="email"]').value;
@@ -42,11 +42,12 @@ document.addEventListener('DOMContentLoaded', function () {
         createPostForm.addEventListener('submit', async function (event) {
             event.preventDefault();
 
-        const title = form.querySelector("#title").value;
-        const location = form.querySelector("#location").value;
-        const description = form.querySelector("#description").value;
-        const best_seasons = form.querySelector("#best_seasons").value;
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+            // Get the values from the form fields/githubAI
+            const title = createPostForm.querySelector('#title').value;
+            const location = createPostForm.querySelector('#location').value;
+            const description = createPostForm.querySelector('#description').value;
+            const best_seasons = createPostForm.querySelector('#best_seasons').value;
+            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
         if (!title || !location || !description) {
             alert("All required fields must be filled!");
@@ -54,12 +55,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
+            //make the fetch request
             const response = await fetch("/api/surf_spots/create/", {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": csrfToken,
-                    },
+                        "Content-Type": "application/json",//ensured JSON format
+                        "X-CSRFToken": csrfToken, // CSRF token
+                        },
                     body: JSON.stringify({
                         title,
                         location,
@@ -68,6 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     }),
                 });
 
+            // handle the response
             if (response.ok) {
                 displaySuccess("Surf spot created successfully!");
                 createPostForm.reset();
@@ -76,6 +79,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 displayError(errorData.error || "An unexpected error occurred.");
             }
         } catch (error) {
+            // Handle unexpected errors
+            console.error("Error during fetch:", error);
             displayError("An unexpected error occurred.");
         }
     });
@@ -89,6 +94,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // Function to display error messages. githubAI
+    function displayError(message) {
+        const errorElement = document.querySelector('#error-message');
+        if (errorElement) {
+            errorElement.innerText = message;
+            errorElement.style.display = 'block';
+        }
+    }
+
+    // Function to display success messages. github AI
     function displaySuccess(message) {
         const successElement = document.querySelector('#success-message');
         if (successElement) {
