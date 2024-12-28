@@ -56,7 +56,7 @@ def create_surf_spot(request):
             # parse Json data from the request body
             data = json.loads(request.body)
 
-            #retrieve and clean data from the request
+            #extract and validate fields
             title = data.get('title', '').strip()
             location = data.get('location', '').strip()
             description = data.get('description', '').strip()
@@ -68,10 +68,10 @@ def create_surf_spot(request):
 
         #validate title lenght
             if len(title) > 50:
-                return JsonResponse({'error': 'Title must noto exceed 50 characters'}, status=400)
+                return JsonResponse({'error': 'Title must not exceed 50 characters'}, status=400)
         
         #Create and save the surf spot entry in the database
-            surf_spot = SurfSpot.objects.create(
+            SurfSpot.objects.create(
                 title=title,
                 location=location, 
                 description=description,

@@ -1,6 +1,5 @@
 /* jshint esversion: 8 */
 
-// load DOM
 document.addEventListener('DOMContentLoaded', function () {
             //Select the registration form element
             const registrationForm = document.querySelector('form');
@@ -8,8 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
             //add event listener for form submition (for user registration validation)
             if (registrationForm) {
                 registrationForm.addEventListener('submit', function (event) {
-
-                    //get the values of form inputs
                     const email = registrationForm.querySelector('input[name="email"]').value;
                     const username = registrationForm.querySelector('input[name="username"]').value;
                     const password1 = registrationForm.querySelector('input[name="password1"]').value;
@@ -38,31 +35,34 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
 
-            //add event listener for creating surf post
-            const createPostForm = document.getElementById('create-post-form');
+            //select the surf post creation form
+            const createPostForm = document. getElementById('create-post-form');
+
+            //add event listener for creating a surf post
             if (createPostForm) {
-                createPostForm.addEventListener('submit', async function (event) {
+            createPostForm.addEventListener('submit', async function (event) {
                     event.preventDefault();
 
-                    // Get the values from the form fields/githubAI
+                    // Get the values form fields values
                     const title = createPostForm.querySelector('#title').value;
                     const location = createPostForm.querySelector('#location').value;
                     const description = createPostForm.querySelector('#description').value;
                     const best_seasons = createPostForm.querySelector('#best_seasons').value;
                     const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
+                    //validate required fields
                     if (!title || !location || !description) {
                         alert("All required fields must be filled!");
                         return;
                     }
 
                     try {
-                        //make the fetch request
-                        const response = await fetch("/api/surf_spots/create/", {
+                        //send the POST request with JSON payload
+                        const response = await fetch('/api/surf_spots/create/', {
                             method: "POST",
                             headers: {
-                                "Content-Type": "application/json", //ensured JSON format
-                                "X-CSRFToken": csrfToken, // CSRF token
+                                'Content-Type': 'application/json', //ensured JSON format
+                                'X-CSRFToken': csrfToken, // CSRF token
                             },
                             body: JSON.stringify({
                                 title,
