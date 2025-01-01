@@ -21,7 +21,7 @@
     <a href="{% url 'logout' %}">Logout</a>
 
     <!--Post form-->
-    <form id="create-post-form" method="POST" action="/api/surf_spots/create">
+    <form id="create-post-form" method="POST" action="{% url 'create_surf_spot' %}">
         {% csrf_token %}
         <h2>Surf spots</h2>
 

@@ -10,6 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User  # for checking duplicate usernames
 from django.views.decorators.http import require_POST
 from .forms import RegistrationForm  # Custom form class for user registration.
+from .forms import SurfSpotForm
 
 
 # register view for user registration
@@ -48,50 +49,20 @@ def home_view(request):
     return render(request, 'users_account/home.html')
 
 # create_surf_spot API endpoint to handle post creation and include validation and error handling. 
-@csrf_exempt
 @login_required
-def create_surf_spot(request):
-    try: 
-        if request.method == 'POST':
-            # parse Json data from the request body
-            data = json.loads(request.body)
-
-            #extract and validate fields
-            title = data.get('title', '').strip()
-            location = data.get('location', '').strip()
-            description = data.get('description', '').strip()
-            best_seasons = data.get('best_seasons', '').strip()
-
-        #validate required fields
-            if not title or not location or not description:
-                return JsonResponse({'error': 'All required fields must be filled'}, status=400)
-
-        #validate title lenght
-            if len(title) > 50:
-                return JsonResponse({'error': 'Title must not exceed 50 characters'}, status=400)
-        
-        #Create and save the surf spot entry in the database
-            SurfSpot.objects.create(
-                title=title,
-                location=location, 
-                description=description,
-                best_seasons=best_seasons,
-                user=request.user,
-            )
-
-            #Return success response
-            return JsonResponse({'message': "Surf spot created successfully"}, status=201)
-
-        #Handle invalid request methods
-        return JsonResponse({'error': "Invalid request method"}, status=405)
-
-    #Handle JSON decoding errors
-    except json.JSONDecodeError:
-        return JsonResponse({'error': 'Invalid JSON'}, status=400)
-
-    #catch and return unexpected errors
-    except Exception as e:
-        return JsonResponse({'error': f'Unexpected error: {str(e)}'}, status=500)
+def create_surf_spot(request): 
+    if request.method == 'POST':
+        form = SurfSpotForm(request.POST)
+        if form.is_valid():
+            surf_spot = form.save(commit=False)
+            surf_spot.user = request.user
+            surf_spot.save()
+            messages.success(request, "Surf spot created successfully!")
+            return redirect('home')
+    else:
+        form = SurfSpotForm()
+    
+    return render(request, 'surf_spots/create_surf_spot.html', {'form': form})
 
 # API endpoint to List surf spots 
 def list_surf_spots(request):
