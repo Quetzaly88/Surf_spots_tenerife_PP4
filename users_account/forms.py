@@ -41,3 +41,10 @@ class SurfSpotForm(forms.ModelForm):
             if len(title) > 50:
                 raise forms.ValidationError("Title must not exceed 50 characters.")
             return title
+
+#custom validation method for the location field
+        def clean_location(self):
+            location = self.cleaned_data.get('location')
+            if len(location) > 50:
+                raise forms.ValidationError("Location must not exceed 50 characters.")
+            return location

@@ -36,8 +36,8 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 # Security Settings (for production)
-CSRF_COOKIE_SECURE = False
-SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = True #ensure CSRF cookies are secure
+SESSION_COOKIE_SECURE = True # ensure session cookies are secure
 CSRF_USE_SESSIONS = False
 CSRF_FAILURE_VIEW = "django.views.csrf.csrf_failure"
 

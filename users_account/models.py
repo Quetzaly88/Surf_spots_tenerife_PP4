@@ -13,8 +13,8 @@ from django.db import models
 
 # creating a model class below. https://angelogentileiii.medium.com/basics-of-django-model-view-template-mvt-architecture-8585aecffbf6
 class SurfSpot(models.Model):
-    title = models.CharField(max_length=25)
-    location = models.CharField(max_length=25)
+    title = models.CharField(max_length=50)
+    location = models.CharField(max_length=50)
     description = models.TextField()
     best_seasons = models.CharField(max_length=300, blank=True, null=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

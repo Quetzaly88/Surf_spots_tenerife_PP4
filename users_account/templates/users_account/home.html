@@ -42,7 +42,7 @@
         <textarea name="description" id="description" required></textarea>
 
         <label for="best_seasons">Best seasons:</label>
-        <textarea name="best_seasons" id="best_seasons" required></textarea>
+        <textarea name="best_seasons" id="best_seasons"></textarea>
 
         <button type="submit">Submit</button>
     </form>
@@ -55,12 +55,21 @@
             <h3>{{ spot.title }}</h3>
             <p>Location: {{ spot.location }}</p>
             <p>Description: {{ spot.description }}</p>
-            <p>Beest seasons: {{ spot.best_seasons|default:"Not specified" }}</p>
+            <p>Best seasons: {{ spot.best_seasons|default:"Not specified" }}</p>
             <p>Posted by: {{ spot.user.username }}</p>
             <p>Date: {{ spot.created_at }}</p>
         </div>
         {% endfor %}
     </div>
+
+    <!-- form error messages "Ensure form.errors.items correctly matches the Django Form API."-->
+    {% if form.errors %}
+    <div class="form-errors">
+        {% for field, errors in form.errors.items %}
+        <p><strong>{{ field|capfirst }}:</strong> {{ errors|join:", " }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
 
     <script src="{% static 'js/display-posts.js' %}"></script>
 

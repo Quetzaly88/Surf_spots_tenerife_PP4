@@ -7,10 +7,9 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import SurfSpot 
 from .forms import RegistrationForm, SurfSpotForm
-
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User  # for checking duplicate usernames
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_http_methods
 
 
 # User authentication views
@@ -32,17 +31,16 @@ def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        user = None #Inilialize user to avoid unboundlocalerror
+        #user = None #Inilialize user to avoid unboundlocalerror
         user = authenticate(request, username=username, password=password)
-        print(f"Authentication attempted: {username}, {password}, User: {user}")  # Debugging
-
+        #print(f"Authentication attempted: {username}, {password}, User: {user}")  # Debugging
         if user is not None:
             login(request, user)
-            print("User logged in, redirecting to home.")  # Debugging
+            #print("User logged in, redirecting to home.")  # Debugging
             return redirect('home')
         else:
-            print("Invalid login.")  # Debugging
-            return render(request, 'users_account/login.html', {'error': "Invalid username or password"},)
+            #print("Invalid login.")  # Debugging
+            return render(request, 'users_account/login.html', {'error': "Invalid username or password"})
     return render(request, 'users_account/login.html')
 
 # User logout view. Logs out user and redirects to the login page
@@ -55,7 +53,6 @@ def logout_view(request):
 # Home page view. Combines surf spot listing and creation in a single view. 
 @login_required
 def home_view(request):
-    #Handle surf spot creation
     if request.method == 'POST':
         form = SurfSpotForm(request.POST)
         if form.is_valid():
@@ -67,13 +64,26 @@ def home_view(request):
     else:
         form = SurfSpotForm()
 
-    # fetch and list all surf spots
+    # fetch and list all surf spots to display on the homepage
     surf_spots = SurfSpot.objects.all().order_by('-created_at')
     return render(request, 'users_account/home.html', {'form': form, 'surf_spots': surf_spots})
 
 # API endpoints
 
-# API endpoint to list all surf spots in JSON format
+#API endpoint to create a surf spot
+@login_required
+@require_http_methods(["POST"])
+def create_surf_spot_api(request):
+    form = SurfSpotForm(json.loads(request.body)) #Parse JSON request body
+    if form.is_valid():
+        surf_spot = form.save(commit=False) # create surf spot without saving
+        surf_spot.user = request.user # assign current user to the surf spot
+        surf_spot.save() #save to the database
+        return JsonResponse({'message': 'Surf spot created successfully!'}, status=201)
+    return JsonResponse({'errors': form.errors}, status=400) #return validation errors
+
+# API endpoint to list all surf spots
+@login_required
 def list_surf_spots(request): 
     if request.method == 'GET':
         spots = SurfSpot.objects.all().select_related('user').order_by('-created_at')
@@ -94,6 +104,10 @@ def list_surf_spots(request):
 
 # Error handlers
 
-#unauthorized error handler. Returns a JSON response for unauthorized access
-def error_unauthorized():
-    return JsonResponse({'error': 'You must be logged in to perform thisaction'}, status=401)
+# Custom 404 error handler
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)  # Render custom 404 page
+
+# Custom 500 error handler
+def custom_500(request):
+    return render(request, '500.html', status=500)  # Render custom 500 page
