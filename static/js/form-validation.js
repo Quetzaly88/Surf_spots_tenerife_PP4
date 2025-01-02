@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (!email || !username || !password1 || !password2) {
                         alert("All fields must be filled"); //show error message
                         event.preventDefault(); //prevent submission
-                        return; //stop further checks
+                        return;
                     }
 
                     //check if passwords match
@@ -35,11 +35,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
 
+            //validate the surf post creation form
+            const createPostForm = document.getElementById('create-post-form');
 
-            //select the surf post creation form
-            const createPostForm = document. getElementById('create-post-form');
-
-            //add event listener for creating a surf post
             if (createPostForm) {
             createPostForm.addEventListener('submit', function (event) {
 
@@ -57,25 +55,3 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
         });
-
-            //     function displayError(message) {
-            //         const errorElement = document.querySelector('#error-message');
-            //         if (errorElement) {
-            //             errorElement.innerText = message;
-            //             errorElement.style.display = 'block';
-            //         }
-            //     }
-
-            //     // Function to display success messages. github AI
-            //     function displaySuccess(message) {
-            //         const successElement = document.querySelector('#success-message');
-            //         if (successElement) {
-            //             successElement.innerText = message;
-            //             successElement.style.display = 'block';
-            //         }
-            //         const errorElement = document.querySelector('#error-message');
-            //         if (errorElement) {
-            //             errorElement.style.display = 'none';
-            //         }
-            //     }
-            // });

@@ -147,3 +147,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Custom User Model
 AUTH_USER_MODEL = "users_account.NovaUser"
+
+LOGIN_URL = '/login/'

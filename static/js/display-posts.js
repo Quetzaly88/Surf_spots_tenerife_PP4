@@ -2,7 +2,7 @@
 
 // load DOM
 document.addEventListener("DOMContentLoaded", function () {
-    const surfSpotsList = document.getElementById(surf-spots-list);
+    const surfSpotsList = document.getElementById('surf-spots-list');
 
     // fetch surf spots from the backend
     async function fetchSurfSpots() {
