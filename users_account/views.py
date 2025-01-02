@@ -32,11 +32,16 @@ def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+        user = None #Inilialize user to avoid unboundlocalerror
         user = authenticate(request, username=username, password=password)
+        print(f"Authentication attempted: {username}, {password}, User: {user}")  # Debugging
+
         if user is not None:
             login(request, user)
+            print("User logged in, redirecting to home.")  # Debugging
             return redirect('home')
         else:
+            print("Invalid login.")  # Debugging
             return render(request, 'users_account/login.html', {'error': "Invalid username or password"},)
     return render(request, 'users_account/login.html')
 

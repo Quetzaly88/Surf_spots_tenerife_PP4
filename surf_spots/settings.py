@@ -38,6 +38,8 @@ CSRF_TRUSTED_ORIGINS = [
 # Security Settings (for production)
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = False
+CSRF_USE_SESSIONS = False
+CSRF_FAILURE_VIEW = "django.views.csrf.csrf_failure"
 
 
 # Application definition
@@ -149,3 +151,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "users_account.NovaUser"
 
 LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/home/'
