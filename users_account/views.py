@@ -10,6 +10,7 @@ from .forms import RegistrationForm, SurfSpotForm
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User  # for checking duplicate usernames
 from django.views.decorators.http import require_http_methods
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger # Import necessary classes for pagination
 
 
 # User authentication views
@@ -100,6 +101,48 @@ def list_surf_spots(request):
         ]
         return JsonResponse(data, safe=False)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+# API endpoint to list surf spots with pagination
+@login_required
+def list_surf_spots_paginated(request):
+    """
+    View to list surf spots with pagination. Returns Json response 
+    with paginated surf spots data
+    """
+    page_number = request.GET.get('page', 1) #default from request query parameters
+    posts_per_page = 5
+    surf_spots = SurfSpot.objects.all().order_by('-created_at') #query database for all SurfSpot objects
+    paginator = Paginator(surf_spots, posts_per_page)
+
+    try:
+        spots_page = paginator.page(page_number) # Get the requested page of surf spots
+    except PageNotAnInteger:
+        #if page is not an integer, return the first page
+        spots_page = paginator.page(1)
+    except EmptyPage:
+        # if page is out of range, return an empty page
+        return JsonResponse({'error': 'No more posts avaiable'}, status=404)
+
+    # Prepare the data for the JSON response
+    data = [
+        {
+            'id': spot.id,
+            'title': spot.title,
+            'location': spot.location,
+            'created_at': spot.created_at.strftime('%Y-%m-%d'),
+        }
+        for spot in spots_page
+    ]
+
+    # Return the paginated data along with metadata
+    return JsonResponse({
+        'surf_spots': data, 
+        'total_pages': paginator.num_pages,
+        'current_page': spots_page.number,
+        'has_next': spots_page.has_next(),
+        'has_previous': spots_page.has_previous(),
+    })
+
 
 
 # Error handlers
