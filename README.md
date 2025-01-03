@@ -102,3 +102,9 @@ This task involved creating a paginated API endpoint that lists all surf spots. 
    The API returns a list of surf spots wuth their title, location and creation date. 
    Pagination is implemented with a default of 5 posts per page.
    If there aren't no surf spots, the API returns an empty list. 
+
+
+Post details view
+Created API end point to displey the details of a specific surf spot. The endpoint quieris the database for a durfspot by its unique id. 
+If the requested surf spot doesn't exist 404 error is returned
+https://8000-quetzaly88-surfspotsten-jr4iym5ywcp.ws.codeinstitute-ide.net/surf_spots/detail/13/ #13 is the ID. 

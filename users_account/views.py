@@ -57,6 +57,10 @@ def logout_view(request):
 # Home page view. Combines surf spot listing and creation in a single view. 
 @login_required
 def home_view(request):
+    """
+    Handles listing and creation of surf spots. 
+    Support pagination for listing surf spots
+    """
     if request.method == 'POST':
         form = SurfSpotForm(request.POST)
         if form.is_valid():
@@ -68,8 +72,15 @@ def home_view(request):
     else:
         form = SurfSpotForm()
 
-    # fetch and list all surf spots to display on the homepage
-    surf_spots = SurfSpot.objects.all().order_by('-created_at')
+    # fetch all surf spots and order by creation date
+    surf_spots_list = SurfSpot.objects.all().order_by('-created_at')
+
+    # Paginate the surf spots list, 5 spots per page
+    paginator = Paginator(surf_spots_list, 5)
+    page_number = request.GET.get('page')
+    surf_spots = paginator.get_page(page_number)
+
+    #render the homepage template with the formand paginated surfspots
     return render(request, 'users_account/home.html', {'form': form, 'surf_spots': surf_spots})
 
 
