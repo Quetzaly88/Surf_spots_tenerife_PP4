@@ -1,39 +1,92 @@
 /* Lato font */
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 
-h1, h2 {
+/* welcome messages */
+.welcome-message {
     text-align: center;
-    margin: 15px;
-    color: white;
+    margin-bottom: 20px;
 }
 
+
+/* general styles*/
 body {
     font-family: 'Lato', Arial, sans-serif;
-    background-color: #335F70; /*Payne's gray*/
+    background-color: #335F70;
+    /*Payne's gray*/
+    margin: 0;
+    padding: 0;
     color: white;
-    display: flex;
+    /* display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; */
 }
 
+/* section for the welcome message and logout link */
+.logout-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 10px 20px;
+    box-sizing: border-box;
+}
+
+/* main container to center content */
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+    gap: 20px;
+    /* background: #264653;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); */
+}
+
+/* 
+h1,
+h2 .logout-section {
+    text-align: center;
+    margin-bottom: 15px;
+    color: white;
+} */
+
+
+
+/* form styles */
 form {
-    max-width: 400%;
+    width: 100%;
+    max-width: 600px;
     background: #264653;
     padding: 20px;
     border-radius: 8px;
-    /*display: flex;
-    flex-direction: column;
-    align-items: center;*/
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* margin: 20px 0; */
 }
 
-input {
+input,
+textarea,
+button {
     font-family: 'Lato', Arial, sans-serif;
     width: 100%;
     padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid;
+    margin-bottom: 10px;
+    border: 1px solid #2A9D8F;
+    border-radius: 5px;
     font-size: 14px;
+}
+
+textarea {
+    resize: none;
+    height: 80px;
 }
 
 button {
@@ -42,19 +95,146 @@ button {
     background-color: #2A9D8F;
     color: white;
     font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
+button:hover {
+    background-color: #21867a;
+}
+
+/* surf spots list section */
+#surf-spots-list {
+    width: 100%;
+    max-width: 600px;
+}
+
+/* individual surf spot post */
+.surf-spot {
+    background: #2a4A52;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+}
+
+.surf-spot h3 {
+    margin: 0;
+    color: #E9C46A;
+}
+
+.surf-spot p {
+    margin: 5px 0;
+    color: white;
+}
+
+/* 
 .link {
-    color: #E9C46A; /* saffron */
+    color: #E9C46A;
+    /* saffron 
     text-decoration: none;
     font-weight: bold;
+    text-align: center;
 }
 
 .error {
-    color: #E76F51; /*burnt sienna*/
+    color: #E76F51;
+    /*burnt sienna
     font-weight: bold;
     margin-top: -10px;
     margin-bottom: 10px;
     font-size: 14px;
+} */
+
+
+input:invalid,
+textarea:invalid {
+    border-color: #E76F51;
 }
 
+/* media queries to make it responsive */
+/* desktop */
+@media (min-width: 1024px) {
+
+    .container {
+        flex-direction: row;
+        gap: 20px;
+    }
+
+    body {
+        flex-direction: row;
+        padding: 20px;
+        justify-content: space-between;
+    }
+
+    form {
+        width: 48%;
+    }
+
+    /* #surf-spots-list {
+        width: 50%;
+    }
+
+    .surf-spot {
+        max-width: 800px;
+        margin: 20px auto;
+    }
+
+    form, #surf-spots-list {
+        width: 48%;
+    }*/
+}
+
+/* meedium screens, tablets */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .container {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    form, #surf-spots-list {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    /* body {
+        padding: 15px;
+    }
+
+    form,
+    .surf-spot {
+        max-width: 700px;
+    } */
+}
+
+/* small screens, mobile */
+@media (max-width: 767px) {
+    .logout-section {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .container {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    form, #surf-spots-list {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    h1,
+    h2 {
+        font-size: 20px;
+    }
+
+    /* input,
+    textarea,
+    button {
+        font-size: 14px;
+    } */
+}
