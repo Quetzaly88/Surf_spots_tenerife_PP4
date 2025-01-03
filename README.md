@@ -87,3 +87,18 @@ I Used Copilot Github AI for some errors but it did.t help me.
 
 
 https://jshint.com/. Javascript validation. using jshint version 8 
+
+
+
+3 Jan. User Story 3
+Task 1. about pagination
+This was new to me.
+This task involved creating a paginated API endpoint that lists all surf spots. The purpose of pagination is to improve loading times by displaying a limited number of posts per page. 
+
+* Endpoint URL:
+   https://8000-quetzaly88-surfspotsten-jr4iym5ywcp.ws.codeinstitute-ide.net/surf_spots/paginated/?page=1
+   
+   Features:
+   The API returns a list of surf spots wuth their title, location and creation date. 
+   Pagination is implemented with a default of 5 posts per page.
+   If there aren't no surf spots, the API returns an empty list. 

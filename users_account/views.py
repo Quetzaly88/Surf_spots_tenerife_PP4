@@ -10,7 +10,9 @@ from .forms import RegistrationForm, SurfSpotForm
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User  # for checking duplicate usernames
 from django.views.decorators.http import require_http_methods
+
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger # Import necessary classes for pagination
+from django.shortcuts import get_object_or_404 # import get_object_or_404 for fetching a specific post or returning 404
 
 
 # User authentication views
@@ -49,6 +51,7 @@ def logout_view(request):
     logout(request)
     return redirect('login')  # redirect to login page
 
+
 # Main applications views
 
 # Home page view. Combines surf spot listing and creation in a single view. 
@@ -68,6 +71,7 @@ def home_view(request):
     # fetch and list all surf spots to display on the homepage
     surf_spots = SurfSpot.objects.all().order_by('-created_at')
     return render(request, 'users_account/home.html', {'form': form, 'surf_spots': surf_spots})
+
 
 # API endpoints
 
@@ -143,6 +147,29 @@ def list_surf_spots_paginated(request):
         'has_previous': spots_page.has_previous(),
     })
 
+
+#API endpoint to fetch the details of a specific surf spot
+@login_required
+def surf_spot_detail(request, spot_id):
+    """
+    View to fetch details of a specific surf spot.
+    Returns Json response with posts details including comments
+    """
+    #Fetch the specific surf spot by its ID. Return 404 if not found. 
+    surf_spot = get_object_or_404(SurfSpot, id=spot_id)
+
+    # Prepare the data for the response
+    data = {
+        'id': surf_spot.id,
+        'title': surf_spot.title,
+        'location': surf_spot.location,
+        'description': surf_spot.description,
+        'best_seasons': surf_spot.best_seasons or "Notspecified",
+        'created_at': surf_spot.created_at.strftime('%Y-%m-%d'),
+        'user': surf_spot.user.username,
+    }
+
+    return JsonResponse(data) #return surf spot details as JSON response
 
 
 # Error handlers
