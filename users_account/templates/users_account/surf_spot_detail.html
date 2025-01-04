@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ surf_spot.title }}</title>
+    <!--link to shared css file-->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <div class="detail-container">
+        <h1>{{ surf_spot.title }}</h1>
+        <p><strong>Location:</strong> {{ surf_spot.location }}</p>
+        <p><strong>Description:</strong> {{ surf_spot.description }}</p>
+        <p><strong>Best Seasons:</strong> {{ surf_spot.best_seasons }}</p>
+        <p><strong>Posted by:</strong> {{ surf_spot.user.username }}</p>
+        <p><strong>Date:</strong> {{ surf_spot.created_at }}</p>
+    
+    <!-- Back to homepage link -->
+     <a href="{% url 'home' %}" class="link">Back to homepage</a>
+    </div>
+    
+</body>
+</html>

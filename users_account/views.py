@@ -164,23 +164,24 @@ def list_surf_spots_paginated(request):
 def surf_spot_detail(request, spot_id):
     """
     View to fetch details of a specific surf spot.
-    Returns Json response with posts details including comments
+    Renders template with post details instead of Json response.
     """
     #Fetch the specific surf spot by its ID. Return 404 if not found. 
     surf_spot = get_object_or_404(SurfSpot, id=spot_id)
+    #render the detail view template
+    return render(request, 'users_account/surf_spot_detail.html', {'surf_spot': surf_spot})
 
-    # Prepare the data for the response
-    data = {
-        'id': surf_spot.id,
-        'title': surf_spot.title,
-        'location': surf_spot.location,
-        'description': surf_spot.description,
-        'best_seasons': surf_spot.best_seasons or "Notspecified",
-        'created_at': surf_spot.created_at.strftime('%Y-%m-%d'),
-        'user': surf_spot.user.username,
-    }
-
-    return JsonResponse(data) #return surf spot details as JSON response
+    # # Prepare the data for the response
+    # data = {
+    #     'id': surf_spot.id,
+    #     'title': surf_spot.title,
+    #     'location': surf_spot.location,
+    #     'description': surf_spot.description,
+    #     'best_seasons': surf_spot.best_seasons or "Notspecified",
+    #     'created_at': surf_spot.created_at.strftime('%Y-%m-%d'),
+    #     'user': surf_spot.user.username,
+    # }
+    # return JsonResponse(data) #return surf spot details as JSON response
 
 
 # Error handlers
