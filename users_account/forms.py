@@ -35,8 +35,11 @@ class SurfSpotForm(forms.ModelForm):
     class Meta:
         model = SurfSpot
         fields = ['title', 'location', 'description', 'best_seasons']
-#custom validation method for the title field
         def clean_title(self):
+            """
+            Custom validation for the title field to enforce a max lenght
+            and provide a custom message
+            """
             title = self.cleaned_data.get('title')
             if len(title) > 50:
                 raise forms.ValidationError("Title must not exceed 50 characters.")

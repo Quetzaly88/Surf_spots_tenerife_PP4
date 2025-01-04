@@ -16,6 +16,11 @@
         <h1>Welcome!</h1>
         <p>Please log in to acces surf spots</p>
 
+        <!-- display error message if authentification fails -->
+         {% if error %}
+         <p class="error">{{ error }}</p>
+         {% endif %}
+
         <!--login form-->
         <form method="POST" action="{% url 'login' %}">
             {% csrf_token %}

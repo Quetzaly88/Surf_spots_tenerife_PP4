@@ -69,6 +69,8 @@ def home_view(request):
             surf_spot.save()
             messages.success(request, "Surf spot created successfully!")
             return redirect('home')
+        else:
+            print(form.errors)
     else:
         form = SurfSpotForm()
 
@@ -76,7 +78,7 @@ def home_view(request):
     surf_spots_list = SurfSpot.objects.all().order_by('-created_at')
 
     # Paginate the surf spots list, 5 spots per page
-    paginator = Paginator(surf_spots_list, 5)
+    paginator = Paginator(surf_spots_list, 5) # ensured that is set to 5
     page_number = request.GET.get('page')
     surf_spots = paginator.get_page(page_number)
 
@@ -170,18 +172,6 @@ def surf_spot_detail(request, spot_id):
     surf_spot = get_object_or_404(SurfSpot, id=spot_id)
     #render the detail view template
     return render(request, 'users_account/surf_spot_detail.html', {'surf_spot': surf_spot})
-
-    # # Prepare the data for the response
-    # data = {
-    #     'id': surf_spot.id,
-    #     'title': surf_spot.title,
-    #     'location': surf_spot.location,
-    #     'description': surf_spot.description,
-    #     'best_seasons': surf_spot.best_seasons or "Notspecified",
-    #     'created_at': surf_spot.created_at.strftime('%Y-%m-%d'),
-    #     'user': surf_spot.user.username,
-    # }
-    # return JsonResponse(data) #return surf spot details as JSON response
 
 
 # Error handlers
