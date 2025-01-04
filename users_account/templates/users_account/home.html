@@ -53,8 +53,9 @@
         {% for spot in surf_spots %}
         <div class="surf-spot">
             <h3><a href="{% url 'surf_spot_detail' spot.id %}">{{ spot.title }}</a></h3>
-            <p>Location: {{ spot.location }}</p>
-            <p>Date: {{ spot.created_at }}</p>
+            <p><strong>Location:</strong> {{ spot.location }}</p>
+            <p><strong>Description:</strong> {{ spot.description }}</p>
+            <p><strong>Date:</strong> {{ spot.created_at }}</p>
         </div>
         {% endfor %}
     </div>
