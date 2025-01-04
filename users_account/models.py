@@ -22,3 +22,14 @@ class SurfSpot(models.Model):
 
     def __str__(self):
         return self.title
+
+#Comment model to represent comments on surf spots
+class Comment(models.Model):
+    surf_spot = models.ForeignKey(SurfSpot, on_delete=models.CASCADE, related_name="comments")#a foreign key to the Surf Spot linking to each comment. 
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    content = models.TextField() #content of the comment
+    created_at = models.DateTimeField(auto_now_add=True) # timestamp when was the comment created
+
+    def __str__(self): # returns string showing the first 20 characters of the comment
+        #Display the comment (limited to 20 characters) and user. 
+        return f"{self.content[:20]}... by {self.user.username}"

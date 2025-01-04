@@ -75,7 +75,7 @@ def home_view(request):
         form = SurfSpotForm()
 
     # fetch all surf spots and order by creation date
-    surf_spots_list = SurfSpot.objects.all().order_by('-created_at')
+    surf_spots_list = SurfSpot.objects.all().order_by('created_at')
 
     # Paginate the surf spots list, 5 spots per page
     paginator = Paginator(surf_spots_list, 5) # ensured that is set to 5
