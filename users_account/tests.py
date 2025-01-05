@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from .models import NovaUser, SurfSpot
+from .models import NovaUser, SurfSpot, Comment
 from django.core.paginator import Paginator
 
 
@@ -134,3 +134,85 @@ class SurfSpotTests(TestCase):
         response = self.client.get(reverse("home"))
         self.assertContains(response, "New Spot")
         self.assertContains(response, "A great spot for surfing.")
+
+
+class CommentTests(TestCase):
+    @classmethod # method runs once for the entire test class. More efficient. 
+    def setUpTestData(cls):
+        """
+        Set up initial data for all test methods.
+        Runs once for the entire test class.
+        """
+        # Create a test user
+        cls.user = NovaUser.objects.create_user(
+            username="testuser",
+            email="testuser@anemail.com",
+            password="password444",
+        )
+
+        # Create a test surf spot
+        cls.surf_spot = SurfSpot.objects.create(
+            title="Test Surf Spot",
+            location="Test location",
+            description="A great surf spot",
+            best_seasons="Winter",
+            user=cls.user,
+        )
+
+    def setUp(self):
+        """
+        Log in the user before each test.
+        This runs before every test method
+        """
+        self.client.login(username="testuser", password="password444")
+
+        # # Create and log in a test user
+        # self.user = NovaUser.objects.create_user(
+        #     username="testuser",
+        #     email="testuser@anemail.com",
+        #     password="password444",
+        # )
+        # self.client.login(username="testuser", password="password444")
+
+        # # Create a test surf spot
+        # self.surf_spot = SurfSpot.objects.create(
+        #     title="Test Surf Spot",
+        #     location="Test location",
+        #     description="A great surf spot",
+        #     best_seasons="Winter",
+        #     user=self.user,
+        # )
+
+    def test_add_comment_valid_and_invalid(self):
+        """
+        Test adding a valid comment and handling an invalid (empty) comment.
+        """
+        # Test valid comment
+        response = self.client.post(
+            reverse("add_comment", args=[self.surf_spot.id]),
+            {"content": "This is a valid comment."}, 
+        )
+        self.assertEqual(response.status_code, 302)  # Check for redirect after success
+        self.assertTrue(Comment.objects.filter(content="This is a valid comment.").exists())
+
+        # Test invalid (empty) comment
+        response = self.client.post(
+            reverse("add_comment", args=[self.surf_spot.id]),
+            {"content": ""}, # Empty content
+        )
+        self.assertEqual(response.status_code, 200)  # Stays on the same page
+        self.assertContains(response, "This field is required.")
+        self.assertFalse(Comment.objects.filter(content="").exists())
+
+    def test_add_comment_requires_login(self):
+        """
+        Test that only logged in users can add comments.
+        """
+        self.client.logout() # Log out the test user
+        response = self.client.post(
+            reverse("add_comment", args=[self.surf_spot.id]),
+            {"content": "This is a comment."},
+        )
+        self.assertEqual(response.status_code, 302)  # Check for redirect after success
+        self.assertRedirects(response, f"{reverse('login')}?next={reverse('add_comment', args=[self.surf_spot.id])}")
+        self.assertFalse(Comment.objects.filter(content="This is a comment.").exists())

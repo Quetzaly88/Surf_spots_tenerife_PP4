@@ -161,7 +161,7 @@ def list_surf_spots_paginated(request):
 
 
 #API endpoint to fetch the details of a specific surf spot
-@login_required
+@login_required # Without this not-logged in users can VIEW the posts and comments. Other changes can be made in the future. 
 def surf_spot_detail(request, spot_id):
     """
     View to fetch details of a specific surf spot.
@@ -173,7 +173,7 @@ def surf_spot_detail(request, spot_id):
     return render(request, 'users_account/surf_spot_detail.html', {'surf_spot': surf_spot})
 
 # Add a view for Comment Creation
-@login_required
+@login_required # Just logged in users can view posts and comments
 @require_http_methods(["POST"])
 def add_comment(request, spot_id):
     """
@@ -190,11 +190,18 @@ def add_comment(request, spot_id):
         comment.user = request.user # Associate comment with the logged in user
         comment.save() # Save the comment to the database 
         messages.success(request, "Comment added successfully!")
+        return redirect('surf_spot_detail', spot_id=spot_id)
     else: 
         messages.error(request, "Failed to add comment. Please, check your message.")
+        # Re-render the detail page with the existing comments and the form with errors.
+        comments = surf_spot.comments.all().order_by('-created_at')
+        return render(request, 'users_account/surf_spot_detail.html', {
+            'surf_spot': surf_spot,
+            'comment_form': form,
+            'comments': comments,
+        })
     
     # Redirect back to the surf spot detail page
-    return redirect('surf_spot_detail', spot_id=spot_id)
 
 # Error handlers
 

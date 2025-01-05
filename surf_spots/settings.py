@@ -134,12 +134,10 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-# dadd static directories for development
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+# Add static directories for development
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
-# directory where collecstatic will store files
+# Directory where 'collecstatic' will store files
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
