@@ -19,6 +19,23 @@
     <h3>{{ request.user.username }}</h3>
     <a href="{% url 'logout' %}">Logout</a>
 
+    <!-- Category filter form -->
+    <form method="GET" action="{% url 'home' %}" class="category-filter-form">
+        <label for="category">Filter by Category:</label>
+        <select name="category" id="category" onchange="this.form.submit()">
+            <option value="">All</option>
+            <option value="Beginner" {% if selected_category == "Beginner" %}selected{% endif %}>Beginner</option>
+            <option value="Advanced" {% if selected_category == "Advanced" %}selected{% endif %}>Advanced</option>
+            <option value="For Everyone" {% if selected_category == "For Everyone" %}selected{% endif %}>For Everyone
+            </option>
+        </select>
+    </form>
+
+    <!-- Display selected category if any -->
+    {% if selected_category %}
+    <p>Showing surf spots for: <strong>{{ selected_category }}</strong></p>
+    {% endif %}
+
     <!-- success and error message -->
     {% if messages %}
     <ul class="messages">
@@ -47,6 +64,8 @@
         <button type="submit">Submit</button>
     </form>
 
+    <!-- Display message if no posts match the selected category -->
+    {% if surf_spots %}
     <!-- surf spots list container -->
     <div id="surf-spots-list">
         <h2>Surf Spots</h2>
@@ -55,6 +74,8 @@
             <h3><a href="{% url 'surf_spot_detail' spot.id %}">{{ spot.title }}</a></h3>
             <p><strong>Location:</strong> {{ spot.location }}</p>
             <p><strong>Description:</strong> {{ spot.description }}</p>
+            <p><strong>Best Seasons:</strong> {{ spot.best_seasons|default:"Not specified" }}</p>
+            <p><strong>Catagory:</strong> {{ spot.category }}</p>
             <p><strong>Date:</strong> {{ spot.created_at }}</p>
         </div>
         {% endfor %}
@@ -63,13 +84,16 @@
     <!-- pagination controls -->
     <div class="pagination">
         {% if surf_spots.has_previous %}
-        <a href="?page={{ surf_spots.previous_page_number }}">Previous</a>
+        <a href="?page={{ surf_spots.previous_page_number }}&category={{ selected_category }}">Previous</a>
         {% endif %}
         <span>Page {{ surf_spots.number }} of {{ surf_spots.paginator.num_pages }}</span>
         {% if surf_spots.has_next %}
-        <a href="?page={{ surf_spots.next_page_number }}">Next</a>
+        <a href="?page={{ surf_spots.next_page_number }}&category={{ selected_category }}">Next</a>
         {% endif %}
     </div>
+    {% else %}
+    <p>No surf spots found for the selected category.</p>
+    {% endif %}
 
     <!-- form error messages "Ensure form.errors.items correctly matches the Django Form API."-->
     {% if form.errors %}
@@ -79,6 +103,14 @@
         {% endfor %}
     </div>
     {% endif %}
+
+    <!-- Form to create a surf spot post -->
+    <form id="create-post-form" method="POST" action="{% url 'home' %}">
+        {% csrf_token %}
+        <h2>Add a Surf Spot</h2>
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
 
     <script src="{% static 'js/display-posts.js' %}"></script>
 
