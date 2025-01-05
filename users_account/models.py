@@ -12,11 +12,19 @@ class NovaUser(AbstractUser):
 from django.db import models
 
 # creating a model class below. https://angelogentileiii.medium.com/basics-of-django-model-view-template-mvt-architecture-8585aecffbf6
+#SurfSpot model representing surf spots
 class SurfSpot(models.Model):
+    CATEGORY_CHOICES = [
+        ("Beginner", "Beginner"),
+        ("Advanced", "Advanced"),
+        ("For Everyone", "For Everyone"),
+    ]
+
     title = models.CharField(max_length=50)
     location = models.CharField(max_length=50)
     description = models.TextField()
     best_seasons = models.CharField(max_length=300, blank=True, null=True)
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default="For Everyone") # New category field
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
