@@ -5,15 +5,14 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from .models import SurfSpot 
-from .forms import RegistrationForm, SurfSpotForm
+from .models import SurfSpot, Comment
+from .forms import RegistrationForm, SurfSpotForm, CommentForm
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User  # for checking duplicate usernames
 from django.views.decorators.http import require_http_methods
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger # Import necessary classes for pagination
 from django.shortcuts import get_object_or_404 # import get_object_or_404 for fetching a specific post or returning 404
-
 
 # User authentication views
 

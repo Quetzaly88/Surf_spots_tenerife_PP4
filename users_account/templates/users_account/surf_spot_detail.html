@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% load static %}
     <meta charset="UTF-8">
@@ -8,6 +9,7 @@
     <!--link to shared css file-->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
+
 <body>
     <div class="detail-container">
         <h1>{{ surf_spot.title }}</h1>
@@ -16,10 +18,41 @@
         <p><strong>Best Seasons:</strong> {{ surf_spot.best_seasons }}</p>
         <p><strong>Posted by:</strong> {{ surf_spot.user.username }}</p>
         <p><strong>Date:</strong> {{ surf_spot.created_at }}</p>
-    
-    <!-- Back to homepage link -->
-     <a href="{% url 'home' %}" class="link">Back to homepage</a>
+
+        <!-- Back to homepage link -->
+        <a href="{% url 'home' %}" class="link">Back to homepage</a>
+
+        <!-- Display existing comments -->
+        <div class="comments-section">
+            <h2>Comments</h2>
+            {% if surf_spot.comments.all %}
+            {% for comment in surf_spot.comments.all %}
+            <div class="comment">
+                <p><strong>{{ comment.user.username }}</strong> written on {{ comment.created_at|date:"M d, Y H:i" }}
+                </p>
+                <p>{{ comment.content }}}</p>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p>No comments yet.</p>
+            {% endif %}
+        </div>
+
+        <!-- comment form for logged in users -->
+        {% if request.user.is_authenticated %}
+        <div class="comment-form">
+            <h3>Add a comment</h3>
+            <form method="POST" action="{% url 'add_comment' surf_spot.id %}">
+                {% csrf_token %}
+                {{ comment_form.as_p }}
+                <button type="submit" class="btn-primary">Post Comment</button>
+            </form>
+        </div>
+        {% else %}
+        <p>You must <a href="{% url 'login' %}">Log in</a> to post a comment.</p>
+        {% endif %}
     </div>
-    
+
 </body>
+
 </html>
