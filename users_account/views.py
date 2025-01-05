@@ -73,8 +73,13 @@ def home_view(request):
     else:
         form = SurfSpotForm()
 
+    #Fetch the selected category from the request
+    selected_category = request.GET.get('category')
+
+    #Query surf spots based on the selected category
+    if selected_category:
     # fetch all surf spots and order by creation date
-    surf_spots_list = SurfSpot.objects.all().order_by('-created_at')
+        surf_spots_list = SurfSpot.objects.all().order_by('-created_at')
 
     # Paginate the surf spots list, 5 spots per page
     paginator = Paginator(surf_spots_list, 5) # ensured that is set to 5
@@ -82,7 +87,11 @@ def home_view(request):
     surf_spots = paginator.get_page(page_number)
 
     #render the homepage template with the formand paginated surfspots
-    return render(request, 'users_account/home.html', {'form': form, 'surf_spots': surf_spots})
+    return render(request, 'users_account/home.html', {
+        'form': form, 
+        'surf_spots': surf_spots,
+        'selected_category': selected_category,
+    })
 
 
 # API endpoints
