@@ -75,7 +75,7 @@ def home_view(request):
         form = SurfSpotForm()
 
     # fetch all surf spots and order by creation date
-    surf_spots_list = SurfSpot.objects.all().order_by('created_at')
+    surf_spots_list = SurfSpot.objects.all().order_by('-created_at')
 
     # Paginate the surf spots list, 5 spots per page
     paginator = Paginator(surf_spots_list, 5) # ensured that is set to 5
@@ -173,6 +173,29 @@ def surf_spot_detail(request, spot_id):
     #render the detail view template
     return render(request, 'users_account/surf_spot_detail.html', {'surf_spot': surf_spot})
 
+# Add a view for Comment Creation
+@login_required
+@require_http_methods(["POST"])
+def add_comment(request, spot_id):
+    """
+    View to handle comment creation. 
+    Just for logged in users
+    """
+    surf_spot = get_object_or_404(SurfSpot, id=spot_id) #fetch the surf spot or show error 404
+    form = CommentForm(request.POST)
+
+    if form.is_valid():
+        # Create a new comment but don't save the database yet
+        comment = form.save(commit=False)
+        comment.surf_spot = surf_spot # Associate the comment with the logged-in user
+        comment.user = request.user # Associate comment with the logged in user
+        comment.save() # Save the comment to the database 
+        messages.success(request, "Comment added successfully!")
+    else: 
+        messages.error(request, "Failed to add comment. Please, check your message.")
+    
+    # Redirect back to the surf spot detail page
+    return redirect('surf_spot_detail', spot_id=spot_id)
 
 # Error handlers
 

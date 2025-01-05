@@ -3,6 +3,7 @@ from django import forms  # used to create user input
 from django.contrib.auth.forms import UserCreationForm  # build in for user registration
 from .models import NovaUser  # imports the custom NovaUSer
 from .models import SurfSpot
+from .models import Comment
 
 # define RegistrationForm class.
 # adds email to the form, ensures valid email, uses widget appearance.
@@ -51,3 +52,19 @@ class SurfSpotForm(forms.ModelForm):
             if len(location) > 50:
                 raise forms.ValidationError("Location must not exceed 50 characters.")
             return location
+
+#Comment form for submitting user comments
+class CommentForm (forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content'] # Only include the content field for user input
+        widgets = {
+            'content': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Write your comment here...',
+                'rows': 3,
+            })
+        }
+        labels = {
+            'content': 'Add a Comment',
+        }

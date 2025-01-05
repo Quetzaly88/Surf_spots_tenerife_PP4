@@ -11,4 +11,5 @@ urlpatterns = [
     path('surf_spots/paginated/', views.list_surf_spots_paginated, name='list_surf_spots_paginated'),
     path('surf_spots/detail/<int:spot_id>/', views.surf_spot_detail, name='surf_spot_detail'),
     path('surf_spots/detail/<int:spot_id>/', views.surf_spot_detail, name='surf_spot_detail'),
+    path('surf_spots/<int:spot_id>/add_comment/', views.add_comment, name='add_comment'),
 ]
