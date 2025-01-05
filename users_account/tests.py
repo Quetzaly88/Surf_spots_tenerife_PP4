@@ -159,6 +159,7 @@ class CommentTests(TestCase):
             user=cls.user,
         )
 
+
     def setUp(self):
         """
         Log in the user before each test.
@@ -166,22 +167,6 @@ class CommentTests(TestCase):
         """
         self.client.login(username="testuser", password="password444")
 
-        # # Create and log in a test user
-        # self.user = NovaUser.objects.create_user(
-        #     username="testuser",
-        #     email="testuser@anemail.com",
-        #     password="password444",
-        # )
-        # self.client.login(username="testuser", password="password444")
-
-        # # Create a test surf spot
-        # self.surf_spot = SurfSpot.objects.create(
-        #     title="Test Surf Spot",
-        #     location="Test location",
-        #     description="A great surf spot",
-        #     best_seasons="Winter",
-        #     user=self.user,
-        # )
 
     def test_add_comment_valid_and_invalid(self):
         """
@@ -204,6 +189,7 @@ class CommentTests(TestCase):
         self.assertContains(response, "This field is required.")
         self.assertFalse(Comment.objects.filter(content="").exists())
 
+
     def test_add_comment_requires_login(self):
         """
         Test that only logged in users can add comments.
@@ -216,3 +202,4 @@ class CommentTests(TestCase):
         self.assertEqual(response.status_code, 302)  # Check for redirect after success
         self.assertRedirects(response, f"{reverse('login')}?next={reverse('add_comment', args=[self.surf_spot.id])}")
         self.assertFalse(Comment.objects.filter(content="This is a comment.").exists())
+
