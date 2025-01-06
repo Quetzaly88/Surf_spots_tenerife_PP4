@@ -23,7 +23,8 @@
     <form method="GET" action="{% url 'home' %}" class="category-filter-form">
         <label for="category">Filter by Category:</label>
         <select name="category" id="category" onchange="this.form.submit()">
-            <option value="" {% if not selected_category %}selected{% endif %}>All</option> <!--All option is selected when no category filter is applied-->
+            <option value="" {% if not selected_category %}selected{% endif %}>All</option>
+            <!--All option is selected when no category filter is applied-->
             <option value="Beginner" {% if selected_category == "Beginner" %}selected{% endif %}>Beginner</option>
             <option value="Advanced" {% if selected_category == "Advanced" %}selected{% endif %}>Advanced</option>
             <option value="For Everyone" {% if selected_category == "For Everyone" %}selected{% endif %}>For Everyone
@@ -69,16 +70,35 @@
     <!-- pagination controls -->
     <div class="pagination">
         {% if surf_spots.has_previous %}
-        <a href="?page={{ surf_spots.previous_page_number }}&category={{ selected_category }}">Previous</a>
+        <a
+            href="?page={{ surf_spots.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">Previous</a>
         {% endif %}
         <span>Page {{ surf_spots.number }} of {{ surf_spots.paginator.num_pages }}</span>
         {% if surf_spots.has_next %}
-        <a href="?page={{ surf_spots.next_page_number }}&category={{ selected_category }}">Next</a>
+        <a
+            href="?page={{ surf_spots.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}">Next</a>
         {% endif %}
     </div>
     {% else %}
     <p>No surf spots found for the selected category.</p>
     {% endif %}
+
+    <!-- List surf spots -->
+    <div id="surf-spots-list">
+        <h2>Surf Spots</h2>
+        {% for spot in surf_spots %}
+        <div class="surf-spot">
+            <h3>{{ spot.title }}</h3>
+            <p><strong>Location:</strong> {{ spot.location }}</p>
+            <p><strong>Description:</strong> {{ spot.description }}</p>
+            <p><strong>Best Seasons:</strong> {{ spot.best_seasons }}</p>
+            <p><strong>Category:</strong> {{ spot.category }}</p>
+            <p><strong>Posted by:</strong> {{ spot.user.username }}</p>
+            <p><strong>Date:</strong> {{ spot.created_at }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
 
     <!-- form error messages "Ensure form.errors.items correctly matches the Django Form API."-->
     {% if form.errors %}

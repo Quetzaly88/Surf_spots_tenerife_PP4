@@ -69,19 +69,22 @@ def home_view(request):
             messages.success(request, "Surf spot created successfully!")
             return redirect('home')
         else:
-            print(form.errors)
+            print(form.errors) #debugging
     else:
         form = SurfSpotForm()
 
     #Fetch category filter request
     selected_category = request.GET.get('category')
+    print(f"Raw selected category: {selected_category}")
 
     #Initialize surf_spots_list based wether a category is selected.
     if selected_category:
     # fetch all surf spots and order by creation date
         surf_spots_list = SurfSpot.objects.filter(category=selected_category).order_by('-created_at')
+        print(f"Selected category: {selected_category}, Surf spots found: {surf_spots_list.count()}") #debugging
     else:
         surf_spots_list = SurfSpot.objects.all().order_by('-created_at')
+        print(f"No category selected, Total surf spots: {surf_spots_list.count()}") #debugging
 
     # Paginate the surf spots list, 5 spots per page
     paginator = Paginator(surf_spots_list, 5) # ensured that is set to 5

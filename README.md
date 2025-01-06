@@ -108,3 +108,13 @@ Post details view
 Created API end point to displey the details of a specific surf spot. The endpoint quieris the database for a durfspot by its unique id. 
 If the requested surf spot doesn't exist 404 error is returned
 https://8000-quetzaly88-surfspotsten-jr4iym5ywcp.ws.codeinstitute-ide.net/surf_spots/detail/13/ #13 is the ID. 
+
+
+
+
+
+https://www.surfmarket.org/es/olas/europa/canarias/tenerife
+
+
+
+
