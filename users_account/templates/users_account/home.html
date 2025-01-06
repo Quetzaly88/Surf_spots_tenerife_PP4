@@ -23,7 +23,7 @@
     <form method="GET" action="{% url 'home' %}" class="category-filter-form">
         <label for="category">Filter by Category:</label>
         <select name="category" id="category" onchange="this.form.submit()">
-            <option value="">All</option>
+            <option value="" {% if not selected_category %}selected{% endif %}>All</option> <!--All option is selected when no category filter is applied-->
             <option value="Beginner" {% if selected_category == "Beginner" %}selected{% endif %}>Beginner</option>
             <option value="Advanced" {% if selected_category == "Advanced" %}selected{% endif %}>Advanced</option>
             <option value="For Everyone" {% if selected_category == "For Everyone" %}selected{% endif %}>For Everyone
@@ -64,7 +64,8 @@
         <button type="submit">Submit</button>
     </form>-->
 
-
+    <!-- Check if there are surf spots to display -->
+    {% if surf_spots %}
     <!-- pagination controls -->
     <div class="pagination">
         {% if surf_spots.has_previous %}

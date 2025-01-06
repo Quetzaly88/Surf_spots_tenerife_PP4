@@ -203,3 +203,37 @@ class CommentTests(TestCase):
         self.assertRedirects(response, f"{reverse('login')}?next={reverse('add_comment', args=[self.surf_spot.id])}")
         self.assertFalse(Comment.objects.filter(content="This is a comment.").exists())
 
+class SurfSpotCategoryTests(TestCase):
+    def setUp(self):
+        """
+        Set up a test user and surf spots with different categories.
+        """
+        self.user = NovaUser.objects.create_user(
+            username="testuser",
+            email="testuser@anemail.com",
+            password="password444",
+        )
+        self.client.login(username="testuser", password="password444")
+
+        # Create surf spots with different categories
+        self.beginner_spot = SurfSpot.objects.create(
+            title="Beginner Spot", location="Beach A", category="Beginner", user=self.user
+        )
+        self.advanced_spot = SurfSpot.objects.create(
+            title="Advanced Spot", location="Beach B", category="Advanced", user=self.user
+        )
+    def test_filtering_by_category(self):
+        """
+        Test filtering returns correct surf spots for selected category
+        """
+        response = self.client.get(reverse("home"), {"category": "Beginner"})
+        self.assertContains(response, "Beginner Spot")
+        self.assertNotContains(response, "Advanced Spot")
+
+    def test_no_filter_displays_all(self):
+        """
+        Test all surf spots are displayed when no category filter is applied.
+        """
+        response = self.client.get(reverse("home"))
+        self.assertContains(response, "Beginner Spot")
+        self.assertContains(response, "Advanced Spot")

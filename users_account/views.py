@@ -74,12 +74,12 @@ def home_view(request):
         form = SurfSpotForm()
 
     #Fetch category filter request
-    category = request.GET.get('category')
+    selected_category = request.GET.get('category')
 
     #Initialize surf_spots_list based wether a category is selected.
-    if category:
+    if selected_category:
     # fetch all surf spots and order by creation date
-        surf_spots_list = SurfSpot.objects.filter(category=category).order_by('-created_at')
+        surf_spots_list = SurfSpot.objects.filter(category=selected_category).order_by('-created_at')
     else:
         surf_spots_list = SurfSpot.objects.all().order_by('-created_at')
 
@@ -92,7 +92,7 @@ def home_view(request):
     return render(request, 'users_account/home.html', {
         'form': form, 
         'surf_spots': surf_spots,
-        'selected_category': category,
+        'selected_category': selected_category,
     })
 
 

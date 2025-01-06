@@ -35,23 +35,29 @@ class RegistrationForm(UserCreationForm):
 class SurfSpotForm(forms.ModelForm):
     class Meta:
         model = SurfSpot
-        fields = ['title', 'location', 'description', 'best_seasons']
-        def clean_title(self):
-            """
-            Custom validation for the title field to enforce a max lenght
-            and provide a custom message
-            """
-            title = self.cleaned_data.get('title')
-            if len(title) > 50:
-                raise forms.ValidationError("Title must not exceed 50 characters.")
-            return title
+        fields = ['title', 'location', 'description', 'best_seasons', 'category'] #new field
+        widgets = {
+            'category': forms.Select(attrs={'class': 'form-control'}),
+        }
+        
+    def clean_title(self):
+        """
+        Custom validation for the title field to enforce a max lenght
+        and provide a custom message
+        """
+        title = self.cleaned_data.get('title')
+        if len(title) > 50:
+            raise forms.ValidationError("Title must not exceed 50 characters.")
+        return title
 
-#custom validation method for the location field
-        def clean_location(self):
-            location = self.cleaned_data.get('location')
-            if len(location) > 50:
-                raise forms.ValidationError("Location must not exceed 50 characters.")
-            return location
+    def clean_location(self):
+        """
+        Custom validation method for the location field
+        """
+        location = self.cleaned_data.get('location')
+        if len(location) > 50:
+            raise forms.ValidationError("Location must not exceed 50 characters.")
+        return location
 
 #Comment form for submitting user comments
 class CommentForm (forms.ModelForm):
