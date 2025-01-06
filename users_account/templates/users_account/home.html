@@ -45,7 +45,7 @@
     </ul>
     {% endif %}
 
-    <!--form to create surf spot Post-->
+    <!--form to create surf spot Post
     <form id="create-post-form" method="POST" action="{% url 'home' %}">
         {% csrf_token %}
         <h2>Surf spots</h2>
@@ -62,24 +62,8 @@
         <textarea name="best_seasons" id="best_seasons"></textarea>
 
         <button type="submit">Submit</button>
-    </form>
+    </form>-->
 
-    <!-- Display message if no posts match the selected category -->
-    {% if surf_spots %}
-    <!-- surf spots list container -->
-    <div id="surf-spots-list">
-        <h2>Surf Spots</h2>
-        {% for spot in surf_spots %}
-        <div class="surf-spot">
-            <h3><a href="{% url 'surf_spot_detail' spot.id %}">{{ spot.title }}</a></h3>
-            <p><strong>Location:</strong> {{ spot.location }}</p>
-            <p><strong>Description:</strong> {{ spot.description }}</p>
-            <p><strong>Best Seasons:</strong> {{ spot.best_seasons|default:"Not specified" }}</p>
-            <p><strong>Catagory:</strong> {{ spot.category }}</p>
-            <p><strong>Date:</strong> {{ spot.created_at }}</p>
-        </div>
-        {% endfor %}
-    </div>
 
     <!-- pagination controls -->
     <div class="pagination">
@@ -104,7 +88,7 @@
     </div>
     {% endif %}
 
-    <!-- Form to create a surf spot post -->
+    <!-- Form to create a surf spot post-->
     <form id="create-post-form" method="POST" action="{% url 'home' %}">
         {% csrf_token %}
         <h2>Add a Surf Spot</h2>

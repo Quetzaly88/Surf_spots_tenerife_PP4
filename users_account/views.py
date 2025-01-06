@@ -73,12 +73,14 @@ def home_view(request):
     else:
         form = SurfSpotForm()
 
-    #Fetch the selected category from the request
-    selected_category = request.GET.get('category')
+    #Fetch category filter request
+    category = request.GET.get('category')
 
-    #Query surf spots based on the selected category
-    if selected_category:
+    #Initialize surf_spots_list based wether a category is selected.
+    if category:
     # fetch all surf spots and order by creation date
+        surf_spots_list = SurfSpot.objects.filter(category=category).order_by('-created_at')
+    else:
         surf_spots_list = SurfSpot.objects.all().order_by('-created_at')
 
     # Paginate the surf spots list, 5 spots per page
@@ -90,7 +92,7 @@ def home_view(request):
     return render(request, 'users_account/home.html', {
         'form': form, 
         'surf_spots': surf_spots,
-        'selected_category': selected_category,
+        'selected_category': category,
     })
 
 
