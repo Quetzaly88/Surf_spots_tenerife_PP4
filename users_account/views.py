@@ -241,10 +241,10 @@ def delete_post(request, post_id):
     """
     post = get_object_or_404(SurfSpot, id=post_id)
 
-    if request.user.is.superuser or post.user == request.user:
+    if request.user.is_superuser or post.user == request.user:
         post.delete()
         messages.success(request, "Post deleted successfully.")
-        if request.user.is.superuser:
+        if request.user.is_superuser:
             logger.info(f"Admin {request.user.username} deleted post '{post.title}'")
     else:
         messages.error(request, "You are not authorized to delete this post.")
@@ -259,10 +259,10 @@ def delete_comment(request, comment_id):
     """
     comment = get_object_or_404(Comment, id=comment_id)
 
-    if request.user.is.superuser or comment.user == request.user:
+    if request.user.is_superuser or comment.user == request.user:
         comment.delete()
         messages.success(request, "Comment deleted successfully.")
-        if request.user.is.superuser:
+        if request.user.is_superuser:
             logger.info(f"Admin {request.user.username} deleted comment by {comment.user.username}")
     else:
         messages.error(request, "You are not authorized to delete this comment.")

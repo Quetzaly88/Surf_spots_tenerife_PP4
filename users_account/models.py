@@ -3,6 +3,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.conf import settings
 
+from django.utils.timezone import now # import ModerationLog model to store details about moderation actions.
+
 # custom user model = NovaUser
 class NovaUser(AbstractUser):
     pass
@@ -41,3 +43,18 @@ class Comment(models.Model):
     def __str__(self): # returns string showing the first 20 characters of the comment
         #Display the comment (limited to 20 characters) and user. 
         return f"{self.content[:20]}... by {self.user.username}"
+
+
+class ModerationLog(models.Model):
+    """
+    Model to log moderation actions performed by admins.
+    """
+    action_type = models.CharField(max_length=50) #'deleted post' 'deleted comment'
+    moderator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    target_user = models.CharField(max_length=50) #username of the post/comment owner
+    target_content = models.TextField() # A brief representation of the deleted content
+    timestamp models.DateTimeField(default=now) # # When was the action taken
+
+    def __str__(self):
+        return f"{self.action_type} by {self.moderator.username} at {self.timestamp}"
+        
