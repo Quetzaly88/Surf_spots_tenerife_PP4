@@ -14,6 +14,8 @@ from django.views.decorators.http import require_http_methods
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger # Import necessary classes for pagination
 from django.shortcuts import get_object_or_404 # import get_object_or_404 for fetching a specific post or returning 404
 
+import logging
+
 # User authentication views
 
 #User registration view. Handles user registration and redirects to home. 
@@ -226,3 +228,46 @@ def custom_404(request, exception):
 # Custom 500 error handler
 def custom_500(request):
     return render(request, '500.html', status=500)  # Render custom 500 page
+
+# User story6
+# Set up a logger framework to log admin actions / deletions. 
+logger = logging.getLogger(__name__)
+
+@login_required
+def delete_post(request, post_id):
+    """
+    View to handle deletion of a surf spot post.
+    Admins can delete any post. Regular users can only delete their own posts.
+    """
+    post = get_object_or_404(SurfSpot, id=post_id)
+
+    if request.user.is.superuser or post.user == request.user:
+        post.delete()
+        messages.success(request, "Post deleted successfully.")
+        if request.user.is.superuser:
+            logger.info(f"Admin {request.user.username} deleted post '{post.title}'")
+    else:
+        messages.error(request, "You are not authorized to delete this post.")
+        
+    return redirect('home')
+
+@login_required
+def delete_comment(request, comment_id):
+    """
+    View to handle deletion of a comment.
+    Admins can delete any comment. Regular users can only delete their own comments.
+    """
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    if request.user.is.superuser or comment.user == request.user:
+        comment.delete()
+        messages.success(request, "Comment deleted successfully.")
+        if request.user.is.superuser:
+            logger.info(f"Admin {request.user.username} deleted comment by {comment.user.username}")
+    else:
+        messages.error(request, "You are not authorized to delete this comment.")
+        
+    return redirect('home')
+    
+
+    
