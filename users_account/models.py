@@ -53,7 +53,7 @@ class ModerationLog(models.Model):
     moderator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     target_user = models.CharField(max_length=50) #username of the post/comment owner
     target_content = models.TextField() # A brief representation of the deleted content
-    timestamp models.DateTimeField(default=now) # # When was the action taken
+    timestamp = models.DateTimeField(default=now) # # When was the action taken
 
     def __str__(self):
         return f"{self.action_type} by {self.moderator.username} at {self.timestamp}"

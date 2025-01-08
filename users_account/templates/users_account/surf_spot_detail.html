@@ -31,6 +31,14 @@
                 <p><strong>{{ comment.user.username }}</strong> written on {{ comment.created_at|date:"M d, Y H:i" }}
                 </p>
                 <p>{{ comment.content }}}</p>
+
+                <!-- delete button for admin or post owner -->
+                {% if request.user.is_superuser or comment.user == request.user %}
+                <form method="POST" action="{% url 'delete_comment' comment.id %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="delete-btn">Delete</button>
+                </form>
+                {% endif %}
             </div>
             {% endfor %}
             {% else %}
