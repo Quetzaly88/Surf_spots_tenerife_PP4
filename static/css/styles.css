@@ -1,6 +1,14 @@
 /* Lato font */
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 
+/* new colors
+primary-orange: #F79256
+light-peach: #FBD1A2
+mint-green: #7DCFB6
+blue: #00B2CA
+deep-blue: #1D4E89 */
+
+
 /* welcome messages */
 .welcome-message {
     text-align: center;
@@ -11,15 +19,10 @@
 /* general styles*/
 body {
     font-family: 'Lato', Arial, sans-serif;
-    background-color: #335F70;
-    /*Payne's gray*/
+    background-color: #1D4E89;
     margin: 0;
     padding: 0;
     color: white;
-    /* display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh; */
 }
 
 /* section for the welcome message and logout link */
@@ -46,30 +49,16 @@ body {
     padding: 20px;
     box-sizing: border-box;
     gap: 20px;
-    /* background: #264653;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); */
 }
-
-/* 
-h1,
-h2 .logout-section {
-    text-align: center;
-    margin-bottom: 15px;
-    color: white;
-} */
-
-
 
 /* form styles */
 form {
     width: 100%;
     max-width: 600px;
-    background: #264653;
+    background: #00B2CA;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    /* margin: 20px 0; */
 }
 
 input,
@@ -79,7 +68,7 @@ button {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid #2A9D8F;
+    border: 1px solid #7DCFB6;
     border-radius: 5px;
     font-size: 14px;
 }
@@ -90,18 +79,35 @@ textarea {
 }
 
 button {
-    padding: 10px;
+    padding: 8px 16px;
     border-radius: 5px;
-    background-color: #2A9D8F;
+    background-color: #F79256;
     color: white;
     font-size: 16px;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s;
+    width: auto;
+    text-align: center;
+    min-width: 80px;
 }
 
 button:hover {
-    background-color: #21867a;
+    background-color: #7DCFB6;
+}
+
+.delete-btn {
+    padding: 6px 10px;
+    background-color: #F79256;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #FBD1A2;
+    color: #1D4E89;
 }
 
 /* surf spots list section */
@@ -112,7 +118,7 @@ button:hover {
 
 /* individual surf spot post */
 .surf-spot {
-    background: #2a4A52;
+    background: #1D4E89;
     padding: 15px;
     border-radius: 8px;
     margin-bottom: 15px;
@@ -122,7 +128,7 @@ button:hover {
 
 .surf-spot h3 {
     margin: 0;
-    color: #E9C46A;
+    color: #FBD1A2;
 }
 
 .surf-spot p {
@@ -130,29 +136,24 @@ button:hover {
     color: white;
 }
 
-/* 
-.link {
-    color: #E9C46A;
-    /* saffron 
-    text-decoration: none;
-    font-weight: bold;
-    text-align: center;
-}
-
-.error {
-    color: #E76F51;
-    /*burnt sienna
-    font-weight: bold;
-    margin-top: -10px;
-    margin-bottom: 10px;
-    font-size: 14px;
-} */
-
-
 input:invalid,
 textarea:invalid {
     border-color: #E76F51;
 }
+
+.pagination a {
+    padding: 6px 12px;
+    margin: 0 5px;
+    background-color: #7DCFB6;
+    color: #1D4E89;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    min-width: 50px;
+    text-align: center;
+}
+
+
 
 /* media queries to make it responsive */
 /* desktop */
@@ -172,22 +173,9 @@ textarea:invalid {
     form {
         width: 48%;
     }
-
-    /* #surf-spots-list {
-        width: 50%;
-    }
-
-    .surf-spot {
-        max-width: 800px;
-        margin: 20px auto;
-    }
-
-    form, #surf-spots-list {
-        width: 48%;
-    }*/
 }
 
-/* meedium screens, tablets */
+/* medium screens, tablets */
 @media (min-width: 768px) and (max-width: 1023px) {
     .container {
         flex-direction: column;
@@ -198,15 +186,6 @@ textarea:invalid {
         width: 100%;
         margin-bottom: 20px;
     }
-    
-    /* body {
-        padding: 15px;
-    }
-
-    form,
-    .surf-spot {
-        max-width: 700px;
-    } */
 }
 
 /* small screens, mobile */
@@ -231,10 +210,4 @@ textarea:invalid {
     h2 {
         font-size: 20px;
     }
-
-    /* input,
-    textarea,
-    button {
-        font-size: 14px;
-    } */
 }

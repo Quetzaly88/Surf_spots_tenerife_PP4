@@ -117,4 +117,7 @@ https://www.surfmarket.org/es/olas/europa/canarias/tenerife
 
 
 
+![coolors](./static/images/coolors-css.webp)
+
+
 
