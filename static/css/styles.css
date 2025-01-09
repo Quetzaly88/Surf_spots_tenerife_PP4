@@ -1,85 +1,82 @@
 /* Lato font */
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 
-/* new colors
+
+/* COLORS
 primary-orange: #F79256
 light-peach: #FBD1A2
 mint-green: #7DCFB6
 blue: #00B2CA
 deep-blue: #1D4E89 */
 
-
-/* welcome messages */
-.welcome-message {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-
-/* general styles*/
+/* general body styling */
 body {
-    font-family: 'Lato', Arial, sans-serif;
-    background-color: #1D4E89;
     margin: 0;
     padding: 0;
     color: white;
+    text-align: center;
 }
 
-/* section for the welcome message and logout link */
+/* header and welcome message */
+h1 {
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 10px;
+    color: black;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.welcome-message {
+    text-align: center;
+    margin: 20px auto;
+    padding: 10px;
+
+}
+
+/* logout-section */
 .logout-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1000px;
     margin: 20px auto;
     padding: 10px 20px;
-    box-sizing: border-box;
-}
-
-/* main container to center content */
-.container {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    box-sizing: border-box;
-    gap: 20px;
-}
-
-/* form styles */
-form {
-    width: 100%;
-    max-width: 600px;
-    background: #00B2CA;
-    padding: 20px;
+    background-color: #7DCFB6;
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* form container styling */
+form {
+    background: #00B2CA;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    margin-bottom: 20px;
+}
+
+/* input and textarea */
 input,
-textarea,
-button {
-    font-family: 'Lato', Arial, sans-serif;
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
+textarea {
+    padding: 12px;
+    margin-bottom: 15px;
     border: 1px solid #7DCFB6;
-    border-radius: 5px;
-    font-size: 14px;
+    border-radius: 6px;
+    font-size: 16px;
 }
 
 textarea {
-    resize: none;
-    height: 80px;
+    height: 100px;
 }
 
+/* active states and button hover */
 button {
-    padding: 8px 16px;
+    padding: 10px 20px;
     border-radius: 5px;
     background-color: #F79256;
     color: white;
@@ -87,27 +84,32 @@ button {
     border: none;
     cursor: pointer;
     transition: background-color 0.3s;
-    width: auto;
     text-align: center;
-    min-width: 80px;
 }
 
 button:hover {
     background-color: #7DCFB6;
 }
 
+button:active {
+    transform: scale(0.98);
+}
+
 .delete-btn {
-    padding: 6px 10px;
-    background-color: #F79256;
-    border-radius: 4px;
-    font-size: 12px;
+    padding: 10px 16px;
+    background-color: #00B2CA;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s;
+    text-align: center;
 }
 
 .delete-btn:hover {
-    background-color: #FBD1A2;
-    color: #1D4E89;
+    background-color: #F79256;
+    color: white;
 }
 
 /* surf spots list section */
@@ -120,39 +122,59 @@ button:hover {
 .surf-spot {
     background: #1D4E89;
     padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
 .surf-spot h3 {
-    margin: 0;
+    margin-bottom: 8px;
     color: #FBD1A2;
 }
 
 .surf-spot p {
-    margin: 5px 0;
-    color: white;
+    margin: 6px 0;
 }
 
-input:invalid,
-textarea:invalid {
-    border-color: #E76F51;
+/* comment section styling */
+.comments-section {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #7DCFB6;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgb(0, 0, 0, 0.1);
+}
+
+.comment {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #1D4E89;
+    border-radius: 6px;
+}
+
+.comment p {
+    margin: 5px 0;
+}
+
+/* pagination styles */
+.pagination {
+    text-align: center;
+    margin: 20px 0;
 }
 
 .pagination a {
-    padding: 6px 12px;
+    padding: 8px 16px;
     margin: 0 5px;
-    background-color: #7DCFB6;
+    background-color: #FBD1A2;
     color: #1D4E89;
-    border-radius: 5px;
+    border-radius: 6px;
     text-decoration: none;
-    font-size: 14px;
-    min-width: 50px;
-    text-align: center;
 }
 
+.pagination a:hover {
+    background-color: #7DCFB6;
+    color: white;
+}
 
 
 /* media queries to make it responsive */
@@ -182,7 +204,8 @@ textarea:invalid {
         padding: 15px;
     }
 
-    form, #surf-spots-list {
+    form,
+    #surf-spots-list {
         width: 100%;
         margin-bottom: 20px;
     }
@@ -190,24 +213,17 @@ textarea:invalid {
 
 /* small screens, mobile */
 @media (max-width: 767px) {
-    .logout-section {
+
+    .logout-section,
+    .container,
+    form,
+    #surf-spots-list {
         flex-direction: column;
         text-align: center;
-        gap: 10px;
-    }
-
-    .container {
-        flex-direction: column;
         padding: 10px;
     }
 
-    form, #surf-spots-list {
-        width: 100%;
-        margin-bottom: 20px;
-    }
-
-    h1,
-    h2 {
-        font-size: 20px;
+    h1 {
+        font-size: 28px;
     }
 }

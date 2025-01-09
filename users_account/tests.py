@@ -39,14 +39,12 @@ class UserAuthTests(TestCase):
         """
         response = self.client.post(
             reverse("login"),
-            {"username": "testuser", "password": "password444",},
+            {"username": "testuser", "password": "password444"},
         )
-        self.assertEqual(response.status_code, 302)  # Check for redirect after success
+        #self.assertEqual(response.status_code, 302)  # Check for redirect after success
         self.assertRedirects(response, reverse("home"))
 
-        #Test logout
         response = self.client.get(reverse("logout"))
-        self.assertEqual(response.status_code, 302)  # Check for redirect after success
         self.assertRedirects(response, reverse("login"))
 
 
@@ -73,7 +71,6 @@ class SurfSpotTests(TestCase):
                 user=self.user,
             )
 
-
     def test_pagination_first_and_last_page(self):
         """
         Test that pagination returns the correct number of posts per page
@@ -81,17 +78,18 @@ class SurfSpotTests(TestCase):
         """
         # Test first page
         response = self.client.get(reverse("home") + "?page=1")
-        self.assertEqual(response.status_code, 200)
+        #self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Surf Spot 1")
         self.assertContains(response, "Surf Spot 5")
         self.assertNotContains(response, "Surf Spot 6") #Should not be on page 1
 
         # Test last page
         response = self.client.get(reverse("home") + "?page=3")
-        self.assertEqual(response.status_code, 200)
+        #self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Surf Spot 11")
         self.assertContains(response, "Surf Spot 12")
-        self.assertNotContains(response, "Surf Spot 5") #Should not be on page 2
+        self.assertNotContains(response, "Surf Spot 6") #Should not be on page 3
+
 
     def test_create_surf_spot(self):
         """
