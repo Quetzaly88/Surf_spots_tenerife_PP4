@@ -249,18 +249,19 @@ def delete_post(request, post_id):
 
         # Log the deletion if performed by an admin
         if request.user.is_superuser:
-            # Log the modetarion action
+            # Log the moderation action
             ModerationLog.objects.create(
-            action_type ="Deleted Post",
-            moderator=request.user,
-            target_user=post.user.username,
-            target_content=post.title,
+                action_type ="Deleted Post",
+                moderator=request.user,
+                target_user=post.user.username,
+                target_content=post.title,
             )
             logger.info(f"Admin {request.user.username} deleted post '{post.title}'")
     else:
         messages.error(request, "You are not authorized to delete this post.")
         
     return redirect('home')
+
 
 @login_required
 def delete_comment(request, comment_id):
@@ -277,10 +278,10 @@ def delete_comment(request, comment_id):
         if request.user.is_superuser:
             # Log the moseration action
             ModerationLog.objects.create(
-            action_type ="Deleted Comment",
-            moderator=request.user,
-            target_user=comment.user.username,
-            target_content=comment.content[:50],
+                action_type ="Deleted Comment",
+                moderator=request.user,
+                target_user=comment.user.username,
+                target_content=comment.content[:50],
             )
             logger.info(f"Admin {request.user.username} deleted comment by {comment.user.username}")
     else:

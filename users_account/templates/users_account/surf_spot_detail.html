@@ -36,12 +36,12 @@
         <!-- Display existing comments -->
         <div class="comments-section">
             <h2>Comments</h2>
-            {% if surf_spot.comments.all %}
+            {% if surf_spot.comments.exists %}
             {% for comment in surf_spot.comments.all %}
             <div class="comment">
                 <p><strong>{{ comment.user.username }}</strong> written on {{ comment.created_at|date:"M d, Y H:i" }}
                 </p>
-                <p>{{ comment.content }}}</p>
+                <p>{{ comment.content }}</p>
 
 
                 <!-- delete button for admin or post owner -->

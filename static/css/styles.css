@@ -9,25 +9,44 @@ mint-green: #7DCFB6
 blue: #00B2CA
 deep-blue: #1D4E89 */
 
-/* general body styling */
+/* general styling */
+
+html {
+    scroll-behavior: smooth;
+}
+
 body {
+    font-family: 'Lato', sans-serif;
+    box-sizing: border-box;
+}
+
+body, html {
     margin: 0;
     padding: 0;
-    color: white;
-    text-align: center;
+    overflow-x: hidden;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
 }
 
 /* header and welcome message */
 h1 {
-    font-size: 36px;
+    font-size: 42px;
+    font-weight: 900;
     text-align: center;
-    margin-bottom: 10px;
-    color: black;
+    margin-bottom: 20px;
+    color: #F79256;
 }
 
 p {
-    font-size: 16px;
-    line-height: 1.5;
+    font-size: 18px;
+    line-height: 1.75;
+    margin-bottom: 15px;
+    color: #333;
     text-align: center;
 }
 
@@ -63,11 +82,12 @@ form {
 /* input and textarea */
 input,
 textarea {
-    padding: 12px;
+    padding: 14px;
     margin-bottom: 15px;
     border: 1px solid #7DCFB6;
     border-radius: 6px;
     font-size: 16px;
+    width: 100%;
 }
 
 textarea {
@@ -76,19 +96,21 @@ textarea {
 
 /* active states and button hover */
 button {
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 12px 24px;
+    border-radius: 8px;
     background-color: #F79256;
     color: white;
-    font-size: 16px;
+    font-size: 18px;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, box-shadow 0.2s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
 
 button:hover {
-    background-color: #7DCFB6;
+    background-color: #00B2CA;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 button:active {
@@ -110,6 +132,13 @@ button:active {
 .delete-btn:hover {
     background-color: #F79256;
     color: white;
+}
+
+button, .delete-btn {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 12px 16px;
+    font-size: 16px;
 }
 
 /* surf spots list section */
@@ -143,6 +172,13 @@ button:active {
     background-color: #7DCFB6;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgb(0, 0, 0, 0.1);
+}
+
+form,
+.surf-spot,
+.comments-section {
+    margin-bottom: 40px;
+    padding: 30px;
 }
 
 .comment {
@@ -182,8 +218,13 @@ button:active {
 @media (min-width: 1024px) {
 
     .container {
-        flex-direction: row;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        /* flex-direction: row; */
         gap: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
     }
 
     body {
@@ -193,13 +234,23 @@ button:active {
     }
 
     form {
-        width: 48%;
+        width: 40%;
+    }
+
+    #surf-spots-list {
+        width: 60%;
+    }
+
+    .logout-section,
+    .welcome-message {
+        width: 100%;
     }
 }
 
 /* medium screens, tablets */
 @media (min-width: 768px) and (max-width: 1023px) {
     .container {
+        display: flex;
         flex-direction: column;
         padding: 15px;
     }
@@ -209,10 +260,21 @@ button:active {
         width: 100%;
         margin-bottom: 20px;
     }
+
+    button, .delete-btn {
+        font-size: 18px;
+    }
 }
 
 /* small screens, mobile */
 @media (max-width: 767px) {
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        text-align: center;
+    }
 
     .logout-section,
     .container,
@@ -223,7 +285,73 @@ button:active {
         padding: 10px;
     }
 
+    form,
+    #surf-spots-list {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
     h1 {
-        font-size: 28px;
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    p {
+        font-size: 16px;
+        line-height: 1.6;
+        margin-bottom: 10px;
+    }
+
+    .logout-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    button, .delete-btn {
+        width: 100%;
+        font-size: 18px;
+        padding: 14px;
+        min-height: 44px;
+        margin-bottom: 10px;
+    }
+
+    /* adjust comment form */
+    .comment-form button {
+        width: 100%;
+        padding: 14px;
+        font-size: 18px;
+    }
+
+    .comments-section {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 10px;
+    }
+    
+
+    input, textarea {
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
+        margin-bottom: 15px;
+        border: 1px solid #7DCFB6;
+        border-radius: 6px;
+    }
+
+    textarea {
+        height: 120px;
+    }
+
+    /* center-align pagination controls */
+    .pagination {
+        text-align: center;
+        margin: 20px 0;
+    }
+
+    .pagination a {
+        display: inline-block;
+        padding: 10px 14px;
+        font-size: 16px;
+        border-radius: 6px;
     }
 }
