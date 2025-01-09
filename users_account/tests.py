@@ -258,21 +258,23 @@ class ModerationTests(TestCase):
             user=cls.user,
         )
 
-        # Create a comment on the surf spot by the reular user
+        # Create a comment on the surf spot by the regular user
         cls.comment = Comment.objects.create(
             surf_spot=cls.surf_spot,
             user=cls.user,
             content="This is a test comment"
         )
+
     def setUp(self):
         """
-        Log in the admin or regular user before each test
+        Log out the user before each test to ensure a clean state. 
         """
         self.client.logout()
 
     def test_admin_can_delete_any_post_and_comment(self):
         """
-        Test that an admin can delete any post and comment
+        Test that an admin can delete any post and any comment. 
+        Ensure that actions are logged in ModerationLog. 
         """
         self.client.login(username="adminuser", password="adminpassword")
 
@@ -291,12 +293,12 @@ class ModerationTests(TestCase):
             ModerationLog.objects.filter(action_type="Deleted Post", moderator=self.admin).exists())
             
         self.assertTrue(
-        ModerationLog.objects.filter(action_type="Deleted Comment", moderator=self.admin).exists())
+            ModerationLog.objects.filter(action_type="Deleted Comment", moderator=self.admin).exists())
 
 
     def test_user_cannot_delete_others_post_or_comment(self):
         """
-        Test that a aregular user cannot delete another user's post or comment.
+        Test that a a regular user cannot delete another user's post or comment.
         """
         self.client.login(username="testuser", password="password444")
 
@@ -305,7 +307,9 @@ class ModerationTests(TestCase):
             title="Admin Post",
             location="Admin Location",
             description="An admin-only post",
-            user=aelf.admin,
+            best_seasons="Summer",
+            category="Advanced",
+            user=self.admin,
         )
         admin_comment = Comment.objects.create(
             surf_spot=admin_surf_spot,
@@ -315,12 +319,12 @@ class ModerationTests(TestCase):
 
 
         # Try deleting admin's post
-        response = self.client.post(reverse("delete_post", args=[admin.spot.id]))
+        response = self.client.post(reverse("delete_post", args=[admin_surf_spot.id]))
         self.assertRedirects(response, reverse("home"))
         self.assertTrue(SurfSpot.objects.filter(id=admin_surf_spot.id).exists())
         
         # Try deleting admin's comment
-        response = self.client.post(reverse("delete_comment", args=[admin.comment.id]))
+        response = self.client.post(reverse("delete_comment", args=[admin_comment.id]))
         self.assertRedirects(response, reverse("home"))
-        self.assertTrue(Comment.objects.filter(id=admin_surf_spot.id).exists())
+        self.assertTrue(Comment.objects.filter(id=admin_comment.id).exists())
             

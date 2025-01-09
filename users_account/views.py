@@ -12,9 +12,10 @@ from django.contrib.auth.models import User  # for checking duplicate usernames
 from django.views.decorators.http import require_http_methods
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger # Import necessary classes for pagination
-from django.shortcuts import get_object_or_404 # import get_object_or_404 for fetching a specific post or returning 404
+from django.shortcuts import get_object_or_404, redirect # import get_object_or_404 for fetching a specific post or returning 404
 
 import logging
+
 
 # User authentication views
 
@@ -241,10 +242,12 @@ def delete_post(request, post_id):
     """
     post = get_object_or_404(SurfSpot, id=post_id)
 
+    # check if the user is authorized to delete the post. 
     if request.user.is_superuser or post.user == request.user:
         post.delete()
         messages.success(request, "Post deleted successfully.")
 
+        # Log the deletion if performed by an admin
         if request.user.is_superuser:
             # Log the modetarion action
             ModerationLog.objects.create(
