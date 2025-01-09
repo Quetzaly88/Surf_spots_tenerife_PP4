@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from .models import NovaUser, SurfSpot, Comment
+from .models import NovaUser, SurfSpot, Comment, ModerationLog
 #from django.core.paginator import Paginator
 
 
@@ -110,25 +110,6 @@ class SurfSpotTests(TestCase):
         self.assertEqual(response.status_code, 302) # redirect after success.
         self.assertTrue(SurfSpot.objects.filter(title="New Spot", category="Beginner").exists())
 
-    #     # Verify the surf spot appears in the homepage
-    #     response = self.client.get(reverse("home"))
-    #     self.assertContains(response, "New Spot")
-    #     self.assertContains(response, "A great spot for surfing.")
-
-    # def test_surf_spot_detail_view(self):
-    #     """
-    #     Test that the detail view returns the correct surf spot details.
-    #     """
-    #     # Fetch the detail view for a specific surf spot
-    #     spot = SurfSpot.objects.get(title="Surf Spot 1")
-    #     response = self.client.get(reverse("surf_spot_detail", args=[spot.id]))
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertContains(response, "Surf Spot 1")
-    #     self.assertContains(response, "Location 1")
-    #     self.assertContains(response, "A great spot.") # updated description
-    #     self.assertContains(response, "Summer")
-    #     self.assertContains(response, self.user.username)
-
 
 class CommentTests(TestCase):
     @classmethod # method runs once for the entire test class. More efficient. 
@@ -227,15 +208,6 @@ class SurfSpotCategoryTests(TestCase):
             category="Advanced",
             user=self.user,
         )
-
-
-        # # Create surf spots with different categories
-        # self.beginner_spot = SurfSpot.objects.create(
-        #     title="Beginner Spot", location="Beach A", category="Beginner", user=self.user
-        # )
-        # self.advanced_spot = SurfSpot.objects.create(
-        #     title="Advanced Spot", location="Beach B", category="Advanced", user=self.user
-        # )
         
     def test_filtering_by_category(self):
         """
@@ -252,3 +224,103 @@ class SurfSpotCategoryTests(TestCase):
         response = self.client.get(reverse("home"))
         self.assertContains(response, "Beginner Spot")
         self.assertContains(response, "Advanced Spot")
+
+
+# Tests to validate ModerationLog
+# admins can delete posts/comments. Users can delete own posts/comments, no unauthorized. 
+class ModerationTests(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        """
+        Set up initial data for all moderation tests. 
+        """
+        # Create a regular user
+        cls.user = NovaUser.objects.create_user(
+            username="testuser",
+            email="testuser@anemail.com",
+            password="password444",
+        )
+
+        #Create an admin user
+        cls.admin = NovaUser.objects.create_superuser(
+            username="adminuser",
+            email="adminuser@anemail.com",
+            password="adminpassword",
+        )
+
+        # Create a surf spot by a regular user
+        cls.surf_spot = SurfSpot.objects.create(
+            title="Test Surf Spot",
+            location="Test location",
+            description="A great surf spot",
+            best_seasons="Winter",
+            category="For Everyone",
+            user=cls.user,
+        )
+
+        # Create a comment on the surf spot by the reular user
+        cls.comment = Comment.objects.create(
+            surf_spot=cls.surf_spot,
+            user=cls.user,
+            content="This is a test comment"
+        )
+    def setUp(self):
+        """
+        Log in the admin or regular user before each test
+        """
+        self.client.logout()
+
+    def test_admin_can_delete_any_post_and_comment(self):
+        """
+        Test that an admin can delete any post and comment
+        """
+        self.client.login(username="adminuser", password="adminpassword")
+
+        # Delete the post
+        response = self.client.post(reverse("delete_post", args=[self.surf_spot.id]))
+        self.assertRedirects(response, reverse("home"))
+        self.assertFalse(SurfSpot.objects.filter(id=self.surf_spot.id).exists())
+
+        # Delete comment
+        response = self.client.post(reverse("delete_comment", args=[self.comment.id]))
+        self.assertRedirects(response, reverse("home"))
+        self.assertFalse(Comment.objects.filter(id=self.comment.id).exists())
+        
+        #check that both actions are logged
+        self.assertTrue(
+            ModerationLog.objects.filter(action_type="Deleted Post", moderator=self.admin).exists())
+            
+        self.assertTrue(
+        ModerationLog.objects.filter(action_type="Deleted Comment", moderator=self.admin).exists())
+
+
+    def test_user_cannot_delete_others_post_or_comment(self):
+        """
+        Test that a aregular user cannot delete another user's post or comment.
+        """
+        self.client.login(username="testuser", password="password444")
+
+        # Create another surf spot and comment by the admin
+        admin_surf_spot = SurfSpot.objects.create(
+            title="Admin Post",
+            location="Admin Location",
+            description="An admin-only post",
+            user=aelf.admin,
+        )
+        admin_comment = Comment.objects.create(
+            surf_spot=admin_surf_spot,
+            user=self.admin,
+            content="Admin-only comment."
+        )
+
+
+        # Try deleting admin's post
+        response = self.client.post(reverse("delete_post", args=[admin.spot.id]))
+        self.assertRedirects(response, reverse("home"))
+        self.assertTrue(SurfSpot.objects.filter(id=admin_surf_spot.id).exists())
+        
+        # Try deleting admin's comment
+        response = self.client.post(reverse("delete_comment", args=[admin.comment.id]))
+        self.assertRedirects(response, reverse("home"))
+        self.assertTrue(Comment.objects.filter(id=admin_surf_spot.id).exists())
+            
