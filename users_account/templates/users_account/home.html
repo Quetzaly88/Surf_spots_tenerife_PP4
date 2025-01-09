@@ -11,30 +11,53 @@
 </head>
 
 <body>
-    <!-- header section -->
+    <!-- navigation bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'home' %}" class="logo">
+                <img src="{% static 'images/logo.webp' %}" alt="Surf Spots Logo" class="logo-img">
+                Surf Spots Tenerife
+                </a>
+                <ul class="nav-links">
+                {% if request.user.is_authenticated %}
+                <li>Welcome, <strong>{{ request.user.username }}</strong></li>
+                <li><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
+                {% else %}
+                <li><a href="{% url 'login' %}" class="nav-link">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <!-- header section
     <header class="welcome-message">
         <h1>Welcome to Surf Spots Tenerife</h1>
         <p>Share your favourite surf locations to the community!</p>
-    </header>
+    </header> -->
 
     <!-- logout section -->
-    <div class="logout-section">
+    <!-- <div class="logout-section">
         <h3>{{ request.user.username }}</h3>
         <a href="{% url 'logout' %}" class="logout-link">Logout</a>
-    </div>
+    </div> -->
 
-    <!-- Category filter form -->
-    <form method="GET" action="{% url 'home' %}" class="category-filter-form">
-        <label for="category">Filter by Category:</label>
-        <select name="category" id="category" onchange="this.form.submit()">
-            <option value="" {% if not selected_category %}selected{% endif %}>All</option>
-            <!--All option is selected when no category filter is applied-->
-            <option value="Beginner" {% if selected_category == "Beginner" %}selected{% endif %}>Beginner</option>
-            <option value="Advanced" {% if selected_category == "Advanced" %}selected{% endif %}>Advanced</option>
-            <option value="For Everyone" {% if selected_category == "For Everyone" %}selected{% endif %}>For Everyone
-            </option>
-        </select>
-    </form>
+    <!-- main content -->
+    <div class="main-content">
+        <h1 class="main-title">Surf Spots Tenerife</h1>
+        
+        <!-- Category filter form -->
+        <form method="GET" action="{% url 'home' %}" class="category-filter-form">
+            <label for="category">Filter by Category:</label>
+            <select name="category" id="category" onchange="this.form.submit()">
+                <option value="" {% if not selected_category %}selected{% endif %}>All</option>
+                <!--All option is selected when no category filter is applied-->
+                <option value="Beginner" {% if selected_category == "Beginner" %}selected{% endif %}>Beginner</option>
+                <option value="Advanced" {% if selected_category == "Advanced" %}selected{% endif %}>Advanced</option>
+                <option value="For Everyone" {% if selected_category == "For Everyone" %}selected{% endif %}>For
+                    Everyone
+                </option>
+            </select>
+        </form>
+    </div>
 
     <!-- Display selected category -->
     {% if selected_category %}
@@ -67,7 +90,7 @@
 
     <!-- List surf spots -->
     <div id="surf-spots-list">
-        <h2>Surf Spots</h2>
+        <!-- <h2>Surf Spots</h2> -->
         {% for spot in surf_spots %}
         <div class="surf-spot">
             <h3><a href="{% url 'surf_spot_detail' spot.id %}">{{ spot.title }}</a></h3>
