@@ -19,8 +19,19 @@
         <p><strong>Posted by:</strong> {{ surf_spot.user.username }}</p>
         <p><strong>Date:</strong> {{ surf_spot.created_at }}</p>
 
+
+        <!-- delete button for admin or post owner -->
+        {% if request.user.is_superuser or surf_spot.user == request.user %}
+        <form method="POST" action="{% url 'delete_post' surf_spot.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="delete-btn">Delete</button>
+        </form>
+        {% endif %}
+
+
         <!-- Back to homepage link -->
         <a href="{% url 'home' %}" class="link">Back to homepage</a>
+
 
         <!-- Display existing comments -->
         <div class="comments-section">
@@ -31,6 +42,7 @@
                 <p><strong>{{ comment.user.username }}</strong> written on {{ comment.created_at|date:"M d, Y H:i" }}
                 </p>
                 <p>{{ comment.content }}}</p>
+
 
                 <!-- delete button for admin or post owner -->
                 {% if request.user.is_superuser or comment.user == request.user %}
