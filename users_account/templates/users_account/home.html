@@ -18,6 +18,10 @@
                 <img src="{% static 'images/logo.webp' %}" alt="Surf Spots Logo" class="logo-img">
                 Surf Spots Tenerife
                 </a>
+
+                <!-- nav bars for mobile -->
+                <i class="fas fa-bars" onclick="toggleNav()"></i> 
+
                 <ul class="nav-links">
                 {% if request.user.is_authenticated %}
                 <li>Welcome, <strong>{{ request.user.username }}</strong></li>
@@ -133,6 +137,12 @@
     {% endif %}
 
     <script src="{% static 'js/display-posts.js' %}"></script>
+    <script>
+        function toggleNav() {
+            let nav = document.getElementById("nav-links");
+            nav.classList.toggle("active")
+        }
+    </script>
 
 </body>
 
