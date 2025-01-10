@@ -11,8 +11,30 @@
 </head>
 
 <body>
-    <div class="detail-container">
-        <h1>{{ surf_spot.title }}</h1>
+    <!-- navigation bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'home' %}" class="logo">
+                <img src="{% static 'images/logo.webp' %}" alt="Surf Spots Logo" class="logo-img">
+                Surf Spots Tenerife
+                </a>
+                <ul class="nav-links">
+                {% if request.user.is_authenticated %}
+                <li>Welcome, <strong>{{ request.user.username }}</strong></li>
+                <li><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
+                {% else %}
+                <li><a href="{% url 'login' %}" class="nav-link">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- main content -->
+    <div class="detail-container main-content">
+        <h1 class="main-title">{{ surf_spot.title }}</h1>
+        
+        <!-- Surf Spot Details -->
+        <div class="surf-spot">
         <p><strong>Location:</strong> {{ surf_spot.location }}</p>
         <p><strong>Description:</strong> {{ surf_spot.description }}</p>
         <p><strong>Best Seasons:</strong> {{ surf_spot.best_seasons }}</p>
@@ -27,7 +49,7 @@
             <button type="submit" class="delete-btn">Delete</button>
         </form>
         {% endif %}
-
+    </div>
 
         <!-- Back to homepage link -->
         <a href="{% url 'home' %}" class="link">Back to homepage</a>
