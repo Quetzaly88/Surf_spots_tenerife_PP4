@@ -17,12 +17,12 @@
             <a href="{% url 'home' %}" class="logo">
                 <img src="{% static 'images/logo.webp' %}" alt="Surf Spots Logo" class="logo-img">
                 Surf Spots Tenerife
-                </a>
+            </a>
 
-                <!-- nav bars for mobile -->
-                <i class="fas fa-bars" onclick="toggleNav()"></i> 
+            <!-- nav bars for mobile -->
+            <i class="fas fa-bars" onclick="toggleNav()"></i>
 
-                <ul class="nav-links">
+            <ul class="nav-links">
                 {% if request.user.is_authenticated %}
                 <li>Welcome, <strong>{{ request.user.username }}</strong></li>
                 <li><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
@@ -47,7 +47,7 @@
     <!-- main content -->
     <div class="main-content">
         <h1 class="main-title">Surf Spots Tenerife</h1>
-        
+
         <!-- Category filter form -->
         <form method="GET" action="{% url 'home' %}" class="category-filter-form">
             <label for="category">Filter by Category:</label>

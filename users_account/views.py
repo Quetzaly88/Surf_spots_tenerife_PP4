@@ -184,10 +184,13 @@ def surf_spot_detail(request, spot_id):
     View to fetch details of a specific surf spot.
     Renders template with post details instead of Json response.
     """
+    form = CommentForm()
     #Fetch the specific surf spot by its ID. Return 404 if not found. 
     surf_spot = get_object_or_404(SurfSpot, id=spot_id)
     #render the detail view template
-    return render(request, 'users_account/surf_spot_detail.html', {'surf_spot': surf_spot})
+    return render(request, 'users_account/surf_spot_detail.html', {'surf_spot': surf_spot, 'comment_form': form}) 
+
+    
 
 # Add a view for Comment Creation
 @login_required # Just logged in users can view posts and comments

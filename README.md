@@ -1,36 +1,64 @@
-21 dec
-Migration Issue. Inconsisten migration history. 
-   When attempting to run **python manage.py migrate** was encountered an error. 
-   The error indicated that the admin migration was applied before the migration for the sustom user model. This resulted in an inconsistent migration history. 
-   The SQLite database was installed with hope that the issue was resolved but it didn'st work. 
-   
-   Solution: Database reset(rm db.sqlite3)
-            Migration cleanup (rm users_account/migrations/0001_initial.py)
-            Recreating migrations (python manage.py makemigrations users_account)
-            Applying migrations (python manage.py migrate)
-After the migration issue was resolved the terminal accepted commands and everything return to normal. 
+SURF SPOTS TENERIFE
 
-I believe this issue was the result of me just doing the migrations that the terminal was suggesting. 
+A FULL-STACK web application where users can share, view, and discuss surf spots in Tenerife. 
+The app allows users to post surf spots details. Also, the users can. write comments on posts and like this interact with the community. The user friendly interface provides categories which can be filtered and even pagination for a better reading experience. 
+This app follows the MVC framework using Django. 
+
+###Table of Contents
+1. Features
+2. User Stories
+3. Technologies used
+4. Testing
+5. Deployment
+6. Known Issues
+7. Future Enhancements
 
 
+### 1. Features
+* User Registration & Authentication:
+   The user can register, log-in and log-out securely. Role-based permissions are implemented, alowing only authorized user to create. edit, delete posts and comments.
+* Post creation and Management:
+   Logged-in users can create a new surf spot post, including a title, location, description, category and best seasons.
+* Comments:
+   Users can comment on posts, and both users and admins can delete comments. 
+* Category filtering and pagination:
+   Posts can be filtered by category. The pagination improves loading and displays 5 posts per page at its max. 
 
-22 dec
-https://www.w3resource.com/javascript/form/email-validation.php
-javascript code
 
-25 dec
-**Errors:** 
-Template doesn't exist: 
-   The users_account/login.html template was not loading because of incorrect configurations.
-   I corrected the directory structure with the new templates folder for login.html and register.html.
+### 2. User Stories
+1. User registration and login
+   As a user, I want to create an account and log in, so that I can post and comment about surf spots.
 
-403 error:
-    CSRF Verification failed: I found out that its purpose was for protection preventing external or malicious users to submit unauthorized POST requests to the server. 
-    I added trusted URL, disable secure cookies for development and adding the csrf tokens. 
+2. Post Surf Spots
+   As a user, I want to share surf spots with the community, so that others can discover and learn about new locations.
 
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
+3. Commenting on posts
+   As a user I can I want to browse and view surf spots, so that I can explore and learn about surfing locations.
 
------------------------------------------26 dec
+4. Discussing surf spots
+   As a user, I want to comment on surf spots, so that I can share my opinions and learn from others.
+
+5. Filtering Surf Spots by Categories
+   As an user, I want to filter surf spots by categories, so that I can find surf spots suited to my skills.
+
+6. Moderating content
+   As an admin I can manage posts and comments, so that I can ensure the community follows the guidelines.
+
+7. Exploring on mobile
+   As a user, I want the platform to work well on my mobile device, so that I can browse surf spots on the go.
+
+8. Deploying the platform
+   As a user I want the platform to be live and functional so that I can access it anytime, anywhere.
+
+
+# 3. Technologies used
+   Backend: Django (Python)
+   Frontend: HTML, CSS, JAvascript
+   Version Control: Github, Gitpod
+   Deployment: Heroku
+   Testing: Django's built-in testing Framework
+
+### 4. Testing
 **TESTING PROCESS**
 
 This project includes the tests suited for the core functionality:
@@ -85,13 +113,40 @@ For Testing:
 Errors: Installed black "pip install black". integrate "Black" with pre-commit hooks to ensure your code is formatted before each commit. pip install pre-commit. https://youtu.be/c5eaobs27yk?feature=shared. Commitment issues arised so I erased Black, commitment hooks and the virtual environment. 
 I Used Copilot Github AI for some errors but it did.t help me.
 
+### 5. Deployment
+- Create an account in Heroku
+- Install heroku CLI and login
+- Create a new heroku app
+- Set environment variables (e.g., SECRET_KEY, DEBUG, ALLOWED_HOSTS).
+- Push to heroku
+- Verify deployment
 
-https://jshint.com/. Javascript validation. using jshint version 8 
+
+### 6. Known Issues
+
+* Migration Issue. Inconsisten migration history. 
+   When attempting to run **python manage.py migrate** was encountered an error. 
+   The error indicated that the admin migration was applied before the migration for the sustom user model. This resulted in an inconsistent migration history. 
+   The SQLite database was installed with hope that the issue was resolved but it didn'st work. 
+   
+   Solution: Database reset(rm db.sqlite3)
+            Migration cleanup (rm users_account/migrations/0001_initial.py)
+            Recreating migrations (python manage.py makemigrations users_account)
+            Applying migrations (python manage.py migrate)
+After the migration issue was resolved the terminal accepted commands and everything return to normal. 
+
+I believe this issue was the result of me just doing the migrations that the terminal was suggesting. 
+
+* Template doesn't exist: 
+   The users_account/login.html template was not loading because of incorrect configurations.
+   I corrected the directory structure with the new templates folder for login.html and register.html.
+
+403 error:
+    CSRF Verification failed: I found out that its purpose was for protection preventing external or malicious users to submit unauthorized POST requests to the server. 
+    I added trusted URL, disable secure cookies for development and adding the csrf tokens. 
 
 
-
-3 Jan. User Story 3
-Task 1. about pagination
+* About pagination
 This was new to me.
 This task involved creating a paginated API endpoint that lists all surf spots. The purpose of pagination is to improve loading times by displaying a limited number of posts per page. 
 
@@ -111,13 +166,15 @@ https://8000-quetzaly88-surfspotsten-jr4iym5ywcp.ws.codeinstitute-ide.net/surf_s
 
 
 
-
-
+* SOURCES
 https://www.surfmarket.org/es/olas/europa/canarias/tenerife
-
-
-
-![coolors](./static/images/coolors-css.webp)
-
-
+https://ron.sh/handling-custom-django-error-pages-the-proper-way/?utm_source=chatgpt.com
+https://coolors.co/f79256-fbd1a2-7dcfb6-00b2ca-
+https://docs.djangoproject.com/en/5.1/topics/logging/
+https://docs.djangoproject.com/en/5.1/topics/testing/
+https://docs.djangoproject.com/en/5.1/
+https://youtu.be/XRRuWEDLwAE?feature=
+https://youtu.be/UpssHYl6bjA?feature=shared
+https://www.youtube.com/watch?v=_uQrJ0TkZlc
+https://www.youtube.com/@programmingwithmosh
 
