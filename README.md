@@ -12,6 +12,7 @@ This app follows the MVC framework using Django.
 5. Deployment
 6. Known Issues
 7. Future Enhancements
+8. Project Fixes & Deployment Configuration
 
 
 ### 1. Features
@@ -178,3 +179,35 @@ https://youtu.be/UpssHYl6bjA?feature=shared
 https://www.youtube.com/watch?v=_uQrJ0TkZlc
 https://www.youtube.com/@programmingwithmosh
 
+### Project Fixes & Deployment Configuration
+* Environment Variables:
+   For security best practices, sensitive settings have been moved to a .env file and accessed using python-decouple. 
+   - SECRET_KEY
+   - DEBUG
+
+   These are now accessed (settings.py) using:
+         from decouple import config
+
+         SECRET_KEY = config('SECRET_KEY')
+         DEBUG = config('DEBUG', cast=bool)
+
+   The .env file is included in .gitignore and never pushed to version control. 
+
+* Static files (CSS, JavaScript, images) were configured to load correctly in both development and production environments using Whitenoise and Django's static file settings:
+
+   STATIC_URL = '/static/'
+   STATICFILES_DIRS = [BASE_DIR / 'static']
+   STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+   terminal: 
+   % python manage.py collectstatic (This has collected static files which is necesary for Heroku to serve them in production)
+
+   Middleware configuration:
+   MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+   ...]
+
+   terminal: 
+   % heroku run python manage.py migrate --app surf-spots-tenerife
+   % heroku run python manage.py collectstatic --app surf-spots-tenerife
