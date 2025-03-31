@@ -11,19 +11,15 @@ ALLOWED_HOSTS = [
     ".herokuapp.com",
 ]
 
-# CSRF Trusted Origins
 CSRF_TRUSTED_ORIGINS = [
     "https://8000-quetzaly88-surfspotsten-jr4iym5ywcp.ws.codeinstitute-ide.net",
 ]
 
-# Security Settings (for production)
-CSRF_COOKIE_SECURE = True #ensure CSRF cookies are secure
-SESSION_COOKIE_SECURE = True # ensure session cookies are secure
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 CSRF_USE_SESSIONS = False
 CSRF_FAILURE_VIEW = "django.views.csrf.csrf_failure"
 
-
-# Application definition
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -37,6 +33,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -65,10 +62,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "surf_spots.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -76,9 +69,6 @@ DATABASES = {
     }
 }
 
-
-# Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -96,9 +86,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -109,25 +96,13 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
-
 STATIC_URL = "/static/"
-
-# Add static directories for development
 STATICFILES_DIRS = [BASE_DIR / "static"]
-
-# Directory where 'collecstatic' will store files
 STATIC_ROOT = BASE_DIR / "staticfiles"
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Custom User Model
 AUTH_USER_MODEL = "users_account.NovaUser"
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/home/' #redirect after login
+LOGIN_REDIRECT_URL = '/home/'
