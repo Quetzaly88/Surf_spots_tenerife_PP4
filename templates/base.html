@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Surf Spots Tenerife{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{% url 'home' %}" class="logo">
+                <img src="{% static 'images/logo.webp' %}" alt="Surf Spots Logo" class="logo-img">
+                Surf Spots Tenerife
+            </a>
+            <i class="fas fa-bars" onclick="toggleNav()"></i>
+            <ul class="nav-links" id="nav-links">
+
+                {% if request.user.is_authenticated %}
+                <li>Welcome, <strong>{{ request.user.username }}</strong></li>
+                <li><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
+                {% else %}
+                <li><a href="{% url 'login' %}" class="nav-link">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li class="" {{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Surf Spots Tenerife</p>
+    </footer>
+
+    <script src="{% static 'js/display-posts.js' %}"></script>
+    <script>
+        function toggleNav() {
+            let nav = document.getElementById("nav-links");
+            nav.classList.toggle("active")
+        }
+    </script>
+</body>
+
+</html>

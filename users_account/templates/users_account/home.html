@@ -1,83 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <!--link to shared css file-->
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
+{% block title %}Home{% endblock %}
 
-<body>
-    <!-- navigation bar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="{% url 'home' %}" class="logo">
-                <img src="{% static 'images/logo.webp' %}" alt="Surf Spots Logo" class="logo-img">
-                Surf Spots Tenerife
-            </a>
+{% block content %}
+<div class="main-content">
+    <h1 class="main-title">Surf Spots Tenerife</h1>
 
-            <!-- nav bars for mobile -->
-            <i class="fas fa-bars" onclick="toggleNav()"></i>
+    <form method="GET" action="{% url 'home' %}" class="category-filter-form">
+        <label for="category">Filter by Category:</label>
+        <select name="category" id="category" onchange="this.form.submit()">
+            <option value="" {% if not selected_category %}selected{% endif %}>All</option>
 
-            <ul class="nav-links">
-                {% if request.user.is_authenticated %}
-                <li>Welcome, <strong>{{ request.user.username }}</strong></li>
-                <li><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
-                {% else %}
-                <li><a href="{% url 'login' %}" class="nav-link">Login</a></li>
-                {% endif %}
-            </ul>
-        </div>
-    </nav>
-    <!-- header section
-    <header class="welcome-message">
-        <h1>Welcome to Surf Spots Tenerife</h1>
-        <p>Share your favourite surf locations to the community!</p>
-    </header> -->
+            <option value="Beginner" {% if selected_category=="Beginner" %}selected{% endif %}>Beginner</option>
+            <option value="Advanced" {% if selected_category=="Advanced" %}selected{% endif %}>Advanced</option>
+            <option value="For Everyone" {% if selected_category=="For Everyone" %}selected{% endif %}>For Everyone
+            </option>
+        </select>
+    </form>
 
-    <!-- logout section -->
-    <!-- <div class="logout-section">
-        <h3>{{ request.user.username }}</h3>
-        <a href="{% url 'logout' %}" class="logout-link">Logout</a>
-    </div> -->
-
-    <!-- main content -->
-    <div class="main-content">
-        <h1 class="main-title">Surf Spots Tenerife</h1>
-
-        <!-- Category filter form -->
-        <form method="GET" action="{% url 'home' %}" class="category-filter-form">
-            <label for="category">Filter by Category:</label>
-            <select name="category" id="category" onchange="this.form.submit()">
-                <option value="" {% if not selected_category %}selected{% endif %}>All</option>
-                <!--All option is selected when no category filter is applied-->
-                <option value="Beginner" {% if selected_category == "Beginner" %}selected{% endif %}>Beginner</option>
-                <option value="Advanced" {% if selected_category == "Advanced" %}selected{% endif %}>Advanced</option>
-                <option value="For Everyone" {% if selected_category == "For Everyone" %}selected{% endif %}>For
-                    Everyone
-                </option>
-            </select>
-        </form>
-    </div>
-
-    <!-- Display selected category -->
     {% if selected_category %}
     <p>Showing surf spots for: <strong>{{ selected_category }}</strong></p>
     {% endif %}
 
-    <!-- success and error messages -->
-    {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}
-        <li class="{{ message.tags }}">{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
-    <!-- Check if there are surf spots to display -->
     {% if surf_spots %}
     <!-- pagination controls -->
     <div class="pagination">
@@ -92,9 +36,7 @@
         {% endif %}
     </div>
 
-    <!-- List surf spots -->
     <div id="surf-spots-list">
-        <!-- <h2>Surf Spots</h2> -->
         {% for spot in surf_spots %}
         <div class="surf-spot">
             <h3><a href="{% url 'surf_spot_detail' spot.id %}">{{ spot.title }}</a></h3>
@@ -105,7 +47,6 @@
             <p><strong>Posted by:</strong> {{ spot.user.username }}</p>
             <p><strong>Date:</strong> {{ spot.created_at }}</p>
 
-            <!-- delete button for admin or post owner -->
             {% if request.user.is_superuser or spot.user == request.user %}
             <form method="POST" action="{% url 'delete_post' spot.id %}" style="display:inline;">
                 {% csrf_token %}
@@ -119,7 +60,6 @@
     <p>No surf spots found for the selected category.</p>
     {% endif %}
 
-    <!-- Form section-->
     <form id="create-post-form" method="POST" action="{% url 'home' %}">
         {% csrf_token %}
         <h2>Add a Surf Spot</h2>
@@ -127,7 +67,6 @@
         <button type="submit">Submit</button>
     </form>
 
-    <!-- form error messages "Ensure form.errors.items correctly matches the Django Form API."-->
     {% if form.errors %}
     <div class="form-errors">
         {% for field, errors in form.errors.items %}
@@ -135,15 +74,5 @@
         {% endfor %}
     </div>
     {% endif %}
-
-    <script src="{% static 'js/display-posts.js' %}"></script>
-    <script>
-        function toggleNav() {
-            let nav = document.getElementById("nav-links");
-            nav.classList.toggle("active")
-        }
-    </script>
-
-</body>
-
-</html>
+</div>
+{% endblock %}
