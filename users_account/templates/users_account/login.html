@@ -1,54 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% block title %}Login{% endblock %}
 
-</head>
+{% block content %}
+<div class="container">
+    <h1>Welcome!</h1>
+    <p>Please log in to acces surf spots</p>
 
-<body>
-    <!--main container for styling-->
-    <div class="container">
-        <h1>Welcome!</h1>
-        <p>Please log in to acces surf spots</p>
+    {% if error %}
+    <p class="error">{{ error }}</p>
+    {% endif %}
 
-        <!-- display error message if authentification fails -->
-         {% if error %}
-         <p class="error">{{ error }}</p>
-         {% endif %}
+    <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
 
-        <!--login form-->
-        <form method="POST" action="{% url 'login' %}">
-            {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
 
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+        <button type="submit">Login</button>
+    </form>
 
-            <button type="submit">Login</button>
-        </form>
+    {% if messages %}
+    <ul class="error">
+        {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 
-        <!--error messages-->
-        {% if messages %}
-        <ul class="error">
-            {% for message in messages %}
-            <li class="{{ message.tags }}">{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-
-        <!-- footer with registration link -->
-        <p class="footer-text">
-            Open account? <a href="{% url 'register' %}" class="link">Register here</a>
-        </p>
-        <!-- <a href="{% url 'logout' %}">Logout</a> -->
-    </div>
-</body>
-
-</html>
+    <p class="footer-text">
+        Open account? <a href="{% url 'register' %}" class="link">Register here</a>
+    </p>
+</div>
+{% endblock %}

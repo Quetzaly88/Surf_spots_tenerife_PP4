@@ -1,38 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-    <!--load django's static template tag-->
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <!--link to external css using django static template tag-->
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
+{% block title %}Register{% endblock %}
 
-<body>
-    <!-- main container for styling -->
-    <div class="container">
-        <h1>Create your account here!</h1>
-        <p>Join us to share and discover surf spots with the community!</p>
+{% block content %}
+<!-- main container for styling -->
+<div class="container">
+    <h1>Create your account here!</h1>
+    <p>Join us to share and discover surf spots with the community!</p>
 
-        <!-- registration form -->
-        <form method="POST" action="{% url 'register' %}">
-            <!--Django's token for security-->
-            {% csrf_token %}
-            <!--render django's form fields as <p> elements-->
-            {{ form.as_p }}
-            <button type="submit" class="btn-primary">Register</button>
-        </form>
+    <!-- registration form -->
+    <form method="POST" action="{% url 'register' %}">
+        <!--Django's token for security-->
+        {% csrf_token %}
+        <!--render django's form fields as <p> elements-->
+        {{ form.as_p }}
+        <button type="submit" class="btn-primary">Register</button>
+    </form>
 
-        <!-- footer with login link -->
-        <p class="footer-text">
-            Already have an account? <a href="{% url 'login' %}" class="link">Log in here</a>
-        </p>
-    </div>
+    <!-- footer with login link -->
+    <p class="footer-text">
+        Already have an account? <a href="{% url 'login' %}" class="link">Log in here</a>
+    </p>
+</div>
 
-    <script src="{% static 'js/form-validation.js' %}" defer></script>
-</body>
-
-</html>
+<script src="{% static 'js/form-validation.js' %}" defer></script>
+{% endblock %}
