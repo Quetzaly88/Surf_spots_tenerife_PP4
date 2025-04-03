@@ -283,3 +283,27 @@ def edit_post(request, post_id):
         'form': form,
         'post': surf_spot,
     })
+
+@login_required
+def edit_comment(request, comment_id):
+    """
+    View to handle editing of a comment.
+    Admins can edit any comment. Regular users can only edit their own comments.
+    """
+    if comment.user != request.user and not request.user.is_superuser:
+        messages.error(request, "You are not authorized to edit this comment.")
+        return redirect('home')
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Comment updated successfully.")
+            return redirect('home')
+    else:
+        form = CommentForm(instance=comment)
+
+    return render(request, 'users_account/edit_comment.html', {
+        'form': form,
+        'comment': comment,
+    })

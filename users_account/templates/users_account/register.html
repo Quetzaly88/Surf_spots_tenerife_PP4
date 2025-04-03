@@ -1,23 +1,20 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Register{% endblock %}
 
 {% block content %}
-<!-- main container for styling -->
 <div class="container">
     <h1>Create your account here!</h1>
     <p>Join us to share and discover surf spots with the community!</p>
 
-    <!-- registration form -->
     <form method="POST" action="{% url 'register' %}">
         <!--Django's token for security-->
         {% csrf_token %}
-        <!--render django's form fields as <p> elements-->
         {{ form.as_p }}
         <button type="submit" class="btn-primary">Register</button>
     </form>
 
-    <!-- footer with login link -->
     <p class="footer-text">
         Already have an account? <a href="{% url 'login' %}" class="link">Log in here</a>
     </p>

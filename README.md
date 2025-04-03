@@ -211,3 +211,6 @@ https://www.youtube.com/@programmingwithmosh
    terminal: 
    % heroku run python manage.py migrate --app surf-spots-tenerife
    % heroku run python manage.py collectstatic --app surf-spots-tenerife
+
+* Add "Edit" feature to the posts. 
+   Now the owners of their posts can edit their post and save it. Now is fully implemented and tested. 
