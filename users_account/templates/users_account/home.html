@@ -11,9 +11,9 @@
         <select name="category" id="category" onchange="this.form.submit()">
             <option value="" {% if not selected_category %}selected{% endif %}>All</option>
 
-            <option value="Beginner" {% if selected_category=="Beginner" %}selected{% endif %}>Beginner</option>
-            <option value="Advanced" {% if selected_category=="Advanced" %}selected{% endif %}>Advanced</option>
-            <option value="For Everyone" {% if selected_category=="For Everyone" %}selected{% endif %}>For Everyone
+            <option value="Beginner" {% if selected_category == "Beginner" %}selected{% endif %}>Beginner</option>
+            <option value="Advanced" {% if selected_category == "Advanced" %}selected{% endif %}>Advanced</option>
+            <option value="For Everyone" {% if selected_category == "For Everyone" %}selected{% endif %}>For Everyone
             </option>
         </select>
     </form>
@@ -52,6 +52,7 @@
                 {% csrf_token %}
                 <button type="submit" class="delete-btn">Delete</button>
             </form>
+            <a href="{% url 'edit_post' spot.id %}" class="edit-btn">Edit</a>
             {% endif %}
         </div>
         {% endfor %}

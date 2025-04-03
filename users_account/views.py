@@ -54,9 +54,6 @@ def logout_view(request):
     return redirect('login')  # redirect to login page
 
 
-# Main applications views
-
-# Home page view. Combines surf spot listing and creation in a single view. 
 @login_required
 def home_view(request):
     """
@@ -76,25 +73,20 @@ def home_view(request):
     else:
         form = SurfSpotForm()
 
-    #Fetch category filter request
     selected_category = request.GET.get('category')
     print(f"Raw selected category: {selected_category}")
 
-    #Initialize surf_spots_list based wether a category is selected.
     if selected_category:
-    # fetch all surf spots and order by creation date
         surf_spots_list = SurfSpot.objects.filter(category=selected_category).order_by('-created_at')
         print(f"Selected category: {selected_category}, Surf spots found: {surf_spots_list.count()}") #debugging
     else:
         surf_spots_list = SurfSpot.objects.all().order_by('-created_at')
         print(f"No category selected, Total surf spots: {surf_spots_list.count()}") #debugging
 
-    # Paginate the surf spots list, 5 spots per page
     paginator = Paginator(surf_spots_list, 5) # ensured that is set to 5
     page_number = request.GET.get('page')
     surf_spots = paginator.get_page(page_number)
 
-    #render the homepage template with the formand paginated surfspots
     return render(request, 'users_account/home.html', {
         'form': form, 
         'surf_spots': surf_spots,
@@ -102,9 +94,6 @@ def home_view(request):
     })
 
 
-# API endpoints
-
-#API endpoint to create a surf spot
 @login_required
 @require_http_methods(["POST"])
 def create_surf_spot_api(request):
@@ -116,7 +105,6 @@ def create_surf_spot_api(request):
         return JsonResponse({'message': 'Surf spot created successfully!'}, status=201)
     return JsonResponse({'errors': form.errors}, status=400) #return validation errors
 
-# API endpoint to list all surf spots
 @login_required
 def list_surf_spots(request): 
     if request.method == 'GET':
@@ -135,7 +123,6 @@ def list_surf_spots(request):
         return JsonResponse(data, safe=False)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
-# API endpoint to list surf spots with pagination
 @login_required
 def list_surf_spots_paginated(request):
     """
@@ -156,7 +143,6 @@ def list_surf_spots_paginated(request):
         # if page is out of range, return an empty page
         return JsonResponse({'error': 'No more posts avaiable'}, status=404)
 
-    # Prepare the data for the JSON response
     data = [
         {
             'id': spot.id,
@@ -167,7 +153,6 @@ def list_surf_spots_paginated(request):
         for spot in spots_page
     ]
 
-    # Return the paginated data along with metadata
     return JsonResponse({
         'surf_spots': data, 
         'total_pages': paginator.num_pages,
@@ -177,23 +162,18 @@ def list_surf_spots_paginated(request):
     })
 
 
-#API endpoint to fetch the details of a specific surf spot
-@login_required # Without this not-logged in users can VIEW the posts and comments. Other changes can be made in the future. 
+@login_required
 def surf_spot_detail(request, spot_id):
     """
     View to fetch details of a specific surf spot.
     Renders template with post details instead of Json response.
     """
     form = CommentForm()
-    #Fetch the specific surf spot by its ID. Return 404 if not found. 
     surf_spot = get_object_or_404(SurfSpot, id=spot_id)
-    #render the detail view template
     return render(request, 'users_account/surf_spot_detail.html', {'surf_spot': surf_spot, 'comment_form': form}) 
 
-    
 
-# Add a view for Comment Creation
-@login_required # Just logged in users can view posts and comments
+@login_required
 @require_http_methods(["POST"])
 def add_comment(request, spot_id):
     """
@@ -204,14 +184,13 @@ def add_comment(request, spot_id):
     form = CommentForm(request.POST)
 
     if form.is_valid():
-        # Create a new comment but don't save the database yet
         comment = form.save(commit=False)
         comment.surf_spot = surf_spot # Associate the comment with the logged-in user
         comment.user = request.user # Associate comment with the logged in user
         comment.save() # Save the comment to the database 
         messages.success(request, "Comment added successfully!")
         return redirect('surf_spot_detail', spot_id=spot_id)
-    else: 
+    else:
         messages.error(request, "Failed to add comment. Please, check your message.")
         # Re-render the detail page with the existing comments and the form with errors.
         comments = surf_spot.comments.all().order_by('-created_at')
@@ -220,21 +199,14 @@ def add_comment(request, spot_id):
             'comment_form': form,
             'comments': comments,
         })
-    
-    # Redirect back to the surf spot detail page
 
-# Error handlers
 
-# Custom 404 error handler
 def custom_404(request, exception):
     return render(request, '404.html', status=404)  # Render custom 404 page
 
-# Custom 500 error handler
 def custom_500(request):
     return render(request, '500.html', status=500)  # Render custom 500 page
 
-# User story6
-# Set up a logger framework to log admin actions / deletions. 
 logger = logging.getLogger(__name__)
 
 @login_required
@@ -245,14 +217,11 @@ def delete_post(request, post_id):
     """
     post = get_object_or_404(SurfSpot, id=post_id)
 
-    # check if the user is authorized to delete the post. 
     if request.user.is_superuser or post.user == request.user:
         post.delete()
         messages.success(request, "Post deleted successfully.")
 
-        # Log the deletion if performed by an admin
         if request.user.is_superuser:
-            # Log the moderation action
             ModerationLog.objects.create(
                 action_type ="Deleted Post",
                 moderator=request.user,
@@ -262,7 +231,7 @@ def delete_post(request, post_id):
             logger.info(f"Admin {request.user.username} deleted post '{post.title}'")
     else:
         messages.error(request, "You are not authorized to delete this post.")
-        
+
     return redirect('home')
 
 
@@ -289,8 +258,28 @@ def delete_comment(request, comment_id):
             logger.info(f"Admin {request.user.username} deleted comment by {comment.user.username}")
     else:
         messages.error(request, "You are not authorized to delete this comment.")
-        
-    return redirect('home')
-    
 
-    
+    return redirect('home')
+
+
+@login_required
+def edit_post(request, post_id):
+    surf_spot = get_object_or_404(SurfSpot, id=post_id)
+
+    if request.user != surf_spot.user and not request.user.is_superuser:
+        messages.error(request, "You are not authorized to edit this post.")
+        return redirect('home')
+
+    if request.method == 'POST':
+        form = SurfSpotForm(request.POST, instance=surf_spot)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Surf spot pdated successfully.")
+            return redirect('home')
+    else:
+        form = SurfSpotForm(instance=surf_spot)  # for GET request, render the form with existing data.
+
+    return render(request, 'users_account/edit_post.html', {
+        'form': form,
+        'post': surf_spot,
+    })
