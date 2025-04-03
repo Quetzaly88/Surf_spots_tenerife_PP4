@@ -1,7 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
 from .models import NovaUser, SurfSpot, Comment, ModerationLog
-#from django.core.paginator import Paginator
 
 
 class UserAuthTests(TestCase):
@@ -14,8 +13,6 @@ class UserAuthTests(TestCase):
             email="testuser@anemail.com",
             password="password444",
         )
-        #self.client.login(username="testuser", password="password444")
-
 
     def test_registration_valid(self):
         """
@@ -30,20 +27,15 @@ class UserAuthTests(TestCase):
                 "password2": "astrongpassword",
             },
         )
-        self.assertEqual(response.status_code, 302)  # Check for redirect after success
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(NovaUser.objects.filter(username="newuser").exists())
 
     def test_user_login_logout(self):
-        """
-        Tests login and logout functionality in one function for less use of code
-        """
         response = self.client.post(
             reverse("login"),
             {"username": "testuser", "password": "password444"},
         )
-        #self.assertEqual(response.status_code, 302)  # Check for redirect after success
         self.assertRedirects(response, reverse("home"))
-
         response = self.client.get(reverse("logout"))
         self.assertRedirects(response, reverse("login"))
 
@@ -60,7 +52,6 @@ class SurfSpotTests(TestCase):
         )
         self.client.login(username="testuser", password="password444")
 
-        # Create 12 surf spots for pagination and detail view tests
         for i in range(12):
             SurfSpot.objects.create(
                 title=f"Surf Spot {i+1}",
@@ -72,24 +63,15 @@ class SurfSpotTests(TestCase):
             )
 
     def test_pagination_first_and_last_page(self):
-        """
-        Test that pagination returns the correct number of posts per page
-        and navigates between pages. Just the first and last page to reduce code. 
-        """
-        # Test first page
         response = self.client.get(reverse("home") + "?page=1")
-        #self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Surf Spot 1")
-        self.assertContains(response, "Surf Spot 5")
-        self.assertNotContains(response, "Surf Spot 6") #Should not be on page 1
-
-        # Test last page
-        response = self.client.get(reverse("home") + "?page=3")
-        #self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Surf Spot 11")
         self.assertContains(response, "Surf Spot 12")
-        self.assertNotContains(response, "Surf Spot 6") #Should not be on page 3
+        self.assertContains(response, "Surf Spot 8")
+        self.assertNotContains(response, "Surf Spot 7")
 
+        response = self.client.get(reverse("home") + "?page=3")
+        self.assertContains(response, "Surf Spot 2")
+        self.assertContains(response, "Surf Spot 1")
+        self.assertNotContains(response, "Surf Spot 3")
 
     def test_create_surf_spot(self):
         """
@@ -102,28 +84,26 @@ class SurfSpotTests(TestCase):
                 "location": "New location",
                 "description": "A great spot for surfing.",
                 "best_seasons": "Winter",
-                "category": "Beginner", #new category
+                "category": "Beginner",
             },
         )
-        self.assertEqual(response.status_code, 302) # redirect after success.
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(SurfSpot.objects.filter(title="New Spot", category="Beginner").exists())
 
 
 class CommentTests(TestCase):
-    @classmethod # method runs once for the entire test class. More efficient. 
+    @classmethod
     def setUpTestData(cls):
         """
         Set up initial data for all test methods.
         Runs once for the entire test class.
         """
-        # Create a test user
         cls.user = NovaUser.objects.create_user(
             username="testuser",
             email="testuser@anemail.com",
             password="password444",
         )
 
-        # Create a test surf spot
         cls.surf_spot = SurfSpot.objects.create(
             title="Test Surf Spot",
             location="Test location",
@@ -133,7 +113,6 @@ class CommentTests(TestCase):
             user=cls.user,
         )
 
-
     def setUp(self):
         """
         Log in the user before each test.
@@ -141,41 +120,37 @@ class CommentTests(TestCase):
         """
         self.client.login(username="testuser", password="password444")
 
-
     def test_add_comment_valid_and_invalid(self):
         """
         Test adding a valid comment and handling an invalid (empty) comment.
         """
-        # Test valid comment
         response = self.client.post(
             reverse("add_comment", args=[self.surf_spot.id]),
-            {"content": "This is a valid comment."}, 
+            {"content": "This is a valid comment."},
         )
-        self.assertEqual(response.status_code, 302)  # Check for redirect after success
+        self.assertEqual(response.status_code, 302)
         self.assertTrue(Comment.objects.filter(content="This is a valid comment.").exists())
 
-        # Test invalid (empty) comment
         response = self.client.post(
             reverse("add_comment", args=[self.surf_spot.id]),
-            {"content": ""}, # Empty content
+            {"content": ""},
         )
-        self.assertEqual(response.status_code, 200)  # Stays on the same page
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "This field is required.")
         self.assertFalse(Comment.objects.filter(content="").exists())
-
 
     def test_add_comment_requires_login(self):
         """
         Test that only logged in users can add comments.
         """
-        self.client.logout() # Log out the test user
+        self.client.logout()
         response = self.client.post(
             reverse("add_comment", args=[self.surf_spot.id]),
             {"content": "This is a comment."},
         )
-        #self.assertEqual(response.status_code, 302)  # Check for redirect after success
         self.assertRedirects(response, f"{reverse('login')}?next={reverse('add_comment', args=[self.surf_spot.id])}")
         self.assertFalse(Comment.objects.filter(content="This is a comment.").exists())
+
 
 class SurfSpotCategoryTests(TestCase):
     def setUp(self):
@@ -188,7 +163,7 @@ class SurfSpotCategoryTests(TestCase):
             password="password444",
         )
         self.client.login(username="testuser", password="password444")
-        
+
         SurfSpot.objects.create(
             title="Beginner Spot",
             location="Beach A",
@@ -206,7 +181,7 @@ class SurfSpotCategoryTests(TestCase):
             category="Advanced",
             user=self.user,
         )
-        
+
     def test_filtering_by_category(self):
         """
         Test filtering returns correct surf spots for selected category
@@ -224,29 +199,24 @@ class SurfSpotCategoryTests(TestCase):
         self.assertContains(response, "Advanced Spot")
 
 
-# Tests to validate ModerationLog
-# admins can delete posts/comments. Users can delete own posts/comments, no unauthorized. 
 class ModerationTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         """
         Set up initial data for all moderation tests. 
         """
-        # Create a regular user
         cls.user = NovaUser.objects.create_user(
             username="testuser",
             email="testuser@anemail.com",
             password="password444",
         )
 
-        #Create an admin user
         cls.admin = NovaUser.objects.create_superuser(
             username="adminuser",
             email="adminuser@anemail.com",
             password="adminpassword",
         )
 
-        # Create a surf spot by a regular user
         cls.surf_spot = SurfSpot.objects.create(
             title="Test Surf Spot",
             location="Test location",
@@ -256,7 +226,6 @@ class ModerationTests(TestCase):
             user=cls.user,
         )
 
-        # Create a comment on the surf spot by the regular user
         cls.comment = Comment.objects.create(
             surf_spot=cls.surf_spot,
             user=cls.user,
@@ -270,26 +239,18 @@ class ModerationTests(TestCase):
         self.client.logout()
 
     def test_admin_can_delete_any_post_and_comment(self):
-        """
-        Test that an admin can delete any post and any comment. 
-        Ensure that actions are logged in ModerationLog. 
-        """
         self.client.login(username="adminuser", password="adminpassword")
 
-        # Delete the post
+        response = self.client.post(reverse("delete_comment", args=[self.comment.id]))
+        self.assertRedirects(response, reverse("home"))
+        self.assertFalse(Comment.objects.filter(id=self.comment.id).exists())
+
         response = self.client.post(reverse("delete_post", args=[self.surf_spot.id]))
         self.assertRedirects(response, reverse("home"))
         self.assertFalse(SurfSpot.objects.filter(id=self.surf_spot.id).exists())
 
-        # Delete comment
-        response = self.client.post(reverse("delete_comment", args=[self.comment.id]))
-        self.assertRedirects(response, reverse("home"))
-        self.assertFalse(Comment.objects.filter(id=self.comment.id).exists())
-        
-        #check that both actions are logged
         self.assertTrue(
             ModerationLog.objects.filter(action_type="Deleted Post", moderator=self.admin).exists())
-            
         self.assertTrue(
             ModerationLog.objects.filter(action_type="Deleted Comment", moderator=self.admin).exists())
 
@@ -300,7 +261,6 @@ class ModerationTests(TestCase):
         """
         self.client.login(username="testuser", password="password444")
 
-        # Create another surf spot and comment by the admin
         admin_surf_spot = SurfSpot.objects.create(
             title="Admin Post",
             location="Admin Location",
@@ -315,14 +275,44 @@ class ModerationTests(TestCase):
             content="Admin-only comment."
         )
 
-
-        # Try deleting admin's post
         response = self.client.post(reverse("delete_post", args=[admin_surf_spot.id]))
         self.assertRedirects(response, reverse("home"))
         self.assertTrue(SurfSpot.objects.filter(id=admin_surf_spot.id).exists())
-        
-        # Try deleting admin's comment
+
         response = self.client.post(reverse("delete_comment", args=[admin_comment.id]))
         self.assertRedirects(response, reverse("home"))
         self.assertTrue(Comment.objects.filter(id=admin_comment.id).exists())
-            
+
+    def test_edit_surf_spot(self):
+        self.client.login(username="adminuser", password="adminpassword")
+        surf_spot = SurfSpot.objects.first()
+        response = self.client.post(
+            reverse("edit_post", args=[surf_spot.id]),
+            {
+                "title": "Updated Surf Spot",
+                "location": surf_spot.location,
+                "description": "An updated description",
+                "best_seasons": surf_spot.best_seasons,
+                "category": surf_spot.category,
+            },
+        )
+        self.assertRedirects(response, reverse("home"))
+        surf_spot.refresh_from_db()
+        self.assertEqual(surf_spot.title, "Updated Surf Spot")
+        self.assertEqual(surf_spot.description, "An updated description")
+
+    def test_edit_comment(self):
+        self.client.login(username="adminuser", password="adminpassword")
+        comment = Comment.objects.create(
+            surf_spot=self.surf_spot,
+            user=self.user,
+            content="Original comment",
+        )
+
+        response = self.client.post(
+            reverse("edit_comment", args=[comment.id]),
+            {"content": "Updated comment"},
+        )
+        self.assertRedirects(response, reverse("surf_spot_detail", args=[self.surf_spot.id]))
+        comment.refresh_from_db()
+        self.assertEqual(comment.content, "Updated comment")
