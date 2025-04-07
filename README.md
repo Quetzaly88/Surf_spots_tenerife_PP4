@@ -1,25 +1,32 @@
-SURF SPOTS TENERIFE
+# SURF SPOTS TENERIFE
 
 A FULL-STACK web application where users can share, view, and discuss surf spots in Tenerife. 
-The app allows users to post surf spots details. Also, the users can. write comments on posts and like this interact with the community. The user friendly interface provides categories which can be filtered and even pagination for a better reading experience. 
+The app allows users to post surf spots details. Also, the users can write comments on posts and like this interact with the community. 
+The user friendly interface provides categories which can be filtered and even pagination for a better reading experience. 
 This app follows the MVC framework using Django. 
 
-###Table of Contents
+## Table of Contents
 1. Features
 2. User Stories
-3. Technologies used
-4. Testing
-5. Deployment
-6. Known Issues
-7. Future Enhancements
-8. Project Fixes & Deployment Configuration
+3. UX Design and Wireframes
+4. Technologies used
+5. Testing
+6. Deployment
+7. Known Issues
+8. Future Enhancements
+9. Sources
 
+---
 
 ### 1. Features
 * User Registration & Authentication:
-   The user can register, log-in and log-out securely. Role-based permissions are implemented, alowing only authorized user to create. edit, delete posts and comments.
-* Post creation and Management:
-   Logged-in users can create a new surf spot post, including a title, location, description, category and best seasons.
+   - The user can register, log-in and log-out securely. - Role-based permissions are implemented, alowing only authorized user to create. edit, delete posts and comments.
+   - Admins can delete any content.
+
+* Posts and Comments:
+   - Logged-in users can create a new surf spot post, including a title, location, description, category and best seasons.
+   - Logged-in users can post comments on surf spots. 
+   - Logged-in users can edit and delete their own comments and posts. 
 * Comments:
    Users can comment on posts, and both users and admins can delete comments. 
 * Category filtering and pagination:
