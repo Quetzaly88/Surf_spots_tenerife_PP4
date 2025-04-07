@@ -27,10 +27,18 @@ This app follows the MVC framework using Django.
    - Logged-in users can create a new surf spot post, including a title, location, description, category and best seasons.
    - Logged-in users can post comments on surf spots. 
    - Logged-in users can edit and delete their own comments and posts. 
-* Comments:
-   Users can comment on posts, and both users and admins can delete comments. 
-* Category filtering and pagination:
-   Posts can be filtered by category. The pagination improves loading and displays 5 posts per page at its max. 
+
+* Filtering and pagination
+   - Posts can be filtered by category. 
+   - The pagination improves loading and displays 5 posts per page at its max. 
+
+* Moderation
+   - Admins can delete any comment or post.
+   - All admin actions are logged via ModerationLog model. 
+
+* Responsive Design
+   - Mobile friendly layout
+   - Simple navigation and clear feedback messages. 
 
 
 ### 2. User Stories
@@ -58,22 +66,42 @@ This app follows the MVC framework using Django.
 8. Deploying the platform
    As a user I want the platform to be live and functional so that I can access it anytime, anywhere.
 
+# 3. UX Design & Wireframes
+* Color and Typography
+   - Palette:
+   - Fonts: 
 
-# 3. Technologies used
+* Layout Decisions
+   - Created base.html to ensure consistent layout and styling across templates.
+   - Navigation and user feedback messages are placed at the top of every page. 
+   - Surf cards are separated using each spot.
+
+* Wireframes
+
+
+# 4. Technologies used
    Backend: Django (Python)
-   Frontend: HTML, CSS, JAvascript
-   Version Control: Github, Gitpod
+   Frontend: HTML, CSS, JavaScript
+   Version Control: Github, VS code. 
    Deployment: Heroku
-   Testing: Django's built-in testing Framework
+   Testing: Django's built-in 'TestCase'
 
 ### 4. Testing
 **TESTING PROCESS**
 
-This project includes the tests suited for the core functionality:
-    - user registration
-    - login
-    - logout
-The tests verify that the users can interact with the application as intended, with validation fot successful and error scenarios. 
+Tests are written using Django’s built-in testing tools. Tests cover:
+
+- Registration, login, logout
+- Post creation, editing, deletion
+- Comment creation, editing, deletion
+- Pagination
+- Category filtering
+- Permissions (admin vs user)
+- Moderation logging
+
+```bash
+# Run tests
+python3 manage.py test
 
 **Features Tested**
 
@@ -91,7 +119,7 @@ The tests verify that the users can interact with the application as intended, w
 **How does the tests work?**
 
    1. Setup
-   - A tst user (testuser) is created in the setUp method to simulate login and logout scenarios.
+   - A testuser is created in the setUp method to simulate login and logout scenarios.
 
    2. User Registration
    - A POST request is made to the register URL with invalid and valid data. 
@@ -109,26 +137,15 @@ The tests verify that the users can interact with the application as intended, w
    - The test ensures the user is redirected to login page with a next parameter for redirection after login. 
 
 
-**How to run the tests?**
-1. Run "python3 manage.py test"
-2. The output will display the status of each test, indicating if is passed or if it has failed. 
-
-* Testing in Django. https://docs.djangoproject.com/en/5.1/topics/testing/overview/
-* Teast case class. https://docs.djangoproject.com/en/5.1/topics/testing/tools/#testcase
-* User creation form. https://docs.djangoproject.com/en/stable/ref/contrib/auth/#django.contrib.auth.forms.UserCreationForm
-
-For Testing:
-Errors: Installed black "pip install black". integrate "Black" with pre-commit hooks to ensure your code is formatted before each commit. pip install pre-commit. https://youtu.be/c5eaobs27yk?feature=shared. Commitment issues arised so I erased Black, commitment hooks and the virtual environment. 
-I Used Copilot Github AI for some errors but it did.t help me.
 
 ### 5. Deployment
 - Create an account in Heroku
 - Install heroku CLI and login
-- Create a new heroku app
-- Set environment variables (e.g., SECRET_KEY, DEBUG, ALLOWED_HOSTS).
-- Push to heroku
-- Verify deployment
-
+- Create a new heroku app.
+- Save environment variables in .env. Use python-decouple.
+- Run python manage.py migrate and python manage.py collectstatic.
+- Push to Heroku
+- Set config vars on Heroku dashboard. 
 
 ### 6. Known Issues
 
@@ -185,6 +202,7 @@ https://youtu.be/XRRuWEDLwAE?feature=
 https://youtu.be/UpssHYl6bjA?feature=shared
 https://www.youtube.com/watch?v=_uQrJ0TkZlc
 https://www.youtube.com/@programmingwithmosh
+
 
 ### Project Fixes & Deployment Configuration
 * Environment Variables:
