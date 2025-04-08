@@ -1,4 +1,3 @@
-# import modules and classes
 import json
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -10,16 +9,12 @@ from .forms import RegistrationForm, SurfSpotForm, CommentForm
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User  # for checking duplicate usernames
 from django.views.decorators.http import require_http_methods
-
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger # Import necessary classes for pagination
 from django.shortcuts import get_object_or_404, redirect # import get_object_or_404 for fetching a specific post or returning 404
 
 import logging
 
 
-# User authentication views
-
-#User registration view. Handles user registration and redirects to home. 
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
@@ -31,24 +26,20 @@ def register(request):
         form = RegistrationForm()  # if GET render empty form
     return render(request, 'users_account/register.html', {'form': form})  # render the registration template and pass the form instance to the template context.
 
-# User login view. Handles user authentication and redirects to home.
+
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        #user = None #Inilialize user to avoid unboundlocalerror
         user = authenticate(request, username=username, password=password)
-        #print(f"Authentication attempted: {username}, {password}, User: {user}")  # Debugging
         if user is not None:
             login(request, user)
-            #print("User logged in, redirecting to home.")  # Debugging
             return redirect('home')
         else:
-            #print("Invalid login.")  # Debugging
             return render(request, 'users_account/login.html', {'error': "Invalid username or password"})
     return render(request, 'users_account/login.html')
 
-# User logout view. Logs out user and redirects to the login page
+
 def logout_view(request):
     logout(request)
     return redirect('login')  # redirect to login page
@@ -106,7 +97,7 @@ def create_surf_spot_api(request):
     return JsonResponse({'errors': form.errors}, status=400) #return validation errors
 
 @login_required
-def list_surf_spots(request): 
+def list_surf_spots(request):
     if request.method == 'GET':
         spots = SurfSpot.objects.all().select_related('user').order_by('-created_at')
         data = [
@@ -115,13 +106,15 @@ def list_surf_spots(request):
                 "location": spot.location,
                 "description": spot.description,
                 "best_seasons": spot.best_seasons,
+                "category": spot.category,
                 "user": spot.user.username,
-                "created_at": spot.created_at,
+                "created_at": spot.created_at.strftime('%Y-%m-%d'),
             }
             for spot in spots
         ]
         return JsonResponse(data, safe=False)
-    return JsonResponse({'error': 'Invalid request method'}, status=405)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 @login_required
 def list_surf_spots_paginated(request):

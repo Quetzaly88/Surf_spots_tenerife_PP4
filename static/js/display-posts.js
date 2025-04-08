@@ -1,13 +1,11 @@
 /* jshint esversion: 8 */
 
-// load DOM
 document.addEventListener("DOMContentLoaded", function () {
     const surfSpotsList = document.getElementById('surf-spots-list');
 
-    // fetch surf spots from the backend
     async function fetchSurfSpots() {
         try {
-            const response = await fetch("/api/surf_spots/list/");
+            const response = await fetch("/surf_spots/list/");
             if (!response.ok) {
                 throw new Error("Failed to fetch surf spots");
             }

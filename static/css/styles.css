@@ -246,12 +246,18 @@ form select {
 
 footer {
     background-color: var(--dark);
-    color: var(--light);
+    color: var(--light-orange);
     padding: 20px;
     text-align: center;
-    font-size: 14px;
+    font-size: 16px;
+    margin-top: 40px;
     border-top: 1px solid var(--light-green);
 }
+
+footer p {
+    margin: 0;
+}
+
 
 /* desktop */
 @media (min-width: 1024px) {
@@ -299,11 +305,13 @@ footer {
         flex-direction: column;
         position: absolute;
         top: 60px;
-        right: 20px;
+        right: 10px;
         background-color: var(--dark);
         padding: 10px 20px;
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        z-index: 999;
+        width: max-content;
     }
 
     .nav-links.active {
@@ -312,6 +320,8 @@ footer {
 
     .nav-links li {
         margin: 10px 0;
+        color: var(--light-orange);
+        white-space: nowrap;
     }
 
     .nav-container {
