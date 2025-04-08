@@ -99,15 +99,32 @@ p {
 }
 
 h1 {
-    font-size: 36px;
+    font-size: clamp(24px, 5vw, 36px);
 }
 
-h2, h3 {
+h2 {
+    font-size: clamp(20px, 4vw, 28px);
     color: var(--mint-green);
 }
+h3 {
+    font-size: clamp(18px, 3vw, 24px);
+    color: var(--light-orange);
+}
 
-p {
-    color: var(--dark);
+p, li, .nav-links a {
+    font-size: clamp(18px, 2.5vw, 22px);
+}
+
+p,
+form label,
+form input,
+form textarea,
+form select,
+.nav-links a,
+.comment,
+.surf-spot,
+button {
+    font-size: clamp(14px, 2.5vw, 16px);
 }
 
 button,
@@ -133,6 +150,10 @@ button:hover,
 .post-comment-btn:hover {
     background-color: var(--mint-green);
     color: var(--light-orange);
+}
+
+a {
+    cursor: pointer;
 }
 
 main {
