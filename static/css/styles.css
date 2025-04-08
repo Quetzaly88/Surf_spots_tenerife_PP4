@@ -9,6 +9,10 @@
     --light: #FAF9F9;
 }
 
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
 body,
 html {
     margin: 0;
@@ -135,25 +139,36 @@ button,
     background-color: var(--dark);
     color: var(--light);
     border: none;
-    padding: 12px 20px;
-    border-radius: 6px;
+    padding: 12px 24px;
+    border-radius: 8px;
     font-size: 16px;
-    transition: background-color 0.3s;
+    font-weight: bold;
     cursor: pointer;
     text-decoration: none;
-    transition: background-color 0.3s ease, color 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-in-out;
 }
 
 button:hover,
 .delete-btn:hover,
 .edit-btn:hover,
 .post-comment-btn:hover {
-    background-color: var(--mint-green);
-    color: var(--light-orange);
+    background-color: var(--light-orange);
+    color: var(--dark);
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 a {
     cursor: pointer;
+    color: var(--dark);
+    text-decoration: none;
+    transition: transform 0.2s ease, color 0.2s ease;
+    font-weight: 700;
+}
+a:hover {
+    transform: scale(1.15);
+    color: orange;
 }
 
 main {
@@ -174,9 +189,13 @@ main {
     margin-bottom: 20px;
 }
 
+.spot-title {
+    color: var(--dark);
+}
+
 form {
     background: var(--mint-green);
-    padding: 25px;
+    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     margin: 20px auto;
@@ -186,9 +205,10 @@ form {
 }
 
 form label {
-    display: block;
+    display: flex;
     font-weight: bold;
     margin-bottom: 5px;
+    margin-top: 0;
 }
 
 form input,
@@ -226,7 +246,7 @@ form select {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgb(0, 0, 0, 0.1);
-    max-width: 1200px;
+    max-width: 600px;
     margin: 20px auto;
 }
 
@@ -331,7 +351,7 @@ footer p {
     }
 
     .logo-img {
-        height: 40px;
+        height: 60px;
         width: auto;
     }
 }

@@ -39,9 +39,12 @@
     <div id="surf-spots-list">
         {% for spot in surf_spots %}
         <div class="surf-spot">
-            <h3><a href="{% url 'surf_spot_detail' spot_id=spot.id %}">{{ spot.title }}</a></h3>
-            <p><strong>Location:</strong> {{ spot.location }}</p>
-            <p><strong>Description:</strong> {{ spot.description }}</p>
+            <h2 class="spot-title">
+                <a href="{% url 'surf_spot_detail' spot_id=spot.id %}">{{ spot.title }}</a>
+            </h2>
+
+            <h3><strong> {{ spot.location }} </strong></h3>
+            <p>{{ spot.description }}</p>
             <p><strong>Best Seasons:</strong> {{ spot.best_seasons }}</p>
             <p><strong>Category:</strong> {{ spot.category }}</p>
             <p><strong>Posted by:</strong> {{ spot.user.username }}</p>

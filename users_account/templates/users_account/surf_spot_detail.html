@@ -3,32 +3,28 @@
 {% block title %}{{ surf_spot.title }}{% endblock %}
 
 {% block content %}
-<!-- main content -->
-<div class="detail-container main-content">
-    <h1 class="main-title">{{ surf_spot.title }}</h1>
+<div class="main-content">
 
-    <!-- Surf Spot Details -->
     <div class="surf-spot">
-        <p><strong>Location:</strong> {{ surf_spot.location }}</p>
-        <p><strong>Description:</strong> {{ surf_spot.description }}</p>
+        <h2 class="spot-title">{{ surf_spot.title }}</h2>
+        <h3><strong> {{ surf_spot.location }} </strong></h3>
+        
+        <p>{{ surf_spot.description }}</p>
         <p><strong>Best Seasons:</strong> {{ surf_spot.best_seasons }}</p>
+        <p><strong>Category:</strong> {{ surf_spot.category }}</p>
         <p><strong>Posted by:</strong> {{ surf_spot.user.username }}</p>
         <p><strong>Date:</strong> {{ surf_spot.created_at }}</p>
 
         {% if request.user.is_superuser or surf_spot.user == request.user %}
-            <form method="POST" action="{% url 'delete_post' surf_spot.id %}" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this surf spot?');">Delete</button>
-            </form>
-            <a href="{% url 'edit_post' surf_spot.id %}" class="edit-btn">Edit</a>        
+        <form method="POST" action="{% url 'delete_post' surf_spot.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn-primary"
+                onclick="return confirm('Are you sure you want to delete this surf spot?');">Delete</button>
+        </form>
+        <a href="{% url 'edit_post' surf_spot.id %}" class="edit-btn">Edit</a>
         {% endif %}
     </div>
 
-    <!-- Back to homepage link -->
-    <a href="{% url 'home' %}" class="link">Back to homepage</a>
-
-
-    <!-- Display existing comments -->
     <div class="comments-section">
         <h2>Comments</h2>
         {% if surf_spot.comments.exists %}
@@ -38,12 +34,11 @@
             </p>
             <p>{{ comment.content }}</p>
 
-
             <!-- delete button for admin or post owner -->
             {% if request.user.is_superuser or comment.user == request.user %}
             <form method="POST" action="{% url 'delete_comment' comment.id %}" style="display:inline;">
                 {% csrf_token %}
-                <button type="submit" class="delete-btn">Delete</button>
+                <button type="submit" class="btn-primary">Delete</button>
             </form>
             <a href="{% url 'edit_comment' comment.id %}" class="edit-btn">Edit</a>
             {% endif %}
@@ -57,15 +52,17 @@
     <!-- comment form for logged in users -->
     {% if request.user.is_authenticated %}
     <div class="comment-form">
-        <h3>Add a comment</h3>
         <form method="POST" action="{% url 'add_comment' surf_spot.id %}">
             {% csrf_token %}
             {{ comment_form.as_p }}
             <button type="submit" class="btn-primary">Post Comment</button>
         </form>
     </div>
-    {% else %}
-    <p>You must <a href="{% url 'login' %}">Log in</a> to post a comment.</p>
-    {% endif %}
+    <!-- Back to homepage link -->
+    <a href="{% url 'home' %}" class="link">
+        <<< Back to homepage</a>
+            {% else %}
+            <p>You must <a href="{% url 'login' %}">Log in</a> to post a comment.</p>
+            {% endif %}
 </div>
 {% endblock %}
