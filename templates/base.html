@@ -16,9 +16,8 @@
             <a href="{% url 'home' %}" class="logo">
                 <img src="{% static 'images/logo.png' %}" alt="Surf Spots Logo" class="logo-img">
             </a>
-            <i class="fas fa-bars" onclick="toggleNav()"></i>
-            <ul class="nav-links" id="nav-links">
 
+            <ul class="nav-links">
                 {% if request.user.is_authenticated %}
                 <li>Welcome, <strong>{{ request.user.username }}</strong></li>
                 <li><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
@@ -48,14 +47,6 @@
     {% if request.user.is_authenticated %}
     <script src="{% static 'js/display-posts.js' %}"></script>
     {% endif %}
-
-    <script>
-        function toggleNav() {
-            console.log("Toggling navigation");
-            let nav = document.getElementById("nav-links");
-            nav.classList.toggle("active")
-        }
-    </script>
 </body>
 
 </html>

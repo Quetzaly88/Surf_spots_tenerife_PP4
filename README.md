@@ -1,7 +1,7 @@
 ### SURF SPOTS TENERIFE
 
 A **FULL-STACK web application** that allows users to share, view, and discuss surf spots in Tenerife. 
-The platform supports user-generated content, such as surf spots details and community comments. It features category-baseed filtering, pagination, and role-based permissions. This application is builded using Django framework following the MVC architecture. 
+The platform supports user-generated content, such as surf spots details and community comments. It features category-baseed filtering, pagination, and role-based permissions. This application is built using Django framework following the MVC architecture. 
 The application is mobile-friendly and includes admin moderation tools. 
 
 --- 
