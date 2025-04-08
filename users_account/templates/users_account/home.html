@@ -46,14 +46,6 @@
             <p><strong>Category:</strong> {{ spot.category }}</p>
             <p><strong>Posted by:</strong> {{ spot.user.username }}</p>
             <p><strong>Date:</strong> {{ spot.created_at }}</p>
-
-            {% if request.user.is_superuser or spot.user == request.user %}
-            <form method="POST" action="{% url 'delete_post' spot.id %}" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit" class="delete-btn">Delete</button>
-            </form>
-            <a href="{% url 'edit_post' spot.id %}" class="edit-btn">Edit</a>
-            {% endif %}
         </div>
         {% endfor %}
     </div>
