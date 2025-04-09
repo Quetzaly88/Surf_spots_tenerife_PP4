@@ -4,9 +4,9 @@
 {% block title %}Register{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="auth-container">
     <h1>Create your account here!</h1>
-    <p>Join us to share and discover surf spots with the community!</p>
+    <p class="login-subtitle">Join us to share and discover surf spots with the community!</p>
 
     <form method="POST" action="{% url 'register' %}">
         <!--Django's token for security-->
