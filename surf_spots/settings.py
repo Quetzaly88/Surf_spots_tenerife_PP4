@@ -110,3 +110,5 @@ AUTH_USER_MODEL = "users_account.NovaUser"
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/home/'
+
+X_FRAME_OPTIONS = 'ALLOWALL'
