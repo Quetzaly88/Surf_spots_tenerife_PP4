@@ -1,7 +1,10 @@
 ### SURF SPOTS TENERIFE
 
+**Live Site:**[Surf Spots Tenerife on Heroku](https://surf-spots-tenerife-84b64aafdf06.herokuapp.com/)
+
+
 A **FULL-STACK web application** that allows users to share, view, and discuss surf spots in Tenerife. 
-The platform supports user-generated content, such as surf spots details and community comments. It features category-baseed filtering, pagination, and role-based permissions. This application is built using Django framework following the MVC architecture. 
+The platform supports user-generated content, such as surf spots details and community comments. It features category-based filtering, pagination, and role-based permissions. This application is built using Django framework following the MVC architecture pattern. 
 The application is mobile-friendly and includes admin moderation tools. 
 
 --- 
@@ -16,7 +19,8 @@ The application is mobile-friendly and includes admin moderation tools.
 7. Deployment
 8. Known Issues
 9. Future Enhancements
-10. Sources
+10. Project Fixes & Deployment Configuration after review
+11. Sources
 
 ---
 ![mockup](./static/images/mockup.png)
@@ -24,18 +28,19 @@ The application is mobile-friendly and includes admin moderation tools.
 # 1. Features
 
 * User Registration & Authentication:
-   - The user can register, log-in and log-out securely. - Role-based permissions are implemented, alowing only authorized user to create. edit, delete posts and comments.
-   - Admins can delete any content.
+   - The user can register, log-in and log-out securely. 
+   - Role-based permissions are implemented, alowing only authorized user to create. edit, delete posts and comments.
+      - Admins can delete any content.
+      - Admins can delete any content
+      
 ![registration](./static/images/registration.png)
 
 
-* Logged in users are granted access to see the surf spots with their descriptions, comments, locations, date of post and name from who the post was created. There will be displayed max 5 posts per page. The homee page includes a category filtering and pagination. 
+* Logged in users are granted access to see the surf spots with their descriptions, comments, locations, date of post and name from who the post was created. There will be displayed max 5 posts per page. The home page includes a category filtering and pagination. 
 ![home](./static/images/home-page.png)
 
-
 * Posts and Comments:
-   - Logged-in users can create a new surf spot post, including a title, location, description, category and best seasons.
-
+   - Logged-in users can create a new surf spot post, including the title, location, description, category and best seasons.
 ![createsurfspot](./static/images/create-surfspot.png)
 
 - Logged-in users can post comments on surf spots. 
@@ -50,47 +55,72 @@ The application is mobile-friendly and includes admin moderation tools.
 * Filtering and pagination
    - Posts can be filtered by category. 
    - The pagination improves loading and displays 5 posts per page at its max. 
-
-
-* Logged in users are granted access to see the surf spots with their descriptions, comments, locations, date of post and name from who the post was created. 
 ![filtering](./static/images/filtering.png)
-
-* Moderation
-   - Admins can delete any comment or post.
-   - All admin actions are logged via ModerationLog model. 
 
 * Responsive Design
    - Mobile friendly layout
    - Simple navigation and clear feedback messages. 
-
 ![messages](./static/images/warning-messages.png)
-
 
 
 # 2. User Stories
 1. User registration and login
    As a user, I want to create an account and log in, so that I can post and comment about surf spots.
+      - Users must be able to create an account with an email, username, and password.
+      - Users must be able to log in using valid credentials.
+      - Error messages must display for invalid inputs.
+      - Users must be able to log out from their account using a logout link.
+
 
 2. Post Surf Spots
    As a user, I want to share surf spots with the community, so that others can discover and learn about new locations.
+      - Users must be able to create posts with a title, location, description, and "best seasons."
+      - Posts must display the author's username and the creation date.
+      - Only logged-in users can create posts.
+      - Invalid form submissions must trigger error messages.
 
 3. Commenting on posts
    As a user I can I want to browse and view surf spots, so that I can explore and learn about surfing locations.
+   Criterion 1:Users must be able to see a list of surf spots with their title, location, and creation date.
+      - Surf spots must be paginated to improve loading times.
+      - Users must be able to click on a post to view its details, including comments.
+      - Navigation links must allow easy movement between the homepage and post details.
 
 4. Discussing surf spots
    As a user, I want to comment on surf spots, so that I can share my opinions and learn from others.
+      - Logged-in users must be able to add comments to posts.
+      - Comments must display the author’s username and timestamp.
+      - Error messages must be shown for invalid or empty submissions.
+      - Only logged-in users can see the comment form.
 
 5. Filtering Surf Spots by Categories
    As an user, I want to filter surf spots by categories, so that I can find surf spots suited to my skills.
+      - Surf spots must be categorized into three categories: Beginner, Advanced, and For Everyone.
+      - A dropdown menu or sidebar must allow users to select and filter posts by these categories.
+      - Filtering results should dynamically update the homepage to show only posts that match the selected category.
+      - If no category is selected, the homepage should display all posts.
 
 6. Moderating content
    As an admin I can manage posts and comments, so that I can ensure the community follows the guidelines.
+      - Admins must be able to view, filter, and delete any post or comment.
+      - Regular users can only delete their own posts or comments.
+      - Unauthorized actions must display appropriate error messages.
+      - Moderation actions must be logged for accountability.
+      - Admins can use Django’s built-in admin panel for full control.
 
 7. Exploring on mobile
    As a user, I want the platform to work well on my mobile device, so that I can browse surf spots on the go.
+      - The website must be fully responsive across devices (mobile, tablet, desktop).
+      - Buttons, forms, and text must be optimized for touch screens.
+      - Navigation must be easy and consistent.
+      - No horizontal scrolling should be required.
 
 8. Deploying the platform
    As a user I want the platform to be live and functional so that I can access it anytime, anywhere.
+      - The platform must be deployed to a reliable, cloud-based host.
+      - All core functionality must work as expected in the deployed version.
+      - Deployment settings must prioritize security and stability.
+
 
 # 3. UX Design & Wireframes
 
@@ -99,12 +129,15 @@ The application is mobile-friendly and includes admin moderation tools.
     - X_FRAME_OPTIONS = 'ALLOWALL'. Then push the changes and deploy. 
     The iframe permission was dissabled after the mockup was created and a new deployment was made. 
 
+
 **Color Palette**
+   Chosen using Coolors. Soft colors with oceanic tones that transmit a friendly atmosphere. 
 ![colors](./static/images/coolors-css.webp)
 
 **Fonts**
-
-
+   Fonts loaded from Google Fonts:
+      - **Lato** for body text (readable, modern)
+      - **Rowdies** for headings. 
 
 **Layout Decisions**
    - Created base.html to ensure consistent layout and styling across templates.
@@ -112,6 +145,7 @@ The application is mobile-friendly and includes admin moderation tools.
    - Surf cards are separated using each spot.
 
 **Wireframes**
+   Created on paper and with 'Lucidchart' program. 
 ![wireframes](./static/images/wireframes.png)
 
 # 4. Data Models
@@ -132,24 +166,72 @@ The application is mobile-friendly and includes admin moderation tools.
       - Records the moderator, target content and timestamp for audit purposes. 
 
 # 5. Technologies used
-   Backend: Django (Python)
-   Frontend: HTML, CSS, JavaScript
-   Version Control: Github, VS code. 
-   Deployment: Heroku
-   Testing: Django's built-in 'TestCase'
+   **Languages and Frameworks**
+      - Django
+      - Python
+      - HTML, CSS, JavaScript
+
+   **Tools**
+      - Heroku (Deployment)
+      - Github
+      - VS code
+      - Google Fonts
+      - Coolors
+      - Lusidchart
 
 
 # 6. Testing
-**MANUAL TESTING**
 
+**MANUAL TESTING**
+   * From DevTools: 
+      - Verified responsiveness on desktop, tablet and mobile (reffer to 'mockup')
+      - Forms tested for validation, errors and redirects. 
+      - Lighthouse passed for accessibility and performance.
 ![LIGHTHOUSE](./static/images/lighthouse.png)
 
+* Validator.w3 shows "Document checking completed. No errors or warnings to show" for all html files. 
+
+* Validator jigsaw.w3 shows "No errors detected".
+
+   **Python Code Validation**
+   To ensure code quality and PEP8 compliance, I used:
+
+      - **[Flake8](https://flake8.pycqa.org/)** to identify issues such as unused imports, indentation problems, trailing spaces, etc.
+         Command in terminal: pip install flake8
+         Command to run flake: flake8 .
+
+      - A '.flake8' config was used to exclude irrelevant files. A new file called '.flake8' was created in the project root.
+         File: 
+
+         [flake8]
+         ignore = E501
+         exclude =
+               venv,
+               migrations,
+               __pycache__,
+               static,
+               manage.py,
+               .vscode,
+               settings.py
+         max-complexity = 10
+
+            * What this config does:
+               - ignore = E501: skips the "line too long" error
+
+               - exclude: skips folders and files you don’t want to check (like migrations, static, etc.)
+
+               - max-complexity: optional — sets the allowed complexity of functions (you can remove this line if not needed)
+
+         Again, run command: flake8 .
+
+      - **[Autopep8](https://pypi.org/project/autopep8/)** was used to automatically fix basic errors: 
+      Command in terminal: pip install autopep8
+      Command in terminal: autopep8 . --in-place --recursive
+      command in terminal to keep checking the errors: flake8 .
 
 
-
-
-**TESTING PROCESS**
-   Testing is implemented using Django's buitt-in 'TestCase' framework. All core features and user flows are covered, ensuring robust functionality, secure access and expected behaviour for both users and admins. 
+**UNIT TESTS (Django TestCase)**
+      Testing is implemented using Django's buitt-in 'TestCase' framework. All core features and user flows are covered, ensuring robust functionality, secure access and expected behaviour for both users and admins. 
 
    Areas covered: 
       - User registration, login, logout
@@ -207,14 +289,17 @@ The application is mobile-friendly and includes admin moderation tools.
    - Create an account in Heroku
    - Install heroku CLI and login
    - Create a new heroku app.
+   - Set config vars (DEBUG and SECRET_KEY) on Heroku dashboard. 
    - Save environment variables in .env. Use python-decouple.
    - Run python manage.py migrate and python manage.py collectstatic.
    - Push to Heroku
-   - Set config vars on Heroku dashboard. 
 
+   *Static files in main/settings.py:
+      STATIC_URL = '/static/'
+      STATICFILES_DIRS = [BASE_DIR / 'static']
+      STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # 8. Known Issues
-
    * Migration Issue. Inconsisten migration history. 
       When attempting to run **python manage.py migrate** was encountered an error. 
       The error indicated that the admin migration was applied before the migration for the sustom user model. This resulted in an inconsistent migration history. 
@@ -247,8 +332,16 @@ The application is mobile-friendly and includes admin moderation tools.
       Pagination is implemented with a default of 5 posts per page.
       If there aren't no surf spots, the API returns an empty list. 
 
+9. Future Enhancements
+   - Add user profiles with avatars and bios.
+   - Add like/favorite functionality for surf spots.
+   - Implement image uploads for surf spots.
+   - Add search functionality.
+   - Include map view of surf spots.
+   - Add staff page.
+   - Include paid content and ads. 
 
-### Project Fixes & Deployment Configuration after review: 
+10. Project Fixes & Deployment Configuration after review: 
 * Environment Variables:
    For security best practices, sensitive settings have been moved to a .env file and accessed using python-decouple. This keeps secrets out of version control.
    Variables used: 
@@ -312,21 +405,19 @@ The application is mobile-friendly and includes admin moderation tools.
 
 
 # 10. SOURCES
-https://ui.dev/amiresponsive?url=https://surf-spots-tenerife-84b64aafdf06.herokuapp.com/home/
-https://www.surfmarket.org/es/olas/europa/canarias/tenerife
-https://squoosh.app/
-https://lucid.app/lucidchart/7036ae0f-d4db-4453-99f3-59d5b8e1ddd7/edit?invitationId=inv_3323fe80-c3f6-4701-b07e-a32ac18f137d&page=0_0#
-
-https://ron.sh/handling-custom-django-error-pages-the-proper-way/?utm_source=chatgpt.com
-https://coolors.co/f79256-fbd1a2-7dcfb6-00b2ca-
-https://docs.djangoproject.com/en/5.1/topics/logging/
-https://docs.djangoproject.com/en/5.1/topics/testing/
-https://docs.djangoproject.com/en/5.1/
-https://youtu.be/XRRuWEDLwAE?feature=
-https://youtu.be/UpssHYl6bjA?feature=shared
-https://www.youtube.com/watch?v=_uQrJ0TkZlc
-https://www.youtube.com/@programmingwithmosh
-
-https://docs.djangoproject.com/en/5.2/howto/static-files/
-https://docs.djangoproject.com/en/5.2/ref/django-admin/#collectstatic
-https://devcenter.heroku.com/articles/django-assets
+- [Mockup creation](https://ui.dev/amiresponsive?url=https://)
+- [HTML validator](https://validator.w3.org/nu/#textarea)
+- [CSS Validator](https://jigsaw.w3.org/css-validator/validatorsurf-spots-tenerife-84b64aafdf06.herokuapp.com/home/)
+- [Sur forecast and points in Tenerife](https://www.surfmarket.org/es/olas/europa/canarias/tenerife)
+- [Sqoosh - Image Compression](https://squoosh.app/)
+- [Lucidchart - Wireframe creation](https://lucid.app/lucidchart/7036ae0f-d4db-4453-99f3-59d5b8e1ddd7/edit?invitationId=inv_3323fe80-c3f6-4701-b07e-a32ac18f137d&page=0_0#)
+- [Handling Custom Django Errors](https://ron.sh/handling-custom-django-error-pages-the-proper-way/?utm_source=chatgpt.com)
+- [Coolors - Color Palette Generator](https://coolors.co/f79256-fbd1a2-7dcfb6-00b2ca-)
+- [Django Logging Docs](https://docs.djangoproject.com/en/5.1/topics/logging/)
+- [Django Testing Docs](https://docs.djangoproject.com/en/5.1/topics/testing/)
+- [Django Docs Homepage](https://docs.djangoproject.com/en/5.1/)
+- [Django Static Files](https://docs.djangoproject.com/en/5.2/howto/static-files/)
+- [Django Admin Commands](https://docs.djangoproject.com/en/5.2/ref/django-admin/#collectstatic)
+- [Heroku Django Asset Management](https://devcenter.heroku.com/articles/django-assets)
+- [Programming with Mosh - Django Series](https://www.youtube.com/@programmingwithmosh)
+- [Django Crash Course - Mosh](https://www.youtube.com/watch?v=_uQrJ0TkZlc)

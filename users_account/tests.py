@@ -43,7 +43,7 @@ class UserAuthTests(TestCase):
 class SurfSpotTests(TestCase):
     def setUp(self):
         """
-        Set up a test user and create surf spots for testing. 
+        Set up a test user and create surf spots for testing.
         """
         self.user = NovaUser.objects.create_user(
             username="testuser",
@@ -54,8 +54,8 @@ class SurfSpotTests(TestCase):
 
         for i in range(12):
             SurfSpot.objects.create(
-                title=f"Surf Spot {i+1}",
-                location=f"Location {i+1}",
+                title=f"Surf Spot {i + 1}",
+                location=f"Location {i + 1}",
                 description="A great spot.",
                 best_seasons="Summer",
                 category="For Everyone",
@@ -203,7 +203,7 @@ class ModerationTests(TestCase):
     @classmethod
     def setUpTestData(cls):
         """
-        Set up initial data for all moderation tests. 
+        Set up initial data for all moderation tests.
         """
         cls.user = NovaUser.objects.create_user(
             username="testuser",
@@ -234,7 +234,7 @@ class ModerationTests(TestCase):
 
     def setUp(self):
         """
-        Log out the user before each test to ensure a clean state. 
+        Log out the user before each test to ensure a clean state.
         """
         self.client.logout()
 
@@ -253,7 +253,6 @@ class ModerationTests(TestCase):
             ModerationLog.objects.filter(action_type="Deleted Post", moderator=self.admin).exists())
         self.assertTrue(
             ModerationLog.objects.filter(action_type="Deleted Comment", moderator=self.admin).exists())
-
 
     def test_user_cannot_delete_others_post_or_comment(self):
         """

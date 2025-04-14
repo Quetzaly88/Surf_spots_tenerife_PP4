@@ -6,11 +6,9 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .models import SurfSpot, Comment, ModerationLog
 from .forms import RegistrationForm, SurfSpotForm, CommentForm
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.models import User  # for checking duplicate usernames
 from django.views.decorators.http import require_http_methods
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger # Import necessary classes for pagination
-from django.shortcuts import get_object_or_404, redirect # import get_object_or_404 for fetching a specific post or returning 404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger  # Import necessary classes for pagination
+from django.shortcuts import get_object_or_404
 
 import logging
 
@@ -48,7 +46,7 @@ def logout_view(request):
 @login_required
 def home_view(request):
     """
-    Handles listing and creation of surf spots. 
+    Handles listing and creation of surf spots.
     Support pagination for listing surf spots
     """
     if request.method == 'POST':
@@ -60,7 +58,7 @@ def home_view(request):
             messages.success(request, "Surf spot created successfully!")
             return redirect('home')
         else:
-            print(form.errors) #debugging
+            print(form.errors)  # debugging
     else:
         form = SurfSpotForm()
 
@@ -69,17 +67,17 @@ def home_view(request):
 
     if selected_category:
         surf_spots_list = SurfSpot.objects.filter(category=selected_category).order_by('-created_at')
-        print(f"Selected category: {selected_category}, Surf spots found: {surf_spots_list.count()}") #debugging
+        print(f"Selected category: {selected_category}, Surf spots found: {surf_spots_list.count()}")  # debugging
     else:
         surf_spots_list = SurfSpot.objects.all().order_by('-created_at')
-        print(f"No category selected, Total surf spots: {surf_spots_list.count()}") #debugging
+        print(f"No category selected, Total surf spots: {surf_spots_list.count()}")  # debugging
 
-    paginator = Paginator(surf_spots_list, 5) # ensured that is set to 5
+    paginator = Paginator(surf_spots_list, 5)  # ensured that is set to 5
     page_number = request.GET.get('page')
     surf_spots = paginator.get_page(page_number)
 
     return render(request, 'users_account/home.html', {
-        'form': form, 
+        'form': form,
         'surf_spots': surf_spots,
         'selected_category': selected_category,
     })
@@ -88,13 +86,14 @@ def home_view(request):
 @login_required
 @require_http_methods(["POST"])
 def create_surf_spot_api(request):
-    form = SurfSpotForm(json.loads(request.body)) #Parse JSON request body
+    form = SurfSpotForm(json.loads(request.body))  # Parse JSON request body
     if form.is_valid():
-        surf_spot = form.save(commit=False) # create surf spot without saving
-        surf_spot.user = request.user # assign current user to the surf spot
-        surf_spot.save() #save to the database
+        surf_spot = form.save(commit=False)  # create surf spot without saving
+        surf_spot.user = request.user  # assign current user to the surf spot
+        surf_spot.save()  # save to the database
         return JsonResponse({'message': 'Surf spot created successfully!'}, status=201)
-    return JsonResponse({'errors': form.errors}, status=400) #return validation errors
+    return JsonResponse({'errors': form.errors}, status=400)  # return validation errors
+
 
 @login_required
 def list_surf_spots(request):
@@ -116,21 +115,22 @@ def list_surf_spots(request):
     else:
         return JsonResponse({'error': 'Invalid request method'}, status=405)
 
+
 @login_required
 def list_surf_spots_paginated(request):
     """
-    View to list surf spots with pagination. Returns Json response 
+    View to list surf spots with pagination. Returns Json response
     with paginated surf spots data
     """
-    page_number = request.GET.get('page', 1) #default from request query parameters
+    page_number = request.GET.get('page', 1)  # default from request query parameters
     posts_per_page = 5
-    surf_spots = SurfSpot.objects.all().order_by('-created_at') #query database for all SurfSpot objects
+    surf_spots = SurfSpot.objects.all().order_by('-created_at')  # query database for all SurfSpot objects
     paginator = Paginator(surf_spots, posts_per_page)
 
     try:
-        spots_page = paginator.page(page_number) # Get the requested page of surf spots
+        spots_page = paginator.page(page_number)  # Get the requested page of surf spots
     except PageNotAnInteger:
-        #if page is not an integer, return the first page
+        # if page is not an integer, return the first page
         spots_page = paginator.page(1)
     except EmptyPage:
         # if page is out of range, return an empty page
@@ -147,7 +147,7 @@ def list_surf_spots_paginated(request):
     ]
 
     return JsonResponse({
-        'surf_spots': data, 
+        'surf_spots': data,
         'total_pages': paginator.num_pages,
         'current_page': spots_page.number,
         'has_next': spots_page.has_next(),
@@ -163,24 +163,24 @@ def surf_spot_detail(request, spot_id):
     """
     form = CommentForm()
     surf_spot = get_object_or_404(SurfSpot, id=spot_id)
-    return render(request, 'users_account/surf_spot_detail.html', {'surf_spot': surf_spot, 'comment_form': form}) 
+    return render(request, 'users_account/surf_spot_detail.html', {'surf_spot': surf_spot, 'comment_form': form})
 
 
 @login_required
 @require_http_methods(["POST"])
 def add_comment(request, spot_id):
     """
-    View to handle comment creation. 
+    View to handle comment creation.
     Just for logged in users
     """
-    surf_spot = get_object_or_404(SurfSpot, id=spot_id) #fetch the surf spot or show error 404
+    surf_spot = get_object_or_404(SurfSpot, id=spot_id)  # fetch the surf spot or show error 404
     form = CommentForm(request.POST)
 
     if form.is_valid():
         comment = form.save(commit=False)
-        comment.surf_spot = surf_spot # Associate the comment with the logged-in user
-        comment.user = request.user # Associate comment with the logged in user
-        comment.save() # Save the comment to the database 
+        comment.surf_spot = surf_spot  # Associate the comment with the logged-in user
+        comment.user = request.user  # Associate comment with the logged in user
+        comment.save()  # Save the comment to the database
         messages.success(request, "Comment added successfully!")
         return redirect('surf_spot_detail', spot_id=spot_id)
     else:
@@ -197,10 +197,13 @@ def add_comment(request, spot_id):
 def custom_404(request, exception):
     return render(request, '404.html', status=404)  # Render custom 404 page
 
+
 def custom_500(request):
     return render(request, '500.html', status=500)  # Render custom 500 page
 
+
 logger = logging.getLogger(__name__)
+
 
 @login_required
 def delete_post(request, post_id):
@@ -216,7 +219,7 @@ def delete_post(request, post_id):
 
         if request.user.is_superuser:
             ModerationLog.objects.create(
-                action_type ="Deleted Post",
+                action_type="Deleted Post",
                 moderator=request.user,
                 target_user=post.user.username,
                 target_content=post.title,
@@ -243,7 +246,7 @@ def delete_comment(request, comment_id):
         if request.user.is_superuser:
             # Log the moseration action
             ModerationLog.objects.create(
-                action_type ="Deleted Comment",
+                action_type="Deleted Comment",
                 moderator=request.user,
                 target_user=comment.user.username,
                 target_content=comment.content[:50],
@@ -276,6 +279,7 @@ def edit_post(request, post_id):
         'form': form,
         'post': surf_spot,
     })
+
 
 @login_required
 def edit_comment(request, comment_id):
