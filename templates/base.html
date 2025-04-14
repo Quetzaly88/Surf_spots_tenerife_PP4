@@ -13,16 +13,18 @@
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="{% url 'home' %}" class="logo">
+            <div class="logo">
                 <img src="{% static 'images/logo.png' %}" alt="Surf Spots Logo" class="logo-img">
-            </a>
+            </div>
 
             <ul class="nav-links">
                 {% if request.user.is_authenticated %}
                 <li>Welcome, <strong>{{ request.user.username }}</strong></li>
                 <li><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
                 {% else %}
-                <li><a href="{% url 'login' %}" class="nav-link">Login</a></li>
+                    {% if request.path == '/login/' %}
+                        <li><a href="{% url 'login' %}" class="nav-link">Login</a></li>
+                    {% endif %}
                 {% endif %}
             </ul>
         </div>
