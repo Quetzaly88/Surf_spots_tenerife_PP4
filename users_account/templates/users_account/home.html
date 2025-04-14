@@ -58,7 +58,7 @@
 
     <form id="create-post-form" method="POST" action="{% url 'home' %}">
         {% csrf_token %}
-        <h2>Add a Surf Spot</h2>
+        <h2 class="spot-title">Add a Surf Spot</h2>
         {{ form.as_p }}
         <button type="submit">Submit</button>
     </form>

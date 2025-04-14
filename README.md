@@ -70,6 +70,13 @@ The application is mobile-friendly and includes admin moderation tools.
 
 # 3. UX Design & Wireframes
 
+**Mockup**
+   To generate a mockup preview using tools like 'Am I Responsive', the application must be embeddable in an <iframe>. By default, Django and Heroku include security headers that block iframe embedding to prevent clickjacking. To allow iframe embedding just during preview I used in settings.py:
+    - X_FRAME_OPTIONS = 'ALLOWALL'. Then push the changes and deploy. 
+    The iframe permission was dissabled after the mockup was created and a new deployment was made. 
+
+
+
 **Color Palette**
 
 **Fonts**
@@ -273,7 +280,9 @@ The application is mobile-friendly and includes admin moderation tools.
 
 
 # 10. SOURCES
+https://ui.dev/amiresponsive?url=https://surf-spots-tenerife-84b64aafdf06.herokuapp.com/home/
 https://www.surfmarket.org/es/olas/europa/canarias/tenerife
+https://squoosh.app/
 https://ron.sh/handling-custom-django-error-pages-the-proper-way/?utm_source=chatgpt.com
 https://coolors.co/f79256-fbd1a2-7dcfb6-00b2ca-
 https://docs.djangoproject.com/en/5.1/topics/logging/

@@ -34,7 +34,6 @@
             </p>
             <p>{{ comment.content }}</p>
 
-            <!-- delete button for admin or post owner -->
             {% if request.user.is_superuser or comment.user == request.user %}
             <form method="POST" action="{% url 'delete_comment' comment.id %}" style="display:inline;">
                 {% csrf_token %}
