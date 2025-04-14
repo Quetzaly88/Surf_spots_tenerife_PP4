@@ -19,20 +19,41 @@ The application is mobile-friendly and includes admin moderation tools.
 10. Sources
 
 ---
+![mockup](./static/css/styles.css/mockup.png)
 
 # 1. Features
+
 * User Registration & Authentication:
    - The user can register, log-in and log-out securely. - Role-based permissions are implemented, alowing only authorized user to create. edit, delete posts and comments.
    - Admins can delete any content.
+![registration](./static/css/styles.css/registration.png)
+
+
+* Logged in users are granted access to see the surf spots with their descriptions, comments, locations, date of post and name from who the post was created. There will be displayed max 5 posts per page. The homee page includes a category filtering and pagination. 
+![home](./static/css/styles.css/home-page.png)
+
 
 * Posts and Comments:
    - Logged-in users can create a new surf spot post, including a title, location, description, category and best seasons.
-   - Logged-in users can post comments on surf spots. 
-   - Logged-in users can edit and delete their own comments and posts. 
+
+![createsurfspot](./static/css/styles.css/create-surfspot.png)
+
+- Logged-in users can post comments on surf spots. 
+![postcomments](./static/css/styles.css/comment-post.png)
+
+- Logged-in users can edit and delete their own comments and posts. 
+
+![editcomments](./static/css/styles.css/edit-comment.png)
+![editcomments](./static/css/styles.css/edit-post.png)
+
 
 * Filtering and pagination
    - Posts can be filtered by category. 
    - The pagination improves loading and displays 5 posts per page at its max. 
+
+
+* Logged in users are granted access to see the surf spots with their descriptions, comments, locations, date of post and name from who the post was created. 
+![filtering](./static/css/styles.css/filtering.png)
 
 * Moderation
    - Admins can delete any comment or post.
@@ -41,6 +62,9 @@ The application is mobile-friendly and includes admin moderation tools.
 * Responsive Design
    - Mobile friendly layout
    - Simple navigation and clear feedback messages. 
+
+![messages](./static/css/styles.css/warning-messages.png)
+
 
 
 # 2. User Stories
@@ -75,9 +99,8 @@ The application is mobile-friendly and includes admin moderation tools.
     - X_FRAME_OPTIONS = 'ALLOWALL'. Then push the changes and deploy. 
     The iframe permission was dissabled after the mockup was created and a new deployment was made. 
 
-
-
 **Color Palette**
+![colors](./static/css/styles.css/coolors-css.webp)
 
 **Fonts**
 
@@ -89,6 +112,7 @@ The application is mobile-friendly and includes admin moderation tools.
    - Surf cards are separated using each spot.
 
 **Wireframes**
+![wireframes](./static/css/styles.css/wireframes.png)
 
 # 4. Data Models
    This application uses Django's ORM to define and manage the following models: 
@@ -116,6 +140,14 @@ The application is mobile-friendly and includes admin moderation tools.
 
 
 # 6. Testing
+**MANUAL TESTING**
+
+![LIGHTHOUSE](./static/css/styles.css/lighthouse.png)
+
+
+
+
+
 **TESTING PROCESS**
    Testing is implemented using Django's buitt-in 'TestCase' framework. All core features and user flows are covered, ensuring robust functionality, secure access and expected behaviour for both users and admins. 
 
@@ -283,6 +315,8 @@ The application is mobile-friendly and includes admin moderation tools.
 https://ui.dev/amiresponsive?url=https://surf-spots-tenerife-84b64aafdf06.herokuapp.com/home/
 https://www.surfmarket.org/es/olas/europa/canarias/tenerife
 https://squoosh.app/
+https://lucid.app/lucidchart/7036ae0f-d4db-4453-99f3-59d5b8e1ddd7/edit?invitationId=inv_3323fe80-c3f6-4701-b07e-a32ac18f137d&page=0_0#
+
 https://ron.sh/handling-custom-django-error-pages-the-proper-way/?utm_source=chatgpt.com
 https://coolors.co/f79256-fbd1a2-7dcfb6-00b2ca-
 https://docs.djangoproject.com/en/5.1/topics/logging/
